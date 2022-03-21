@@ -1,0 +1,15 @@
+<?xml version="1.0"?><!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping>
+    <class name="User" table="personnes">
+        <id name="idPersonne" type="int" column="idpersonne">
+            <generator class="increment"/>
+        </id>
+        <property name="nomPersonne" type="string" not-null="true" />
+        <property name="prenomPersonne" type="string" not-null="true" />
+        <property name="datenaissPersonne" type="date">
+            <meta attribute="field-description">date de naissance</meta>
+        </property>
+    </class>
+</hibernate-mapping>
