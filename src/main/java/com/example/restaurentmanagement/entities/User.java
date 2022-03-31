@@ -1,58 +1,45 @@
 package com.example.restaurentmanagement.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
+@Data @ToString @NoArgsConstructor @AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idPersonne;
-    private String nomPersonne;
-    private String prenomPersonne;
-    private Date datenaissPersonne;
+    private Long id;
+    private String firstname;
+    private String lastname;
+    @Column(nullable = false, unique = true)
+    private String username;
+    private String email;
+    private String password;
+    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "bookMarks", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurent_id"))
+    private Set<Restaurent> bookmarks;
 
-    public User(String nomPersonne, String prenomPersonne, Date datenaissPersonne) {
-        this.nomPersonne = nomPersonne;
-        this.prenomPersonne = prenomPersonne;
-        this.datenaissPersonne = datenaissPersonne;
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Review> reviews;
 
-    public User() {
-    }
+    @OneToMany(mappedBy = "ownerUser", fetch = FetchType.EAGER)
+    private Set<Restaurent> restaurants;
 
-    public Date getDatenaissPersonne() {
-        return datenaissPersonne;
-    }
 
-    public Integer getIdPersonne() {
-        return idPersonne;
-    }
 
-    public String getNomPersonne() {
-        return nomPersonne;
-    }
 
-    public String getPrenomPersonne() {
-        return prenomPersonne;
-    }
-
-    public void setDatenaissPersonne(Date date) {
-        datenaissPersonne = date;
-    }
-
-    public void setIdPersonne(Integer integer) {
-        idPersonne = integer;
-    }
-
-    public void setNomPersonne(String string) {
-        nomPersonne = string;
-    }
-
-    public void setPrenomPersonne(String string) {
-        prenomPersonne = string;
+    public User(String username, String email, String password, String role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 }

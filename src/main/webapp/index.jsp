@@ -59,8 +59,8 @@
             <ul>
                 <li><span><a href="#0">Home</a></span>
                     <ul>
-                        <li><a href="index.html">Home version 1</a></li>
-                        <li><a href="index-2.html">Home version 2</a></li>
+                        <li><a href="listUsers.php">Home version 1</a></li>
+                        <li><a href="addUsers.php">Home version 2</a></li>
                         <li><a href="index-3.html">Home version 3</a></li>
                         <li><a href="index-4.html">Home version 4</a></li>
                         <li><a href="index-5.html">Home version 5</a></li>
