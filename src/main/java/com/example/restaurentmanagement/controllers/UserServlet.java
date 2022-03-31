@@ -10,11 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name="MainServlet", urlPatterns = "*.php")
-public class MainServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
     userRepositoryImp userRepositoryImp;
 
         public void init() {
@@ -24,28 +23,41 @@ public class MainServlet extends HttpServlet {
             response.setContentType("text/html");
             String Path = request.getServletPath();
             if (Path.equalsIgnoreCase("/listUsers.php")) {
-                UserModel model = new UserModel();
-                model.setKeyWord("users");
+                UserModel model1 = new UserModel();
+                model1.setKeyWord("users");
                 List<User> users = userRepositoryImp.getAllUsers();
-                model.setUsers(users);
-                request.setAttribute("modelUser", model);
-                request.getRequestDispatcher("views/tables.jsp").forward(request, response);
+                model1.setUsers(users);
+                request.setAttribute("modelUser", model1);
+                request.getRequestDispatcher("views/listUsers.jsp").forward(request, response);
             }
             if (Path.equalsIgnoreCase("/addUsers.php")) {
-                request.getRequestDispatcher("views/add-listing.jsp").forward(request, response);
+                request.getRequestDispatcher("views/addUser.jsp").forward(request, response);
             }
             if (Path.equalsIgnoreCase("/saveUser.php")) {
-                 User user = new User();
+                User user = new User();
                 user.setFirstname(request.getParameter("firstname"));
                 user.setLastname(request.getParameter("lastname"));
                 user.setUsername(request.getParameter("username"));
                 user.setEmail(request.getParameter("email"));
                 user.setPassword(request.getParameter("password"));
                 user.setRole(request.getParameter("role"));
+                if(Long.valueOf(request.getParameter("id")) != 0)
+                    user.setId(Long.valueOf(request.getParameter("id")));
                 userRepositoryImp.saveOrUpdateUser(user);
-                System.out.println(user);
-                request.getRequestDispatcher("views/confirmation.jsp").forward(request, response);
+                request.getRequestDispatcher("views/saveConfirmation.jsp").forward(request, response);
             }
+            if (Path.equalsIgnoreCase("/editUser.php")) {
+                Long userID = Long.valueOf(request.getParameter("id"));
+                User user = userRepositoryImp.getUser(userID);
+                request.setAttribute("user", user);
+                request.getRequestDispatcher("views/editUser.jsp").forward(request, response);
+            }
+            if (Path.equalsIgnoreCase("/deleteUser.php")) {
+                Long userID = Long.valueOf(request.getParameter("id"));
+                if(userRepositoryImp.deleteUser(userID))
+                    request.getRequestDispatcher("views/deleteConfirmation.jsp").forward(request, response);
+            }
+
         }
 
     @Override

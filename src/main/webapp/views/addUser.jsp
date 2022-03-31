@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="com.example.restaurentmanagement.entities.User"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,10 +55,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseMylistings">
             <li>
-              <a href="add-listing.jsp">Add users</a>
+              <a href="addUser.jsp">Add users</a>
             </li>
 			<li>
-              <a href="tables.jsp">List users</a>
+              <a href="listUsers.jsp">List users</a>
             </li>
           </ul>
         </li>
@@ -106,13 +109,13 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>First name</label>
-						<input type="text" class="form-control" placeholder="first name" name="firstname">
+						<input type="text" class="form-control" placeholder="first name" name="firstname" value="">
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Last name</label>
-						<input type="text" class="form-control" placeholder="last name" name="lastname">
+						<input type="text" class="form-control" placeholder="last name" name="lastname" value="">
 					</div>
 				</div>
 			</div>
@@ -152,6 +155,7 @@
 			</div>
 			</div>
 			<!-- /row-->
+                <input type="hidden" name="id" value="0">
                 <button type="submit" class="btn_1 medium">Save</button>
 <%--		<p><a href="#0" class="btn_1 medium">Save</a></p>--%>
         </form>
@@ -223,6 +227,6 @@
         height: 200
       });
     </script>
-	
+  </div>
 </body>
 </html>

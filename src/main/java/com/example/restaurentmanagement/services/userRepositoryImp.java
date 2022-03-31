@@ -1,5 +1,6 @@
 package com.example.restaurentmanagement.services;
 
+import com.example.restaurentmanagement.config.HibernateUtil;
 import com.example.restaurentmanagement.entities.User;
 import org.hibernate.*;
 import org.hibernate.boot.MetadataSources;
@@ -7,125 +8,125 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.PersistenceException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class userRepositoryImp implements userRepository{
     static User currentUser = null;
-    final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
-     SessionFactory sessionFactory ;
-     Session session ;
-     Transaction tx;
+
+
 
     public userRepositoryImp() {
-        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        session = sessionFactory.openSession();
-        tx = null;
     }
 
     @Override
     public boolean saveOrUpdateUser(User user) {
-        try {
-            tx = session.beginTransaction();
-            //session.save(user);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try{
             String password = user.getPassword();
             user.setPassword(encryptionMd5(password));
             session.saveOrUpdate(user);
             session.flush() ;
             tx.commit();
             return true;
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-                return false;
-            }
-            throw e;
-        } finally {
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
             session.close();
-            sessionFactory.close();
         }
+        return false;
     }
 
     @Override
     public boolean deleteUser(Long id) {
-        try {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try{
+            //TODO Handle Exception ???
             User user = new User();
             user.setId(id);
-            tx = session.beginTransaction();
             session.delete(user);
             session.flush() ;
             tx.commit();
             return true;
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-                return false;
-            }
-            throw e;
-        } finally {
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            tx.rollback();
+            return false;
+        }finally {
             session.close();
-            sessionFactory.close();
         }
     }
 
     @Override
     public User getUser(Long id) {
-        try {
-            tx = session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try{
             User user = session.get(User.class, id);
             session.flush() ;
             tx.commit();
             return user;
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-                return null;
-            }
-            throw e;
-        } finally {
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
             session.close();
-            sessionFactory.close();
         }
+        return null;
     }
 
 
     @Override
     public boolean authenticate(String username, String password) {
-        // TODO change depricated
-        Criteria criteria = session.createCriteria(User.class);
-        User user = (User) criteria.add(Restrictions.eq("username", username)).uniqueResult();
-        if(user == null){
-            return false;
-        }else{
-            if(encryptionMd5(password).equals(user.getPassword())) {
-                currentUser = user;
-                return true;
+       // TODO change depricated
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try{
+            Criteria criteria = session.createCriteria(User.class);
+            User user = (User) criteria.add(Restrictions.eq("username", username)).uniqueResult();
+            session.flush() ;
+            tx.commit();
+            if(user == null){
+                return false;
+            }else{
+                if(encryptionMd5(password).equals(user.getPassword())) {
+                    currentUser = user;
+                    return true;
+                }
+                else return false;
             }
-            else return false;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
+            session.close();
         }
+        return false;
     }
 
     @Override
     public List<User> getAllUsers() {
-        try {
-            tx = session.beginTransaction();
-            // TODO change depricated
+        // TODO change depricated
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try{
             Query query = session.createQuery("from User");
             List<User> users = query.list();
             session.flush() ;
             tx.commit();
             return users;
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-                return null;
-            }
-            throw e;
-        } finally {
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
             session.close();
-            sessionFactory.close();
         }
+        return null;
     }
 
 

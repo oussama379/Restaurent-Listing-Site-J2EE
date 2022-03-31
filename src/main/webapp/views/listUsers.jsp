@@ -49,10 +49,10 @@
         </a>
         <ul class="sidenav-second-level collapse" id="collapseMylistings">
           <li>
-            <a href="add-listing.jsp">Add users</a>
+            <a href="addUser.jsp">Add users</a>
           </li>
     <li>
-            <a href="tables.jsp">List users</a>
+            <a href="listUsers.jsp">List users</a>
           </li>
         </ul>
       </li>
@@ -126,6 +126,8 @@
                 <td>oussama123</td>
                 <td>oussama@gmail.com</td>
                 <td>Admin</td>
+                <td><a href="#0" class="btn_1 small">Edit</a></td>
+                <td><a href="#0" class="btn_1 small">Delete</a></td>
               </tr>
               <c:forEach items="${modelUser.getUsers()}" var="u">
                 <tr>
@@ -134,6 +136,8 @@
                   <td>${u.username}</td>
                   <td>${u.email}</td>
                   <td>${u.role}</td>
+                  <td><a href="editUser.php?id=${u.id}" class="btn_1 small">Edit</a></td>
+                  <td><a href="deleteUser.php?id=${u.id}" class="btn_1 small">Delete</a></td>
                 </tr>
               </c:forEach>
               </tbody>
