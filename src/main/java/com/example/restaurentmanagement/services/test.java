@@ -12,11 +12,16 @@ public class test {
        /* for ( User U : userRepositoryImp.getAllUsers() ){
             System.out.println(U.toString());
         }*/
-
-        //User user = new User("ouss", "oussa@gmail.com", "1234", "admin");
-        //boolean b = userRepositoryImp.saveOrUpdateUser(user);
-        boolean b = userRepositoryImp.authenticate("ouss", "1234");
+/*
+        User user = new User("oussamacc", "hennae","zzoVVVVccuss", "oussa@gmail.com", "1234", "admin");
+        user.setId(2L);
+        boolean b = userRepositoryImp.saveOrUpdateUser(user);
         System.out.println(b);
+
+        System.out.println(userRepositoryImp.authenticate("mm", "1234"));
+        System.out.println(userRepositoryImp.getUser(1L));
+        System.out.println(userRepositoryImp.deleteUser(1L));
+        System.out.println(userRepositoryImp.getAllUsers());*/
 
         /*User user2 = new User("ouss1modify", "oussa@gmail.com", "admin");
         user2.setId(1L);*/

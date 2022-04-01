@@ -47,6 +47,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/resources/admin_section" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/resources/resources_admin" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/views/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="com.example.restaurentmanagement.entities.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%--<% boolean confirmation = (boolean) request.getAttribute("confirmation"); %>--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,36 +14,36 @@
   <title>XOXO - Admin Page</title>
 	
   <!-- Favicons-->
-  <link rel="shortcut icon" href="resources/img/favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" type="image/x-icon" href="resources/img/apple-touch-icon-57x57-precomposed.png">
-  <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="resources/img/apple-touch-icon-72x72-precomposed.png">
-  <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="resources/img/apple-touch-icon-114x114-precomposed.png">
-  <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="resources/img/apple-touch-icon-144x144-precomposed.png">
+  <link rel="shortcut icon" href="resources/img_admin/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" type="image/x-icon" href="resources/img_admin/apple-touch-icon-57x57-precomposed.png">
+  <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="resources/img_admin/apple-touch-icon-72x72-precomposed.png">
+  <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="resources/img_admin/apple-touch-icon-114x114-precomposed.png">
+  <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="resources/img_admin/apple-touch-icon-144x144-precomposed.png">
 
   <!-- GOOGLE WEB FONT -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
 	
   <!-- Bootstrap core CSS-->
-  <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="resources/vendor_admin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Main styles -->
-  <link href="resources/css/admin.css" rel="stylesheet">
+  <link href="resources/css_admin/admin.css" rel="stylesheet">
   <!-- Icon fonts-->
-  <link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="resources/vendor_admin/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Plugin styles -->
-  <link href="resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-  <link href="resources/vendor/dropzone.css" rel="stylesheet">
-  <link href="resources/css/date_picker.css" rel="stylesheet">
+  <link href="resources/vendor_admin/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="resources/vendor_admin/dropzone.css" rel="stylesheet">
+  <link href="resources/css_admin/date_picker.css" rel="stylesheet">
   <!-- WYSIWYG Editor -->
-  <link rel="stylesheet" href="resources/js/editor/summernote-bs4.css">
+  <link rel="stylesheet" href="resources/js_admin/editor/summernote-bs4.css">
   <!-- Your custom styles -->
-  <link href="resources/css/custom.css" rel="stylesheet">
+  <link href="resources/css_admin/custom.css" rel="stylesheet">
 	
 </head>
 
 <body class="fixed-nav sticky-footer" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-default fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html"><img src="resources/img/logo.png" data-retina="true" alt="" width="150" height="36"></a>
+    <a class="navbar-brand" href="index.html"><img src="resources/img_admin/logo.png" data-retina="true" alt="" width="150" height="36"></a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -53,14 +54,14 @@
             <i class="fa fa-fw fa-list"></i>
             <span class="nav-link-text">Manage Users</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseMylistings">
-            <li>
-              <a href="addUser.jsp">Add users</a>
-            </li>
-			<li>
-              <a href="listUsers.jsp">List users</a>
-            </li>
-          </ul>
+            <ul class="sidenav-second-level collapse" id="collapseMylistings">
+                <li>
+                    <a href="addUsers.php">Add users</a>
+                </li>
+                <li>
+                    <a href="listUsers.php">List users</a>
+                </li>
+            </ul>
         </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
@@ -109,13 +110,13 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>First name</label>
-						<input type="text" class="form-control" placeholder="first name" name="firstname" value="">
+						<input type="text" class="form-control" placeholder="first name" name="firstname" value="" required>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Last name</label>
-						<input type="text" class="form-control" placeholder="last name" name="lastname" value="">
+						<input type="text" class="form-control" placeholder="last name" name="lastname" value="" required>
 					</div>
 				</div>
 			</div>
@@ -123,13 +124,13 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Username</label>
-						<input type="text" class="form-control" placeholder="username" name="username">
+						<input type="text" class="form-control" placeholder="username" name="username" required>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Email</label>
-						<input type="email" class="form-control" placeholder="email" name="email">
+						<input type="email" class="form-control" placeholder="email" name="email" required>
 					</div>
 				</div>
 			</div>
@@ -138,7 +139,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Password</label>
-						<input type="password" class="form-control" placeholder="password" name="password">
+						<input type="password" class="form-control" placeholder="password" name="password" required>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -157,8 +158,44 @@
 			<!-- /row-->
                 <input type="hidden" name="id" value="0">
                 <button type="submit" class="btn_1 medium">Save</button>
+
 <%--		<p><a href="#0" class="btn_1 medium">Save</a></p>--%>
         </form>
+
+           <%-- <c:if test="${confirmation == true}">
+            <!-- /confirmation-->
+            </c:if>--%>
+            <br>
+            <br>
+            <br>
+            <c:choose>
+                <c:when test="${confirmation == true}">
+                    <div class="col-xl-3 col-sm-6 mb-3">
+                        <div class="card dashboard text-white bg-success o-hidden h-100">
+                            <div class="card-body">
+                                <div class="card-body-icon">
+                                    <i class="fa fa-fw fa-check"></i>
+                                </div>
+                                <div class="mr-5"><h5>Successfully saved</h5></div>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${confirmation == false}">
+                    <div class="col-xl-3 col-sm-6 mb-3">
+                        <div class="card dashboard text-white bg-danger o-hidden h-100">
+                            <div class="card-body">
+                                <div class="card-body-icon">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="mr-5"><h5>Unsuccessfully saved</h5></div>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+            </c:choose>
+
+            <!-- /confirmation-->
 	  </div>
 	  <!-- /.container-fluid-->
    	</div>
@@ -193,25 +230,25 @@
       </div>
     </div>
     <!-- Bootstrap core JavaScript-->
-    <script src="resources/vendor/jquery/jquery.min.js"></script>
-    <script src="resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="resources/vendor_admin/jquery/jquery.min.js"></script>
+    <script src="resources/vendor_admin/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
-    <script src="resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="resources/vendor_admin/jquery-easing/jquery.easing.min.js"></script>
     <!-- Page level plugin JavaScript-->
-    <script src="resources/vendor/chart.js/Chart.min.js"></script>
-    <script src="resources/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="resources/vendor/datatables/dataTables.bootstrap4.js"></script>
-	<script src="resources/vendor/jquery.selectbox-0.2.js"></script>
-	<script src="resources/vendor/retina-replace.min.js"></script>
-	<script src="resources/vendor/jquery.magnific-popup.min.js"></script>
+    <script src="resources/vendor_admin/chart.js/Chart.min.js"></script>
+    <script src="resources/vendor_admin/datatables/jquery.dataTables.js"></script>
+    <script src="resources/vendor_admin/datatables/dataTables.bootstrap4.js"></script>
+	<script src="resources/vendor_admin/jquery.selectbox-0.2.js"></script>
+	<script src="resources/vendor_admin/retina-replace.min.js"></script>
+	<script src="resources/vendor_admin/jquery.magnific-popup.min.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="resources/js/admin.js"></script>
+    <script src="resources/js_admin/admin.js"></script>
 	<!-- Custom scripts for this page-->
-	<script src="resources/vendor/dropzone.min.js"></script>
-	<script src="resources/vendor/bootstrap-datepicker.js"></script>
+	<script src="resources/vendor_admin/dropzone.min.js"></script>
+	<script src="resources/vendor_admin/bootstrap-datepicker.js"></script>
 	<script>$('input.date-pick').datepicker();</script>
   <!-- WYSIWYG Editor -->
-  <script src="resources/js/editor/summernote-bs4.min.js"></script>
+  <script src="resources/js_admin/editor/summernote-bs4.min.js"></script>
   <script>
       $('.editor').summernote({
     fontSizes: ['10', '14'],
