@@ -63,7 +63,7 @@
 				<div class="clearfix add_bottom_30">
 					<div class="checkboxes float-left">
 						<label class="container_check">Remember me
-						  <input type="checkbox">
+						  <input type="checkbox" name="remember" id="remember">
 						  <span class="checkmark"></span>
 						</label>
 					</div>

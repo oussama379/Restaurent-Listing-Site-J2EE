@@ -20,13 +20,21 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // if /logout requested else /login requested
+        // IF /logout requested ELSE /login requested
         if (request.getServletPath().equalsIgnoreCase("/logout")){
+            // Destroy the session
             request.getSession().invalidate();
+            // Destroy the cookie
+            AppUtils.removeCookie(response);
+
             // Redirect to Home Page.
             response.sendRedirect(request.getContextPath() + "/");
         }else{
-            request.getRequestDispatcher("views/login.jsp").forward(request, response);
+            // IF Cookie exist or Session exist redirect to Home ELSE forward to login.jsp
+            if (AppUtils.getCookie(request) != 0L || AppUtils.getLoginedUser(request.getSession()) != null)
+                response.sendRedirect(request.getContextPath() + "/");
+            else
+                request.getRequestDispatcher("views/login.jsp").forward(request, response);
         }
     }
 
@@ -34,8 +42,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String remember = request.getParameter("remember");
         User userAccount = null;
 
+        // Authentication test
         if (userRepository.authenticate(email, password)){
              userAccount = userRepositoryImp.currentUser;
         }else{
@@ -44,7 +54,12 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("views/login.jsp").forward(request, response);
         }
 
+        // Store logged user in Session
         AppUtils.storeLoginedUser(request.getSession(), userAccount);
+
+        // Test Remember me option to store user id in Cookies
+        if(remember != null)
+            AppUtils.storeCookie(response, userAccount.getId());
 
         //
         int redirectId = -1;

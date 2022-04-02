@@ -4,6 +4,9 @@ import com.example.restaurentmanagement.entities.User;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 public class AppUtils {
     private static int REDIRECT_ID = 0;
@@ -20,6 +23,32 @@ public class AppUtils {
     // Obtain user information stored in Session
     public static User getLoginedUser(HttpSession session) {
         return (User) session.getAttribute("loginedUser");
+    }
+
+    // Store user id in Cookie
+    public static void storeCookie(HttpServletResponse response, Long id) {
+        Cookie c = new Cookie("userid", id.toString());
+        c.setMaxAge(24*60*60);
+        response.addCookie(c);
+    }
+
+    // Remove user id in Cookie
+    public static void removeCookie(HttpServletResponse response) {
+        Cookie c = new Cookie("userid", "");
+        c.setMaxAge(0);
+        response.addCookie(c);
+    }
+
+    // Get user id from Cookies
+    public static Long getCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        // if exist return id else return 0
+        for (Cookie c : cookies) {
+            if (c.getName().equals("userid"))
+                return Long.valueOf(c.getValue());
+        }
+        return 0L;
     }
 
     public static int storeRedirectAfterLoginUrl(HttpSession session, String requestUri) {
