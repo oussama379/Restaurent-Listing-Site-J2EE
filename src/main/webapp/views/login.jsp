@@ -26,7 +26,7 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="resources/css/custom.css" rel="stylesheet">
-
+	<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 </head>
 
 <body id="login_bg">
@@ -43,21 +43,21 @@
 			<figure>
 				<a href="index.html"><img src="resources/img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a>
 			</figure>
-			  <form>
-				<div class="access_social">
-					<a href="#0" class="social_bt facebook">Login with Facebook</a>
-					<a href="#0" class="social_bt google">Login with Google</a>
-					<a href="#0" class="social_bt linkedin">Login with Linkedin</a>
-				</div>
-				<div class="divider"><span>Or</span></div>
+			  <form action="login" method="POST">
+<%--				<div class="access_social">--%>
+<%--					<a href="#0" class="social_bt facebook">Login with Facebook</a>--%>
+<%--					<a href="#0" class="social_bt google">Login with Google</a>--%>
+<%--					<a href="#0" class="social_bt linkedin">Login with Linkedin</a>--%>
+<%--				</div>--%>
+<%--				<div class="divider"><span>Or</span></div>--%>
 				<div class="form-group">
 					<label>Email</label>
-					<input type="email" class="form-control" name="email" id="email">
+					<input type="email" class="form-control" name="email" id="email" required>
 					<i class="icon_mail_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>Password</label>
-					<input type="password" class="form-control" name="password" id="password" value="">
+					<input type="password" class="form-control" name="password" id="password" value="" required>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div class="clearfix add_bottom_30">
@@ -69,7 +69,7 @@
 					</div>
 					<div class="float-right mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
 				</div>
-				<a href="#0" class="btn_1 rounded full-width">Login to Panagea</a>
+				<input type="submit"  class="btn_1 rounded full-width" value="Login to Panagea"/>
 				<div class="text-center add_top_10">New to Panagea? <strong><a href="register.html">Sign up!</a></strong></div>
 			</form>
 			<div class="copy">© 2018 Panagea</div>
@@ -82,6 +82,31 @@
     <script src="resources/js/common_scripts.js"></script>
     <script src="resources/js/main.js"></script>
 	<script src="resources/assets/validate.js"></script>
-  
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script>
+		window.onload = function() {
+			toastr.options = {
+				"closeButton": false,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": false,
+				"positionClass": "toast-bottom-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			}
+			if ("${errorMessage}"){
+				toastr["error"]("", "${errorMessage}")
+			}
+		}
+	</script>
 </body>
 </html>

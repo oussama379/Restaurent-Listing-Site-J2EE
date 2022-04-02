@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class userRepositoryImp implements userRepository{
-    static User currentUser = null;
+    public static User currentUser = null;
 
 
 
@@ -82,13 +82,13 @@ public class userRepositoryImp implements userRepository{
 
 
     @Override
-    public boolean authenticate(String username, String password) {
+    public boolean authenticate(String email, String password) {
        // TODO change depricated
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try{
             Criteria criteria = session.createCriteria(User.class);
-            User user = (User) criteria.add(Restrictions.eq("username", username)).uniqueResult();
+            User user = (User) criteria.add(Restrictions.eq("email", email)).uniqueResult();
             session.flush() ;
             tx.commit();
             if(user == null){
@@ -155,5 +155,7 @@ public class userRepositoryImp implements userRepository{
         }
         return generatedPassword;
     }
+
+
 
 }

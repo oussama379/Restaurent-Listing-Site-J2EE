@@ -172,6 +172,13 @@
                 </li>--%>
                 <li><span><a href="listUsers.php">Admin Section</a></span></li>
                 <li><span><a href="register.php">Register</a></span></li>
+                <c:if test="${loginedUser != null}">
+                    <li><span><a href="#">${loginedUser.username}</a></span>
+                        <ul class="second_level_right">
+                            <li><a href="#">About</a></li>
+                        </ul>
+                    </li>
+                </c:if>
             </ul>
         </nav>
     </header>
