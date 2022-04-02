@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name="MainServlet", urlPatterns = "*.php")
+@WebServlet(name="UserServlet", urlPatterns = "*.php")
 public class UserServlet extends HttpServlet {
     userRepositoryImp userRepositoryImp;
 

@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,9 +33,9 @@
 </head>
 
 <body class="fixed-nav sticky-footer" id="page-top">
- <!-- Navigation-->
- <nav class="navbar navbar-expand-lg navbar-dark bg-default fixed-top" id="mainNav">
-  <a class="navbar-brand" href="index.php"><img src="resources/img/logo.png" data-retina="true" alt="" width="150" height="36"></a>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-default fixed-top" id="mainNav">
+  <a class="navbar-brand" href="index.php"><img src="resources/img_admin/logo.png" data-retina="true" alt="" width="150" height="36"></a>
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -48,7 +47,7 @@
           <span class="nav-link-text">Home</span>
         </a>
       </li>
-  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage Users">
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage Users">
         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylistings" data-parent="#mylistings">
           <i class="fa fa-fw fa-gear"></i>
           <span class="nav-link-text">Manage Users</span>
@@ -57,7 +56,7 @@
           <li>
             <a href="addUsers.php">Add users</a>
           </li>
-    <li>
+          <li>
             <a href="listUsers.php">List users</a>
           </li>
         </ul>
@@ -110,101 +109,87 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="#">Manage Users</a>
+          <a href="#">Home</a>
         </li>
-        <li class="breadcrumb-item active">List of Users</li>
+        <li class="breadcrumb-item active">Admin Dashboard</li>
       </ol>
-		<!-- Example DataTables Card-->
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> List of Users</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>First name</th>
-                  <th>Last name</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>First name</th>
-                  <th>Last name</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </tfoot>
-              <tbody>
-              <tr>
-                <td>Oussama</td>
-                <td>Hennane</td>
-                <td>oussama123</td>
-                <td>oussama@gmail.com</td>
-                <td>Admin</td>
-                <td><a href="#0" class="btn_1 small">Edit</a></td>
-                <td><a href="#0" class="btn_1 small">Delete</a></td>
-              </tr>
-              <c:forEach items="${modelUser.getUsers()}" var="u">
-                <tr>
-                  <td>${u.firstname}</td>
-                  <td>${u.lastname}</td>
-                  <td>${u.username}</td>
-                  <td>${u.email}</td>
-                  <td>${u.role}</td>
-                  <td><a href="editUser.php?id=${u.id}" class="btn_1 small">Edit</a></td>
-                  <td><a href="deleteUser.php?id=${u.id}" class="btn_1 small">Delete</a></td>
-                </tr>
-              </c:forEach>
-              </tbody>
-            </table>
+	  <!-- Icon Cards-->
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card dashboard text-white bg-primary o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-envelope-open"></i>
+              </div>
+              <div class="mr-5"><h5>26 New Messages!</h5></div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="messages.html">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
           </div>
         </div>
-      </div>
-	  <!-- /tables-->
-       <br>
-      <br>
-
-      <c:choose>
-        <c:when test="${confirmation == true}">
-          <div class="col-xl-3 col-sm-6 mb-3">
-            <div class="card dashboard text-white bg-success o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="fa fa-fw fa-check"></i>
-                </div>
-                <div class="mr-5"><h5>Successfully deleted</h5></div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card dashboard text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-star"></i>
               </div>
+				<div class="mr-5"><h5>11 New Reviews!</h5></div>
             </div>
+            <a class="card-footer text-white clearfix small z-1" href="reviews.html">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
           </div>
-        </c:when>
-        <c:when test="${confirmation == false}">
-          <div class="col-xl-3 col-sm-6 mb-3">
-            <div class="card dashboard text-white bg-danger o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="fa fa-exclamation-triangle"></i>
-                </div>
-                <div class="mr-5"><h5>Unsuccessfully deleted</h5></div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card dashboard text-white bg-success o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-calendar-check-o"></i>
               </div>
+              <div class="mr-5"><h5>10 New Bookings!</h5></div>
             </div>
+            <a class="card-footer text-white clearfix small z-1" href="bookings.html">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
           </div>
-        </c:when>
-      </c:choose>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card dashboard text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-heart"></i>
+              </div>
+              <div class="mr-5"><h5>10 New Bookmarks!</h5></div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="bookmarks.html">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+		</div>
+		<!-- /cards -->
+		<h2></h2>
 	  </div>
-	  <!-- /container-fluid-->
+	  <!-- /.container-fluid-->
    	</div>
-    <!-- /container-wrapper-->
-
-
+    <!-- /.container-wrapper-->
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright © 2022</small>
+          <small>Copyright © PANAGEA 2018</small>
         </div>
       </div>
     </footer>
@@ -225,7 +210,7 @@
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
+            <a class="btn btn-primary" href="logout">Logout</a>
           </div>
         </div>
       </div>
@@ -236,7 +221,7 @@
     <!-- Core plugin JavaScript-->
     <script src="resources/vendor_admin/jquery-easing/jquery.easing.min.js"></script>
     <!-- Page level plugin JavaScript-->
-    <script src="resources/vendor_admin/chart.js/Chart.min.js"></script>
+    <script src="resources/vendor_admin/chart.js/Chart.js"></script>
     <script src="resources/vendor_admin/datatables/jquery.dataTables.js"></script>
     <script src="resources/vendor_admin/datatables/dataTables.bootstrap4.js"></script>
 	<script src="resources/vendor_admin/jquery.selectbox-0.2.js"></script>
@@ -245,7 +230,7 @@
     <!-- Custom scripts for all pages-->
     <script src="resources/js_admin/admin.js"></script>
 	<!-- Custom scripts for this page-->
-    <script src="resources/js_admin/admin-datatables.js"></script>
+    <script src="resources/js_admin/admin-charts.js"></script>
 	
 </body>
 </html>

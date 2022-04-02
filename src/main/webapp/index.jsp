@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>--%>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,9 +44,26 @@
             </a>
         </div>
         <ul id="top_menu">
-<%--            <li><a href="cart-1.html" class="cart-menu-btn" title="Cart"><strong>4</strong></a></li>--%>
-            <li><a href="#sign-in-dialog" id="sign-in" class="login" title="Sign In">Sign In</a></li>
-<%--            <li><a href="wishlist.html" class="wishlist_bt_top" title="Your wishlist">Your wishlist</a></li>--%>
+
+    <c:choose>
+    <c:when test="${loginedUser != null}">
+        <li>
+            <div class="dropdown dropdown-user">
+                <a href="#0" class="logged" data-toggle="dropdown" title="Logged"><img src="resources/img/avatar.jpg" alt=""></a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="logout">Logout</a></li>
+                        <li><a href="#">${loginedUser.username}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </c:when>
+    <c:otherwise>
+        <li><a href="#sign-in-dialog" id="sign-in" class="login" title="Sign In">Sign In</a></li>
+    </c:otherwise>
+    </c:choose>
+
         </ul>
         <!-- /top_menu -->
         <a href="#menu" class="btn_mobile">
@@ -57,18 +75,22 @@
         </a>
         <nav id="menu" class="main-menu">
             <ul>
-                <li><span><a href="index.php">Home</a></span>
-                </li>
+                <c:choose>
+                    <c:when test="${loginedUser != null}">
+                        <li><span><a href="index.php">Home</a></span></li>
+                     <c:if test="${loginedUser.role.equals('Admin')}">
+                        <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
+                     </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <li><span><a href="index.php">Home</a></span></li>
+                        <c:if test="${loginedUser.role.equals('Admin')}">
+                            <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
+                        </c:if>
+                        <li><span><a href="register.php">Register</a></span></li>
+                    </c:otherwise>
+                </c:choose>
 
-                <li><span><a href="listUsers.php">Admin Section</a></span></li>
-                <li><span><a href="register.php">Register</a></span></li>
-                <c:if test="${loginedUser != null}">
-                    <li><span><a href="#">${loginedUser.username}</a></span>
-                        <ul class="second_level_right">
-                            <li><a href="#">About</a></li>
-                        </ul>
-                    </li>
-                </c:if>
             </ul>
         </nav>
     </header>
@@ -84,7 +106,7 @@
                         <div class="row no-gutters custom-search-input-2">
                             <div class="col-lg-10">
                                 <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Type the name of the restaurent you're looking for...">
+                                    <input class="form-control" type="text" placeholder="Type the name of the restaurant you're looking for...">
                                     <i class="icon_search"></i>
                                 </div>
                             </div>
@@ -238,11 +260,11 @@
     <div class="small-dialog-header">
         <h3>Sign In</h3>
     </div>
-    <form>
+    <form action="login" method="POST">
         <div class="sign-in-wrapper">
-            <a href="#0" class="social_bt facebook">Login with Facebook</a>
-            <a href="#0" class="social_bt google">Login with Google</a>
-            <div class="divider"><span>Or</span></div>
+<%--            <a href="#0" class="social_bt facebook">Login with Facebook</a>--%>
+<%--            <a href="#0" class="social_bt google">Login with Google</a>--%>
+<%--            <div class="divider"><span>Or</span></div>--%>
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" class="form-control" name="email" id="email">
@@ -256,7 +278,7 @@
             <div class="clearfix add_bottom_15">
                 <div class="checkboxes float-left">
                     <label class="container_check">Remember me
-                        <input type="checkbox">
+                        <input type="checkbox" name="remember">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -264,7 +286,7 @@
             </div>
             <div class="text-center"><input type="submit" value="Log In" class="btn_1 full-width"></div>
             <div class="text-center">
-                Don’t have an account? <a href="register.php">Sign up</a>
+                Don’t have an account? <a href="login">Sign up</a>
             </div>
             <div id="forgot_pw">
                 <div class="form-group">
