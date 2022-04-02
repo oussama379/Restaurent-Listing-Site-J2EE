@@ -1,6 +1,6 @@
-package com.example.restaurentmanagement.services;
+package com.example.restaurantmanagement.services;
 
-import com.example.restaurentmanagement.entities.User;
+import com.example.restaurantmanagement.entities.User;
 
 import java.util.List;
 

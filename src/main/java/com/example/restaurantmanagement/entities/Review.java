@@ -1,4 +1,4 @@
-package com.example.restaurentmanagement.entities;
+package com.example.restaurantmanagement.entities;
 
 
 import lombok.AllArgsConstructor;
@@ -21,14 +21,11 @@ public class Review {
     private String reviewText;
     private double rating;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Restaurent restaurent;
+    private Restaurant restaurant;
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
 
-    public Review(String reviewText) {
-        this.reviewText = reviewText;
-    }
 
 
 }
