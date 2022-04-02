@@ -78,11 +78,7 @@ public class AppUtils {
     }
 
     public static String getRedirectAfterLoginUrl(HttpSession session, int redirectId) {
-        String url = id_uri_map.get(redirectId);
-        if (url != null) {
-            return url;
-        }
-        return null;
+        return id_uri_map.get(redirectId);
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
