@@ -1,9 +1,9 @@
-package com.example.restaurentmanagement.controllers;
+package com.example.restaurantmanagement.controllers;
 
-import com.example.restaurentmanagement.entities.User;
-import com.example.restaurentmanagement.services.userRepository;
-import com.example.restaurentmanagement.services.userRepositoryImp;
-import com.example.restaurentmanagement.utils.AppUtils;
+import com.example.restaurantmanagement.entities.User;
+import com.example.restaurantmanagement.services.userRepository;
+import com.example.restaurantmanagement.services.userRepositoryImp;
+import com.example.restaurantmanagement.utils.AppUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
