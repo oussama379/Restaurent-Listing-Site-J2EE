@@ -1,6 +1,6 @@
-package com.example.restaurentmanagement.model;
+package com.example.restaurantmanagement.model;
 
-import com.example.restaurentmanagement.entities.User;
+import com.example.restaurantmanagement.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

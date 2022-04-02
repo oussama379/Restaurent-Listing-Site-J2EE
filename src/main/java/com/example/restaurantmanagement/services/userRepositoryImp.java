@@ -1,11 +1,8 @@
-package com.example.restaurentmanagement.services;
+package com.example.restaurantmanagement.services;
 
-import com.example.restaurentmanagement.config.HibernateUtil;
-import com.example.restaurentmanagement.entities.User;
+import com.example.restaurantmanagement.config.HibernateUtil;
+import com.example.restaurantmanagement.entities.User;
 import org.hibernate.*;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.PersistenceException;

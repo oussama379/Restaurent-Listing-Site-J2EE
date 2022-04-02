@@ -1,14 +1,26 @@
-package com.example.restaurentmanagement.services;
+package com.example.restaurantmanagement.services;
 
-import com.example.restaurentmanagement.entities.User;
-import com.example.restaurentmanagement.services.userRepositoryImp;
+import com.example.restaurantmanagement.config.HibernateUtil;
+import com.example.restaurantmanagement.entities.Restaurant;
+import org.hibernate.Session;
 
 public class test {
     public static void main(String args[]) throws Exception {
         /*final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         Session session = sessionFactory.openSession();*/
+/*
         userRepositoryImp userRepositoryImp = new userRepositoryImp();
+        restaurantRepositoryImp restaurantRepositoryImp = new restaurantRepositoryImp();
+
+
+
+        Restaurant restaurant = new Restaurant();
+        restaurantRepositoryImp.deleteRestaurant(1L);
+*/
+
+
+
        /* for ( User U : userRepositoryImp.getAllUsers() ){
             System.out.println(U.toString());
         }*/

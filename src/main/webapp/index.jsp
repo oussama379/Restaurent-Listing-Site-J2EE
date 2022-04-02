@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,118 +58,8 @@
         <nav id="menu" class="main-menu">
             <ul>
                 <li><span><a href="index.php">Home</a></span>
-                  <%--  <ul>
-                        <li><a href="listUsers.php">Home version 1</a></li>
-                        <li><a href="addUsers.php">Home version 2</a></li>
-                        <li><a href="index-3.html">Home version 3</a></li>
-                        <li><a href="index-4.html">Home version 4</a></li>
-                        <li><a href="index-5.html">Home version 5</a></li>
-                        <li><a href="index-6.html">With Cookie bar (EU law)</a></li>
-                        <li><a href="index-7.html">Home version 7</a></li>
-                    </ul>--%>
                 </li>
-                <%--
-                <li><span><a href="#0">Tours</a></span>
-                    <ul>
-                        <li>
-                            <span><a href="#0">Tours grid</a></span>
-                            <ul>
-                                <li><a href="tours-grid-isotope.html">Tours grid isotope</a></li>
-                                <li><a href="tours-grid-sidebar.html">Tours grid sidebar</a></li>
-                                <li><a href="tours-grid-sidebar-2.html">Tours grid sidebar 2</a></li>
-                                <li><a href="tours-grid.html">Tours grid simple</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span><a href="#0">Tours list</a></span>
-                            <ul>
-                                <li><a href="tours-list-isotope.html">Tours list isotope</a></li>
-                                <li><a href="tours-list-sidebar.html">Tours list sidebar</a></li>
-                                <li><a href="tours-list-sidebar-2.html">Tours list sidebar 2</a></li>
-                                <li><a href="tours-list.html">Tours list simple</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="tour-detail.html">Tour detail</a></li>
-                    </ul>
-                </li>
-                <li><span><a href="#0">Hotels</a></span>
-                    <ul>
-                        <li>
-                            <span><a href="#0">Hotel grid</a></span>
-                            <ul>
-                                <li><a href="hotels-grid-isotope.html">Hotel grid isotope</a></li>
-                                <li><a href="hotels-grid-sidebar.html">Hotel grid sidebar</a></li>
-                                <li><a href="hotels-grid-sidebar-2.html">Hotel grid sidebar 2</a></li>
-                                <li><a href="hotels-grid.html">Hotel grid simple</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span><a href="#0">Hotel list</a></span>
-                            <ul>
-                                <li><a href="hotels-list-isotope.html">Hotel list isotope</a></li>
-                                <li><a href="hotels-list-sidebar.html">Hotel list sidebar</a></li>
-                                <li><a href="hotels-list-sidebar-2.html">Hotel list sidebar 2</a></li>
-                                <li><a href="hotels-list.html">Hotel list simple</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="hotel-detail.html">Hotel detail</a></li>
-                    </ul>
-                </li>
-                <li><span><a href="#0">Eat &amp; Drink</a></span>
-                    <ul>
-                        <li>
-                            <span><a href="#0">Restaurant grid</a></span>
-                            <ul>
-                                <li><a href="restaurants-grid-isotope.html">Restaurant grid isotope</a></li>
-                                <li><a href="restaurants-grid-sidebar.html">Restaurant grid sidebar</a></li>
-                                <li><a href="restaurants-grid-sidebar-2.html">Restaurant grid sidebar 2</a></li>
-                                <li><a href="restaurants-grid.html">Restaurant grid simple</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span><a href="#0">Restaurant list</a></span>
-                            <ul>
-                                <li><a href="restaurants-list-isotope.html">Restaurant list isotope</a></li>
-                                <li><a href="restaurants-list-sidebar.html">Restaurant list sidebar</a></li>
-                                <li><a href="restaurants-list-sidebar-2.html">Restaurant list sidebar 2</a></li>
-                                <li><a href="restaurants-list.html">Restaurant list simple</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="restaurant-detail.html">Restaurant detail</a></li>
-                    </ul>
-                </li>
-                <li><span><a href="adventure.html">Adventure</a></span></li>
-                <li><span><a href="#0">Pages</a></span>
-                    <ul>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="media-gallery.html">Media gallery</a></li>
-                        <li><a href="help.html">Help Section</a></li>
-                        <li><a href="faq.html">Faq Section</a></li>
-                        <li><a href="wishlist.html">Wishlist page</a></li>
-                        <li><a href="contacts.html">Contacts</a></li>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="register.html">Register</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                    </ul>
-                </li>
-                <li><span><a href="#0">Extra</a></span>
-                    <ul>
-                        <li><a href="menu-options.html">Menu Position Options</a></li>
-                        <li><a href="tour-detail-singlemonth-datepicker.html">Single month Datepicker</a></li>
-                        <li><a href="404.html">404 Error page</a></li>
-                        <li><a href="cart-1.html">Cart page 1</a></li>
-                        <li><a href="cart-2.html">Cart page 2</a></li>
-                        <li><a href="cart-3.html">Cart page 3</a></li>
-                        <li><a href="pricing-tables.html">Responsive pricing tables</a></li>
-                        <li><a href="coming_soon/index.html">Coming soon</a></li>
-                        <li><a href="invoice.html">Invoice</a></li>
-                        <li><a href="icon-pack-1.html">Icon pack 1</a></li>
-                        <li><a href="icon-pack-2.html">Icon pack 2</a></li>
-                        <li><a href="icon-pack-3.html">Icon pack 3</a></li>
-                        <li><a href="icon-pack-4.html">Icon pack 4</a></li>
-                        <li><a href="hamburgers.html">Animated Hamburgers</a></li>
-                    </ul>
-                </li>--%>
+
                 <li><span><a href="listUsers.php">Admin Section</a></span></li>
                 <li><span><a href="register.php">Register</a></span></li>
                 <c:if test="${loginedUser != null}">
@@ -184,7 +74,7 @@
     </header>
     <!-- /header -->
 
-    <main>
+    <div>
         <section class="hero_single version_2">
             <div class="wrapper">
                 <div class="container">
@@ -256,7 +146,7 @@
             <hr class="large">
         </div>
         <!-- /container -->
-
+        </main>
     <footer>
         <div class="container margin_60_35">
             <div class="row">
@@ -339,7 +229,8 @@
         </div>
     </footer>
     <!--/footer-->
-</div>
+    </div>
+
 <!-- page -->
 
 <!-- Sign In Popup -->

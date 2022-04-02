@@ -44,7 +44,7 @@
     <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage Users">
         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylistings" data-parent="#mylistings">
-          <i class="fa fa-fw fa-list"></i>
+          <i class="fa fa-fw fa-gear"></i>
           <span class="nav-link-text">Manage Users</span>
         </a>
         <ul class="sidenav-second-level collapse" id="collapseMylistings">
@@ -53,6 +53,20 @@
           </li>
     <li>
             <a href="listUsers.php">List users</a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Manage Restaurants">
+        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#Components">
+          <i class="fa fa-fw fa-gear"></i>
+          <span class="nav-link-text">Manage Restaurants</span>
+        </a>
+        <ul class="sidenav-second-level collapse" id="collapseComponents">
+          <li>
+            <a href="addRestaurant.phpp">Add Restaurants</a>
+          </li>
+          <li>
+            <a href="listRestaurant.phpp">List Restaurants</a>
           </li>
         </ul>
       </li>

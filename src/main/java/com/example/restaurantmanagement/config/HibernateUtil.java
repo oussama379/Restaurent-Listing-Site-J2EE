@@ -1,4 +1,4 @@
-package com.example.restaurentmanagement.config;
+package com.example.restaurantmanagement.config;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
