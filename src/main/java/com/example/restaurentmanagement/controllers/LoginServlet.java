@@ -10,7 +10,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "LoginServlet", value = "/login")
+@WebServlet(name = "LoginServlet", value = {"/login","/logout"})
 public class LoginServlet extends HttpServlet {
     userRepositoryImp userRepository;
 
@@ -20,7 +20,14 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("views/login.jsp").forward(request, response);
+        // if /logout requested else /login requested
+        if (request.getServletPath().equalsIgnoreCase("/logout")){
+            request.getSession().invalidate();
+            // Redirect to Home Page.
+            response.sendRedirect(request.getContextPath() + "/");
+        }else{
+            request.getRequestDispatcher("views/login.jsp").forward(request, response);
+        }
     }
 
     @Override
@@ -51,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             // Par défaut, après l'achèvement de la connexion
             // redirigez à la page /userInfo
-            response.sendRedirect(request.getContextPath());
+            response.sendRedirect(request.getContextPath()+ "/");
         }
 
     }
