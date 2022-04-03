@@ -103,9 +103,13 @@
 				"showMethod": "fadeIn",
 				"hideMethod": "fadeOut"
 			}
-			if ("${errorMessage}"){
+			if ("${errorMessage}" == "Registered Successfully"){
+				toastr["success"]("", "${errorMessage}")
+			}
+			if ("${errorMessage}" == "Invalid Email or Password"){
 				toastr["error"]("", "${errorMessage}")
 			}
+
 		}
 	</script>
 </body>
