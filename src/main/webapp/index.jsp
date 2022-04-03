@@ -78,13 +78,13 @@
                 <c:choose>
                     <c:when test="${loginedUser != null}">
                         <li><span><a href="index.php">Home</a></span></li>
-                     <c:if test="${loginedUser.role.equals('Admin')}">
+                     <c:if test="${loginedUser.role.equals('ADMIN')}">
                         <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
                      </c:if>
                     </c:when>
                     <c:otherwise>
                         <li><span><a href="index.php">Home</a></span></li>
-                        <c:if test="${loginedUser.role.equals('Admin')}">
+                        <c:if test="${loginedUser.role.equals('ADMIN')}">
                             <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
                         </c:if>
                         <li><span><a href="register.php">Register</a></span></li>

@@ -85,7 +85,7 @@ public class UserServlet extends HttpServlet {
                 user.setUsername(request.getParameter("username"));
                 user.setEmail(request.getParameter("email"));
                 user.setPassword(request.getParameter("password1"));
-                user.setRole("User");
+                user.setRole("CLIENT");
 
                 if (userRepositoryImp.saveOrUpdateUser(user)) {
                     request.setAttribute("confirmation", true);

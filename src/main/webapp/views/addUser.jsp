@@ -167,9 +167,9 @@
 					<label>Role</label>
 					<div class="styled-select">
 					<select name="role">
-						<option>Admin</option>
-						<option>User</option>
-						<option>Restaurant Owner</option>
+						<option value="ADMIN">Admin</option>
+						<option value="CLIENT">Client</option>
+						<option value="OWNER">Restaurant Owner</option>
 					</select>
 					</div>
 				</div>
