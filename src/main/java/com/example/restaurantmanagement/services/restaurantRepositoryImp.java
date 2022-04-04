@@ -178,6 +178,24 @@ public class restaurantRepositoryImp implements restaurantRepository{
         }
         return result;
     }
+/*
+    public static List<Restaurant> openNow() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Restaurant> result = null;
+        try {
+            session.beginTransaction();
+            org.hibernate.query.Query query = session.createQuery("from Restaurant");
+            result = query.list();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+*/
+
+
+
 
 
 }

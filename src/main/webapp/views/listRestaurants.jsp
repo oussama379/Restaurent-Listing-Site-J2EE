@@ -143,7 +143,7 @@
 							<i class="icon_search"></i>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="text" placeholder="Where" name="location" value="<c:if test="${location != null}">${location}</c:if>">
+							<input class="form-control" type="text" placeholder="Neighborhood...." name="location" value="<c:if test="${location != null}">${location}</c:if>">
 							<i class="icon_pin_alt"></i>
 						</div>
 						<div class="form-group">
@@ -151,7 +151,7 @@
 							<option>All Categories</option>
 							<c:if test="${typesCuisine.isEmpty() != true}">
 									<c:forEach var = "i" begin = "0" end = "${typesCuisine.size() - 1}">
-										<option >${typesCuisine.get(i)}</option>
+										<option <c:if test="${cuisineType.equals(typesCuisine.get(i))}">selected</c:if>>${typesCuisine.get(i)}</option>
 									</c:forEach>
 							</c:if>
 						</select>
@@ -169,13 +169,31 @@
 								<option value="5" <c:if test="${rating != null && rating == 5}">selected</c:if>>&#9733; &#9733; &#9733;  &#9733; &#9733;</option>
 							</select>
 						</div>
+						<br>
+						<br>
+						<br>
+						<%--<div class="form-group">
+						<select class="wide" name="cuisineType">
+							<option>No Time</option>
+							<option >Open Now</option>
+						</select>
+					</div>--%>
+					<%--	<div class="filter_type">
+							<ul>
+								<li>
+									<label>
+										<input type="checkbox" class="icheck" name="openNow">Open Now
+									</label>
+								</li>
+							</ul>
+						</div>--%>
 						<input type="submit" class="btn_search" value="Search">
 						<a href="listRestaurants.phpp" class="btn_1 medium">Cancel Search</a>
 					</div>
 				</aside>
 <%--				</form>--%>
 				<!-- /aside -->
-
+<%--	${restaurantsPage.get(i).id}-PIC1-${restaurantsPage.get(i).images}--%>
 				<div class="col-lg-9">
 					<div class="isotope-wrapper">
 					<div class="row">
@@ -185,17 +203,16 @@
 							<div class="box_grid">
 								<figure>
 									<a href="#0" class="wish_bt"></a>
-									<a href="restaurant-detail.html"><img src="resources/img/restaurant_1.jpg" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
-									<small>Paris Centre</small>
+									<a href="restaurant-detail.html"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
 								</figure>
 								<div class="wrapper">
 									<h3><a href="restaurant-detail.html">${restaurantsPage.get(i).getName()}</a></h3>
-									<p>Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.</p>
-									<span class="price">From <strong>$54</strong> /per person</span>
+									<p>${restaurantsPage.get(i).getDescription()}</p>
+									<span class="price">Average <strong>${restaurantsPage.get(i).getAverageCost()} DH</strong> /per person</span>
 								</div>
 								<ul>
-									<li><i class="ti-eye"></i> 164 views</li>
-									<li><div class="score"><span>Superb<em>350 Reviews</em></span><strong>8.9</strong></div></li>
+									<li><i class="ti-eye"></i> ${restaurantsPage.get(i).getPopularity()} views</li>
+									<li><div class="score"><span>350 Reviews</span><strong>${restaurantsPage.get(i).getRating()}.0</strong></div></li>
 								</ul>
 							</div>
 						</div>
@@ -346,17 +363,17 @@
 	<!--/footer-->
 	</div>
 	<!-- page -->
-	
+
 	<!-- Sign In Popup -->
 	<div id="sign-in-dialog" class="zoom-anim-dialog mfp-hide">
 		<div class="small-dialog-header">
 			<h3>Sign In</h3>
 		</div>
-		<form>
+		<form action="login" method="POST">
 			<div class="sign-in-wrapper">
-				<a href="#0" class="social_bt facebook">Login with Facebook</a>
-				<a href="#0" class="social_bt google">Login with Google</a>
-				<div class="divider"><span>Or</span></div>
+				<%--            <a href="#0" class="social_bt facebook">Login with Facebook</a>--%>
+				<%--            <a href="#0" class="social_bt google">Login with Google</a>--%>
+				<%--            <div class="divider"><span>Or</span></div>--%>
 				<div class="form-group">
 					<label>Email</label>
 					<input type="email" class="form-control" name="email" id="email">
@@ -370,15 +387,15 @@
 				<div class="clearfix add_bottom_15">
 					<div class="checkboxes float-left">
 						<label class="container_check">Remember me
-						  <input type="checkbox">
-						  <span class="checkmark"></span>
+							<input type="checkbox" name="remember">
+							<span class="checkmark"></span>
 						</label>
 					</div>
 					<div class="float-right mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
 				</div>
 				<div class="text-center"><input type="submit" value="Log In" class="btn_1 full-width"></div>
 				<div class="text-center">
-					Don’t have an account? <a href="register.html">Sign up</a>
+					Don’t have an account? <a href="login">Sign up</a>
 				</div>
 				<div id="forgot_pw">
 					<div class="form-group">

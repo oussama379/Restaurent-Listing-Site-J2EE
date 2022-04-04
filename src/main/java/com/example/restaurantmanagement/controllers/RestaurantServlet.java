@@ -71,7 +71,6 @@ public class RestaurantServlet extends HttpServlet {
             String[] pic_menu = saveFiles(req, restaurant.getId());
             restaurant.setImages(pic_menu[0]);
             restaurant.setMenuImages(pic_menu[1]);
-
             // Update : Add pictures and menus
             restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
 
@@ -96,6 +95,18 @@ public class RestaurantServlet extends HttpServlet {
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("nbPages", nbPages);
             req.setAttribute("restaurantsPage", restaurantsPage);
+
+            //--Handling-Images----//
+            List<String> allImages = new ArrayList<>();
+            for(Restaurant r : restaurantsPage)
+                allImages.add(r.getImages());
+            List<String> firstImages = new ArrayList<>();
+            for(String s : allImages) {
+                String[] arrOfStr = s.split(":", 2);
+                firstImages.add(arrOfStr[0]);
+            }
+            req.setAttribute("firstImages", firstImages);
+            //--End-Handling-Images----//
 
             req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
         }
