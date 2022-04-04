@@ -60,7 +60,91 @@ public class RestaurantServlet extends HttpServlet {
             restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
             req.getRequestDispatcher("views/addRestaurant.jsp").forward(req, resp);
             //=========================================================================\\
-        }else {
+        }
+        else if (Path.equalsIgnoreCase("/listRestaurants.phpp")) {
+            List<String> typesCuisine = restaurantRepositoryImp.getTypesOfCuisine();
+            req.setAttribute("typesCuisine", typesCuisine);
+
+            int count = Math.toIntExact(restaurantRepositoryImp.countRestaurants());
+            int nbPages ;
+            if(count % restaurantRepositoryImp.pageSize != 0) nbPages = (int) count/restaurantRepositoryImp.pageSize + 1;
+            else nbPages = (int) count/3;
+            int currentPage = 1;
+
+            if(req.getParameter("page") != null) {
+                currentPage = Integer.parseInt(req.getParameter("page"));
+            }
+            List<Restaurant> restaurantsPage = restaurantRepositoryImp.getPage(currentPage);
+
+            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("nbPages", nbPages);
+            req.setAttribute("restaurantsPage", restaurantsPage);
+
+            req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
+        }
+        else if (Path.equalsIgnoreCase("/searchRestaurants.phpp")) {
+            List<String> typesCuisine = restaurantRepositoryImp.getTypesOfCuisine();
+            req.setAttribute("typesCuisine", typesCuisine);
+            String name = req.getParameter("name");
+            String location = req.getParameter("location");
+            String cuisineType = req.getParameter("cuisineType");
+            String rating = req.getParameter("rating");
+/*            System.out.println(name);
+            System.out.println(location);
+            System.out.println(cuisineType);
+            System.out.println(rating);*/
+            System.out.println("----------------------");
+            if(name.equals(""))
+                name = null;
+            else
+                req.setAttribute("name", name);
+            if(location.equals(""))
+                location = null;
+            else
+                req.setAttribute("location", location);
+            if(cuisineType.equals("All Categories"))
+                cuisineType = null;
+            else
+                req.setAttribute("cuisineType", cuisineType);
+            if(rating.equals("0"))
+                rating = null;
+            else
+                req.setAttribute("rating", rating);
+            System.out.println("----------------------");
+   /*         System.out.println(name);
+            System.out.println(location);
+            System.out.println(cuisineType);
+            System.out.println(rating);*/
+            System.out.println("----------------------");
+            int currentPage = 1;
+
+            if(req.getParameter("page") != null) {
+                currentPage = Integer.parseInt(req.getParameter("page"));
+            }
+
+            javafx.util.Pair<List<Restaurant>, Integer> P = restaurantRepositoryImp.getByMultipleCriteria(name, cuisineType, location, rating,
+                    currentPage);
+            req.setAttribute("search", true);
+
+            int count = P.getValue();
+            int nbPages ;
+            if(count % restaurantRepositoryImp.pageSize != 0) nbPages = (int) count/restaurantRepositoryImp.pageSize + 1;
+            else nbPages = (int) count/3;
+
+            List<Restaurant> restaurantsPage = P.getKey();
+            System.out.println(restaurantsPage.size());
+            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("nbPages", nbPages);
+            req.setAttribute("restaurantsPage", restaurantsPage);
+            if(name == null) req.setAttribute("name", "");
+            if(rating == null) req.setAttribute("rating", "0");
+            if(location == null) req.setAttribute("location", "");
+            if(cuisineType == null) req.setAttribute("cuisineType", "All Categories");
+            req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
+        }
+        //=========================================================================\\
+            //=========================================================================\\
+        else {
             req.getRequestDispatcher("404.jsp").forward(req, resp);
         }
 

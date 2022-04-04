@@ -30,7 +30,8 @@
   <link href="resources/vendor_admin/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <!-- Your custom styles -->
   <link href="resources/css_admin/custom.css" rel="stylesheet">
-	
+  <!-- For Toast -->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 </head>
 
 <body class="fixed-nav sticky-footer" id="page-top">
@@ -246,6 +247,34 @@
     <script src="resources/js_admin/admin.js"></script>
 	<!-- Custom scripts for this page-->
     <script src="resources/js_admin/admin-datatables.js"></script>
-	
+ <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+ <script>
+   window.onload = function() {
+     toastr.options = {
+       "closeButton": false,
+       "debug": false,
+       "newestOnTop": false,
+       "progressBar": false,
+       "positionClass": "toast-bottom-right",
+       "preventDuplicates": false,
+       "onclick": null,
+       "showDuration": "300",
+       "hideDuration": "1000",
+       "timeOut": "5000",
+       "extendedTimeOut": "1000",
+       "showEasing": "swing",
+       "hideEasing": "linear",
+       "showMethod": "fadeIn",
+       "hideMethod": "fadeOut"
+     }
+
+     if ("${errorMessage}" == "Deleted Successfully" || "${errorMessage}" == "Saved Successfully"){
+       toastr["success"]("", "${errorMessage}")
+     }
+     if ("${errorMessage}" == "Error while Deleting"){
+       toastr["error"]("", "${errorMessage}")
+     }
+   }
+ </script>
 </body>
 </html>

@@ -22,6 +22,7 @@ public class Restaurant {
     private String name;
     private Long popularity;
     private double averageCost;
+    private Long rating;
     private String typeCuisine;
     private String phone;
     private String webSite;

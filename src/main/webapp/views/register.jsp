@@ -23,8 +23,10 @@
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/css/style.css" rel="stylesheet">
 	<link href="resources/css/vendors.css" rel="stylesheet">
+	<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 
-    <!-- YOUR CUSTOM CSS -->
+
+	<!-- YOUR CUSTOM CSS -->
     <link href="resources/css/custom.css" rel="stylesheet">
 	
 </head>
@@ -93,7 +95,32 @@
 	
 	<!-- SPECIFIC SCRIPTS -->
 	<script src="resources/js/pw_strenght.js"></script>
-	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+	<script>
+		window.onload = function() {
+			toastr.options = {
+				"closeButton": false,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": false,
+				"positionClass": "toast-bottom-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			}
+			if ("${errorMessage}"){
+				toastr["error"]("", "${errorMessage}")
+			}
+		}
+	</script>
 	
   
 </body>
