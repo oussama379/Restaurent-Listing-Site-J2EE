@@ -22,6 +22,9 @@
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
           <root url="file://$MODULE_DIR$/src/main/webapp/resources" />
+          <root url="file://$MODULE_DIR$/src/main/webapp/resources/admin_section" />
+          <root url="file://$MODULE_DIR$/src/main/webapp/resources/resources_admin" />
+          <root url="file://$MODULE_DIR$/src/main/webapp/views/resources" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -82,5 +85,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.0.2" level="project" />
     <orderEntry type="library" name="Maven: jstl:jstl:1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:19-ea+4" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:19-ea+4" level="project" />
   </component>
 </module>

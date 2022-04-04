@@ -2,11 +2,12 @@ package com.example.restaurantmanagement.services;
 
 import com.example.restaurantmanagement.config.HibernateUtil;
 import com.example.restaurantmanagement.entities.Restaurant;
+
+
 import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-
 import javax.persistence.PersistenceException;
 import java.util.List;
 
@@ -14,7 +15,6 @@ public class restaurantRepositoryImp implements restaurantRepository{
 
     public restaurantRepositoryImp() {
     }
-
     @Override
     public boolean saveOrUpdateRestaurant(Restaurant restaurant) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -118,9 +118,10 @@ public class restaurantRepositoryImp implements restaurantRepository{
         List<Restaurant> restaurants = criteria.list();
         return restaurants;
     }
-    public List<Restaurant> getByMultipleCriteria(String name, String typeCuisine, String block, String rating) {
+    public javafx.util.Pair<List<Restaurant>, Integer> getByMultipleCriteria(String name, String typeCuisine, String block, String rating, int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Restaurant.class);
+
         if (name != null) {
             criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
         }
@@ -131,10 +132,15 @@ public class restaurantRepositoryImp implements restaurantRepository{
             criteria.add(Restrictions.like("block", block, MatchMode.ANYWHERE));
         }
         if (rating != null) {
-            criteria.add(Restrictions.eq("rating", rating));
+            Long rat = Long.parseLong(rating);
+            criteria.add(Restrictions.eq("rating", rat));
         }
+        int count = Integer.valueOf(criteria.list().size());
+        criteria = criteria.setFirstResult(this.pageSize * (pageNumber - 1));
+        criteria = criteria.setMaxResults(this.pageSize);
         List<Restaurant> restaurants = criteria.list();
-        return restaurants;
+        javafx.util.Pair<List<Restaurant>, Integer> P = new javafx.util.Pair<>(restaurants, count);
+        return P;
     }
 
     public Long countRestaurants(){
@@ -155,6 +161,23 @@ public class restaurantRepositoryImp implements restaurantRepository{
         return null;
     }
 
+
+    public static int pageSize = 3;
+    public static List<Restaurant> getPage(int pageNumber) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Restaurant> result = null;
+        try {
+            session.beginTransaction();
+            org.hibernate.query.Query query = session.createQuery("from Restaurant");
+            query = query.setFirstResult(pageSize * (pageNumber - 1));
+            query.setMaxResults(pageSize);
+            result = query.list();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
 }

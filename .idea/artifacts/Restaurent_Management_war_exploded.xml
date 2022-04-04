@@ -34,6 +34,8 @@
           <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:2.0.2" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.0.2" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-base:19-ea+4" />
+          <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:19-ea+4" />
         </element>
       </element>
       <element id="directory" name="META-INF">

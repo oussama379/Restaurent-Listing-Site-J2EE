@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -138,11 +139,11 @@
 				<aside class="col-lg-3">
 					<div class="custom-search-input-2 inner-2">
 						<div class="form-group">
-							<input class="form-control" type="text" placeholder="Name..." name="name">
+							<input class="form-control" type="text" placeholder="Name..." name="name" value="<c:if test="${name != null}">${name}</c:if>">
 							<i class="icon_search"></i>
 						</div>
 						<div class="form-group">
-							<input class="form-control" type="text" placeholder="Where" name="location">
+							<input class="form-control" type="text" placeholder="Where" name="location" value="<c:if test="${location != null}">${location}</c:if>">
 							<i class="icon_pin_alt"></i>
 						</div>
 						<div class="form-group">
@@ -150,7 +151,7 @@
 							<option>All Categories</option>
 							<c:if test="${typesCuisine.isEmpty() != true}">
 									<c:forEach var = "i" begin = "0" end = "${typesCuisine.size() - 1}">
-										<option>${typesCuisine.get(i)}</option>
+										<option >${typesCuisine.get(i)}</option>
 									</c:forEach>
 							</c:if>
 						</select>
@@ -161,14 +162,15 @@
 						<div class="form-group">
 							<select class="wide" name="rating">
 								<option value="0">Rating</option>
-								<option value="1">&#9733;</option>
-								<option value="2">&#9733; &#9733;</option>
-								<option value="3">&#9733; &#9733; &#9733;</option>
-								<option value="4">&#9733; &#9733; &#9733; &#9733;</option>
-								<option value="5">&#9733; &#9733; &#9733;  &#9733; &#9733;</option>
+								<option value="1"<c:if test="${rating != null && rating == 1}">selected</c:if>>&#9733;</option>
+								<option value="2" <c:if test="${rating != null && rating == 2}">selected</c:if>>&#9733; &#9733;</option>
+								<option value="3" <c:if test="${rating != null && rating == 3}">selected</c:if>>&#9733; &#9733; &#9733;</option>
+								<option value="4" <c:if test="${rating != null && rating == 4}">selected</c:if>>&#9733; &#9733; &#9733; &#9733;</option>
+								<option value="5" <c:if test="${rating != null && rating == 5}">selected</c:if>>&#9733; &#9733; &#9733;  &#9733; &#9733;</option>
 							</select>
 						</div>
 						<input type="submit" class="btn_search" value="Search">
+						<a href="listRestaurants.phpp" class="btn_1 medium">Cancel Search</a>
 					</div>
 				</aside>
 <%--				</form>--%>
@@ -177,6 +179,7 @@
 				<div class="col-lg-9">
 					<div class="isotope-wrapper">
 					<div class="row">
+                        <c:if test="${restaurantsPage.isEmpty() != true}">
 						<c:forEach var = "i" begin = "0" end = "${restaurantsPage.size() - 1 }">
 						<div class="col-md-6 isotope-item popular">
 							<div class="box_grid">
@@ -197,7 +200,7 @@
 							</div>
 						</div>
 						</c:forEach>
-
+                        </c:if>
 
 					</div>
 					<!-- /row -->
@@ -205,21 +208,45 @@
 					<!-- /isotope-wrapper -->
 
 <%--					<p class="text-center"><a href="#0" class="btn_1 rounded add_top_30">Load more</a></p>--%>
-					<nav aria-label="...">
-						<ul class="pagination pagination-sm">
-							<li class="page-item <c:if test="${currentPage == 1}"> disabled </c:if> ">
-								<a class="page-link" href="listRestaurants.phpp?page=${currentPage - 1}" tabindex="-1">Previous</a>
-							</li>
-							<c:forEach var = "i" begin = "1" end = "${nbPages}">
-								<li class="page-item  <c:if test="${currentPage == i}"> active </c:if> ">
-									<a class="page-link" href="listRestaurants.phpp?page=${i}">${i}</a>
-								</li>
-							</c:forEach>
-							<li class="page-item <c:if test="${currentPage == nbPages}"> disabled </c:if> ">
-								<a class="page-link" href="listRestaurants.phpp?page=${currentPage + 1}">Next</a>
-							</li>
-						</ul>
-					</nav>
+
+                    <c:if test="${restaurantsPage.isEmpty() != true}">
+					<c:choose>
+						<c:when test="${search == true}">
+							<nav aria-label="...">
+								<ul class="pagination pagination-sm">
+									<li class="page-item <c:if test="${currentPage == 1}"> disabled </c:if> ">
+										<a class="page-link" href="searchRestaurants.phpp?page=${currentPage - 1}&name=${name}&cuisineType=${cuisineType}&rating=${rating}&location=${location}" tabindex="-1">Previous</a>
+									</li>
+									<c:forEach var = "i" begin = "1" end = "${nbPages}">
+										<li class="page-item  <c:if test="${currentPage == i}"> active </c:if> ">
+											<a class="page-link" href="searchRestaurants.phpp?page=${i}&name=${name}&cuisineType=${cuisineType}&rating=${rating}&location=${location}">${i}</a>
+										</li>
+									</c:forEach>
+									<li class="page-item <c:if test="${currentPage == nbPages}"> disabled </c:if> ">
+										<a class="page-link" href="searchRestaurants.phpp?page=${currentPage + 1}&name=${name}&cuisineType=${cuisineType}&rating=${rating}&location=${location}">Next</a>
+									</li>
+								</ul>
+							</nav>
+						</c:when>
+						<c:otherwise>
+							<nav aria-label="...">
+								<ul class="pagination pagination-sm">
+									<li class="page-item <c:if test="${currentPage == 1}"> disabled </c:if> ">
+										<a class="page-link" href="listRestaurants.phpp?page=${currentPage - 1}" tabindex="-1">Previous</a>
+									</li>
+									<c:forEach var = "i" begin = "1" end = "${nbPages}">
+										<li class="page-item  <c:if test="${currentPage == i}"> active </c:if> ">
+											<a class="page-link" href="listRestaurants.phpp?page=${i}">${i}</a>
+										</li>
+									</c:forEach>
+									<li class="page-item <c:if test="${currentPage == nbPages}"> disabled </c:if> ">
+										<a class="page-link" href="listRestaurants.phpp?page=${currentPage + 1}">Next</a>
+									</li>
+								</ul>
+							</nav>
+						</c:otherwise>
+					</c:choose>
+                    </c:if>
 				</div>
 				<!-- /col -->
 
