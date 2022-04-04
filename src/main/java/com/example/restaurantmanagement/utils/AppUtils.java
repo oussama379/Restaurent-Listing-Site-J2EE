@@ -14,6 +14,7 @@ import javax.servlet.ServletRegistration;
 
 public class AppUtils {
     private static int REDIRECT_ID = 0;
+    public static String UPLOAD_DIRECTORY = "../../src/main/webapp/upload";
 
     private static final Map<Integer, String> id_uri_map = new HashMap<Integer, String>();
     private static final Map<String, Integer> uri_id_map = new HashMap<String, Integer>();

@@ -20,8 +20,10 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private String description;
     private Long popularity;
     private double averageCost;
+    private String payment; // Possible payment methods
     private Long rating;
     private String typeCuisine;
     private String phone;
@@ -29,13 +31,14 @@ public class Restaurant {
     private String email;
     private String facebook;
     private String instagram;
-    private String tags ="[]";
-    private String menuImages = "[]";
-    private String images = "[]";
+    private String tags;
+    private String menuImages;
+    private String images;
     private String openingTime;
     private String closingTime;
     private String openingTimeWeekEnd;
     private String closingTimeWeekEnd;
+    private String block; // Rabat Blocks : Agdal, Hay Riyad, ...
     private String address;
     private String googleMaps;
     private AddRequestStatus addRequestStatus;

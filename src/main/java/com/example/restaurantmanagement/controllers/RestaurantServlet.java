@@ -5,15 +5,19 @@ import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.UserModel;
 import com.example.restaurantmanagement.services.userRepositoryImp;
 import com.example.restaurantmanagement.services.restaurantRepositoryImp;
-
+import com.example.restaurantmanagement.utils.AppUtils;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
+@MultipartConfig
 @WebServlet(name="RestaurantServlet", urlPatterns = "*.phpp")
 public class RestaurantServlet extends HttpServlet {
     userRepositoryImp userRepositoryImp;
@@ -53,11 +57,24 @@ public class RestaurantServlet extends HttpServlet {
             restaurant.setPhone(req.getParameter("phone"));
             restaurant.setInstagram(req.getParameter("instagram"));
             restaurant.setTypeCuisine(req.getParameter("typeCuisine"));
-            // json
             restaurant.setTags(req.getParameter("tags"));
+            restaurant.setDescription(req.getParameter("description"));
+            restaurant.setBlock(req.getParameter("block"));
+            restaurant.setPayment(req.getParameter("payment"));
+            restaurant.setWebSite(req.getParameter("webSite"));
             restaurant.setOwnerUser(null);
 
+            // Save
             restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+
+            // Edit object to save pictures after first save to put the object id on pictures names
+            String[] pic_menu = saveFiles(req, restaurant.getId());
+            restaurant.setImages(pic_menu[0]);
+            restaurant.setMenuImages(pic_menu[1]);
+
+            // Update : Add pictures and menus
+            restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+
             req.getRequestDispatcher("views/addRestaurant.jsp").forward(req, resp);
             //=========================================================================\\
         }
@@ -152,7 +169,46 @@ public class RestaurantServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
+        doGet(req, resp);
+    }
+
+    private String[] saveFiles(HttpServletRequest request, Long id) throws ServletException, IOException {
+        /*
+        * The objective : store files in "/path-to-project-folder/src/main/webapp/upload/"
+        * getServletContext().getRealPath("/") : return = /path-to-project-folder/target/RestaurentManagement-1.0-SNAPSHOT/
+        * AppUtils.UPLOAD_DIRECTORY : return = /../../src/main/webapp/upload
+        * the result :
+        * /path-to-project-folder/target/RestaurentManagement-1.0-SNAPSHOT/../../src/main/webapp/upload = /path-to-project-folder/src/main/webapp/upload/
+        * */
+        String uploadPath = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) uploadDir.mkdir();
+
+        // result ex : "pic1.png:pic2.png:pic3.png:"
+        StringBuilder pictures = new StringBuilder();
+        StringBuilder menu = new StringBuilder();
+
+        int p = 1, m = 1;
+        String fileName, saveName;
+        for (Part part : request.getParts()) {
+            fileName = part.getSubmittedFileName();
+            if (fileName != null){
+                if (part.getName().equals("pictures")){
+                    saveName = id+"-PIC"+p+"-"+fileName;
+                    part.write(uploadPath + File.separator + saveName);
+                    pictures.append(saveName).append(":");
+                    p++;
+                }else if (part.getName().equals("menu")){
+                    saveName = id+"-MENU"+m+"-"+fileName;
+                    part.write(uploadPath + File.separator + saveName);
+                    menu.append(saveName).append(":");
+                    m++;
+                }
+            }
+        }
+
+        String[] ary = {pictures.toString(), menu.toString()};
+        return ary;
     }
 
 }

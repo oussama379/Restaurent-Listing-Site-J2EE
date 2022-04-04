@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="resources/js_admin/editor/summernote-bs4.css">
   <!-- Your custom styles -->
   <link href="resources/css_admin/custom.css" rel="stylesheet">
+	<link href="resources/css_admin/magicsuggest.css" rel="stylesheet" />
 
 </head>
 
@@ -109,9 +110,7 @@
 </nav>
 <!-- /Navigation-->
 
-  <form class="content-wrapper" action="saveRestaurant.phpp" method="post">
-<%--	  <form >--%>
-<%--		  enctype="multipart/form-data"--%>
+  <form class="content-wrapper" action="saveRestaurant.phpp" method="post" onsubmit="getTags()" enctype="multipart/form-data">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
@@ -120,9 +119,9 @@
         </li>
         <li class="breadcrumb-item active">Add Restaurant</li>
       </ol>
-		<div class="box_general padding_bottom">
+	  	<div class="box_general padding_bottom">
 			<div class="header_box version_2">
-				<h2><i class="fa fa-file"></i>Restaurant info</h2>
+				<h2><i class="fa fa-file"></i>Restaurant Informations</h2>
 			</div>
 			<div class="row">
 				<div class="col-md-6">
@@ -131,10 +130,13 @@
 						<input type="text" class="form-control" placeholder="Restaurant Title" name="name">
 					</div>
 				</div>
-				<div class="col-md-6">
+			</div>
+			<!-- /row-->
+			<div class="row">
+				<div class="col-md-12">
 					<div class="form-group">
-						<label>Cuisine Type</label>
-						<input type="text" class="form-control" placeholder="Ex. Traditional dishes " name="typeCuisine">
+						<label>Description</label>
+						<textarea id="description" name="description" class="form-control"></textarea>
 					</div>
 				</div>
 			</div>
@@ -142,12 +144,18 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
+						<label>Cuisine Type</label>
+						<input type="text" class="form-control" placeholder="Ex. Traditional dishes " name="typeCuisine">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
 						<label>Tags</label>
-						<input type="text" class="form-control" placeholder="Tags should be separated by commas. Ex: Wifi, Alcohol, ...." name="tags">
+						<input type="text" id="tags" name="tags" class="form-control" placeholder="Tags should be separated by commas. Ex: Wifi, Alcohol, ...." hidden>
+						<div id="example" class="form-control"></div>
 					</div>
 				</div>
 			</div>
-
 			<!-- /row-->
 			<div class="row">
 				<div class="col-md-4">
@@ -185,45 +193,74 @@
 				</div>
 			</div>
 			<!-- /row-->
-			<!-- /row-->
+	  </div>
+		<!-- /box_general-->
 
+		<div class="box_general padding_bottom">
+			<div class="header_box version_2">
+				<h2><i class="fa fa-camera"></i>Pictures</h2>
+			</div>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label>Restaurant Photos</label>
-<%--						<form action="/file-upload" class="dropzone"></form>--%>
+						<label>Restaurant pictures</label>
+						<%--						<form action="/file-upload" class="dropzone dz-clickable"><div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>--%>
+						<input class="form-control form-control-lg" id="pictures" name="pictures" type="file" multiple>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<label>Menu Photos</label>
-<%--						<form action="/file-upload" class="dropzone"></form>--%>
+						<label>Menu pictures</label>
+						<%--						<form action="/file-upload" class="dropzone dz-clickable"><div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>--%>
+						<input class="form-control form-control-lg" id="menu" name="menu" type="file" multiple>
 					</div>
 				</div>
 			</div>
-			<!-- /row-->
-			<!-- /row-->
-
-		<!-- /box_general-->
+		</div>
 		<!-- /box_general-->
 
-<%--		<div class="box_general padding_bottom">
-			<div class="header_box version_2">
-				<h2><i class="fa-solid fa-tags"></i>Tags</h2>
-			</div>
-
-			<!-- /row-->
-		</div>--%>
-		<!-- /box_general-->
 		<div class="box_general padding_bottom">
 			<div class="header_box version_2">
 				<h2><i class="fa fa-map-marker"></i>Location</h2>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<div class="form-group">
 						<label>Address</label>
 						<input type="text" class="form-control" placeholder="ex. 250, Fifth Avenue..." name="address">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Neighborhood</label>
+						<div class="styled-select">
+							<select name="block">
+								<option value="" disabled selected>Select</option>
+								<option value="Medina">Medina</option>
+								<option value="Oudayas">Oudayas</option>
+								<option value="Hassan">Hassan</option>
+								<option value="Océan">Océan</option>
+								<option value="Les Orangers">Les Orangers</option>
+								<option value="Diour Jamaa">Diour Jamaa</option>
+								<option value="Aakkari">Aakkari</option>
+								<option value="Yacoub El Mansour">Yacoub El Mansour</option>
+								<option value="Massira">Massira</option>
+								<option value="Hay el Fath">Hay el Fath</option>
+								<option value="Youssoufia">Youssoufia</option>
+								<option value="Douar el Hajja">Douar el Hajja</option>
+								<option value="Mabella">Mabella</option>
+								<option value="Taqaddoum">Taqaddoum</option>
+								<option value="Hay Nahda">Hay Nahda</option>
+								<option value="Aviation">Aviation</option>
+								<option value="Rommani">Rommani</option>
+								<option value="Agdal">Agdal</option>
+								<option value="Hay Riad">Hay Riad</option>
+								<option value="Souissi">Souissi</option>
+								<option value="Les Ambassadeurs">Les Ambassadeurs</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -235,7 +272,7 @@
 			</div>
 		</div>
 		<!-- /box_general-->
-		
+
 		<div class="box_general padding_bottom">
 			<div class="header_box version_2">
 				<h2><i class="fa fa-clock-o"></i>Opening</h2>
@@ -392,31 +429,26 @@
 		
 		<div class="box_general padding_bottom">
 			<div class="header_box version_2">
-				<h2><i class="fa fa-dollar"></i>Average Pricing </h2>
+				<h2><i class="fa fa-dollar"></i>Cost </h2>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
-					<h6>For One Person</h6>
-					<table id="pricing-list-container1" style="width:100%;">
-						<tr class="pricing-list-item">
-							<td>
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Price in DH" name="averageCost">
-										</div>
-								</div>
-								</div>
-							</td>
-						</tr>
-					</table>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Average Pricing for One Person</label>
+						<input type="text" class="form-control" placeholder="Price in DH" name="averageCost">
 					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label>Accepted payments methods</label>
+						<input type="text" class="form-control" placeholder="Cash, Cards" name="payment">
+					</div>
+				</div>
 			</div>
 			<!-- /row-->
 		</div>
 		<!-- /box_general-->
-		</div>
-		<button type="submit" class="btn_1 medium">Save</button>
+	  <button type="submit" class="btn_1 medium">Save</button>
 	</div>
 <%--	  </form>--%>
   </form>
@@ -470,23 +502,36 @@
 	<script src="resources/vendor_admin/dropzone.min.js"></script>
 	<script src="resources/vendor_admin/bootstrap-datepicker.js"></script>
 	<script>$('input.date-pick').datepicker();</script>
-  <!-- WYSIWYG Editor -->
-  <script src="resources/js_admin/editor/summernote-bs4.min.js"></script>
-  <script>
-      $('.editor').summernote({
-    fontSizes: ['10', '14'],
-    toolbar: [
-      // [groupName, [list of button]]
-      ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['strikethrough']],
-      ['fontsize', ['fontsize']],
-      ['para', ['ul', 'ol', 'paragraph']]
-      ],
-        placeholder: 'Write here your description....',
-        tabsize: 2,
-        height: 200
-      });
-    </script>
+  	<!-- WYSIWYG Editor -->
+  	<script src="resources/js_admin/editor/summernote-bs4.min.js"></script>
+	<script src="resources/js_admin/magicsuggest.js"></script>
+	<script>
+	  $('.editor').summernote({
+		fontSizes: ['10', '14'],
+		toolbar: [
+		  // [groupName, [list of button]]
+		  ['style', ['bold', 'italic', 'underline', 'clear']],
+		  ['font', ['strikethrough']],
+		  ['fontsize', ['fontsize']],
+		  ['para', ['ul', 'ol', 'paragraph']]
+		  ],
+			placeholder: 'Write here your description....',
+			tabsize: 2,
+			height: 200
+	  });
+	  var myData = ['New York','Los Angeles','Chicago']
+	  $(function() {
+		  var instance = $('#example').magicSuggest({
+			  data: myData,
+		  });
+	  });
+	  function getTags(){
+		  var instance = $('#example').magicSuggest({
+			  data: myData,
+		  });
+		  $("#tags").val(instance.getValue().toString());
+	  }
+	</script>
 	
 </body>
 </html>
