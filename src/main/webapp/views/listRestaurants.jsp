@@ -77,13 +77,13 @@
 				<c:choose>
 					<c:when test="${loginedUser != null}">
 						<li><span><a href="index.php">Home</a></span></li>
-						<c:if test="${loginedUser.role.equals('Admin')}">
+						<c:if test="${loginedUser.role.equals('ADMIN')}">
 							<li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
 						</c:if>
 					</c:when>
 					<c:otherwise>
 						<li><span><a href="index.php">Home</a></span></li>
-						<c:if test="${loginedUser.role.equals('Admin')}">
+						<c:if test="${loginedUser.role.equals('ADMIN')}">
 							<li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
 						</c:if>
 						<li><span><a href="register.php">Register</a></span></li>
@@ -203,7 +203,7 @@
 							<div class="box_grid">
 								<figure>
 									<a href="#0" class="wish_bt"></a>
-									<a href="restaurant-detail.html"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
+									<a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
 								</figure>
 								<div class="wrapper">
 									<h3><a href="restaurant-detail.html">${restaurantsPage.get(i).getName()}</a></h3>

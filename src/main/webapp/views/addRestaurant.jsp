@@ -167,7 +167,7 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Web site (Optional)</label>
-						<input type="text" class="form-control" name="webSite">
+						<input type="text" class="form-control" placeholder="Ex. https://google.com" name="webSite">
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -182,13 +182,13 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Facebook link (Optional)</label>
-						<input type="text" class="form-control" name="facebook">
+						<input type="text" class="form-control" placeholder="Ex. https://facebook.com/..." name="facebook">
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Instagram link (Optional)</label>
-						<input type="text" class="form-control" name="instagram">
+						<input type="text" class="form-control" placeholder="Ex. https://instagram.com/..." name="instagram">
 					</div>
 				</div>
 			</div>

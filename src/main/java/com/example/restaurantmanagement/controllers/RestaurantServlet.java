@@ -117,11 +117,6 @@ public class RestaurantServlet extends HttpServlet {
             String location = req.getParameter("location");
             String cuisineType = req.getParameter("cuisineType");
             String rating = req.getParameter("rating");
-/*            System.out.println(name);
-            System.out.println(location);
-            System.out.println(cuisineType);
-            System.out.println(rating);*/
-            System.out.println("----------------------");
             if(name.equals(""))
                 name = null;
             else
@@ -138,12 +133,6 @@ public class RestaurantServlet extends HttpServlet {
                 rating = null;
             else
                 req.setAttribute("rating", rating);
-            System.out.println("----------------------");
-   /*         System.out.println(name);
-            System.out.println(location);
-            System.out.println(cuisineType);
-            System.out.println(rating);*/
-            System.out.println("----------------------");
             int currentPage = 1;
 
             if(req.getParameter("page") != null) {
@@ -169,8 +158,45 @@ public class RestaurantServlet extends HttpServlet {
             if(location == null) req.setAttribute("location", "");
             if(cuisineType == null) req.setAttribute("cuisineType", "All Categories");
             req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
+            //=========================================================================\\
+        }else if (Path.equalsIgnoreCase("/restaurantDetail.phpp")) {
+            Long id = Long.valueOf(req.getParameter("id"));
+            Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+            req.setAttribute("restaurant", restaurant);
+
+            //--Handling-Images----//
+            List<String> Images = new ArrayList<>();
+            String[] arrOfStr = restaurant.getImages().split(":");
+            for(String s : arrOfStr)
+                Images.add(s);
+            req.setAttribute("Images", Images);
+
+            List<String> menuImages = new ArrayList<>();
+            String[] arrOfStr1 = restaurant.getMenuImages().split(":");
+            for(String s1 : arrOfStr1)
+                menuImages.add(s1);
+            req.setAttribute("menuImages", menuImages);
+            //--End-Handling-Images----//
+
+            //--Handling-Tags----//
+            List<String> tags = new ArrayList<>();
+            String[] arrOfStr2 = restaurant.getTags().split(",");
+            for(String s1 : arrOfStr2)
+                tags.add(s1);
+            req.setAttribute("tags", tags);
+            //--End-Handling-Tags----//
+
+            //--Handling-Pay-Methods----//
+            List<String> pay = new ArrayList<>();
+            String[] arrOfStr3 = restaurant.getPayment().split(",");
+            for(String s1 : arrOfStr3)
+                pay.add(s1);
+            req.setAttribute("pay", pay);
+            //--End-Handling-Pay-Methods----//
+
+
+            req.getRequestDispatcher("views/restaurantDetail.jsp").forward(req, resp);
         }
-        //=========================================================================\\
             //=========================================================================\\
         else {
             req.getRequestDispatcher("404.jsp").forward(req, resp);

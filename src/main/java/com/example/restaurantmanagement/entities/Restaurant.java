@@ -42,6 +42,7 @@ public class Restaurant {
     private String address;
     private String googleMaps;
     private AddRequestStatus addRequestStatus;
+    private int views = 0;
 
     @OneToMany(mappedBy = "restaurant")
     private Set<Review> reviews;
