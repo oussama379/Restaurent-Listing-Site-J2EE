@@ -52,11 +52,14 @@ public class AppUtils {
     public static Long getCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
-        // if exist return id else return 0
-        for (Cookie c : cookies) {
-            if (c.getName().equals("userid"))
-                return Long.valueOf(c.getValue());
+        if (cookies != null) {
+            // if exist return id else return 0
+            for (Cookie c : cookies) {
+                if (c.getName().equals("userid"))
+                    return Long.valueOf(c.getValue());
+            }
         }
+
         return 0L;
     }
 

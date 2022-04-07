@@ -1,6 +1,7 @@
 package com.example.restaurantmanagement.controllers;
 
 import com.example.restaurantmanagement.entities.User;
+import com.example.restaurantmanagement.services.userRepositoryImp;
 import com.example.restaurantmanagement.utils.AppUtils;
 import com.example.restaurantmanagement.utils.SecurityUtils;
 
@@ -19,10 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebFilter("/*")
 public class SecurityFilter implements Filter {
+    private static userRepositoryImp userRepositoryImp;
 
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
-
+        userRepositoryImp = new userRepositoryImp();
     }
 
     @Override
@@ -32,13 +34,22 @@ public class SecurityFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         String servletPath = request.getServletPath();
+        Long userId = AppUtils.getCookie(request); // Get user id from Cookie
+        User loginedUser = AppUtils.getLoginedUser(request.getSession()); // Get user from Sesion
 
-        // L'informstion d'utilisateur est stockée dans Session
-        // (Après l'achèvement de connexion).
-        User loginedUser = AppUtils.getLoginedUser(request.getSession());
+        // IF Session doesn't exist and Cookie exist -> Create Session
+        if (loginedUser == null && userId != 0L){
+            loginedUser = userRepositoryImp.getUser(userId);
+            AppUtils.storeLoginedUser(request.getSession(), loginedUser);
+        }
 
         if (servletPath.equals("/login")) {
-            chain.doFilter(request, response);
+            // IF Cookie exist or Session exist redirect to Home ELSE forward to login.jsp
+            if (loginedUser != null)
+                response.sendRedirect(request.getContextPath() + "/");
+            else
+                chain.doFilter(request, response);
+
             return;
         }
 

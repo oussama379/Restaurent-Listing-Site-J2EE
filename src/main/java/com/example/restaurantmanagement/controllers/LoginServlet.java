@@ -30,10 +30,6 @@ public class LoginServlet extends HttpServlet {
             // Redirect to Home Page.
             response.sendRedirect(request.getContextPath() + "/");
         }else{
-            // IF Cookie exist or Session exist redirect to Home ELSE forward to login.jsp
-            if (AppUtils.getCookie(request) != 0L || AppUtils.getLoginedUser(request.getSession()) != null)
-                response.sendRedirect(request.getContextPath() + "/");
-            else
                 request.getRequestDispatcher("views/login.jsp").forward(request, response);
         }
     }
