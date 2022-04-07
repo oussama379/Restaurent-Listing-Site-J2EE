@@ -35,13 +35,13 @@
 	
 	<div id="page" class="theia-exception">
 		<header class="header menu_fixed">
-			<div id="preloader"><div data-loader="circle-side"></div></div><!-- /Preload -->
-			<div id="logo">
-				<a href="index.html">
-					<img src="resources/img/logo.png" width="150" height="36" data-retina="true" alt="" class="logo_normal">
-					<img src="resources/img/logo_sticky.png" width="150" height="36" data-retina="true" alt="" class="logo_sticky">
-				</a>
-			</div>
+            <div id="preloader"><div data-loader="circle-side"></div></div><!-- /Page Preload -->
+            <div id="logo">
+                <a href="index.html">
+                    <img src="resources/img/logo.png" width="150" height="36" data-retina="true" alt="" class="logo_normal">
+                    <img src="resources/img/logo_sticky.png" width="150" height="36" data-retina="true" alt="" class="logo_sticky">
+                </a>
+            </div>
 			<ul id="top_menu">
 				<c:choose>
 					<c:when test="${loginedUser != null}">
@@ -215,7 +215,6 @@
 						<h3>Reviews</h3>
 						<br>
 						<section id="reviews">
-						
 							<div class="reviews-container">
 								<!-- /review-box -->
 								<div class="review-box clearfix">
@@ -236,6 +235,39 @@
 									</div>
 								</div>
 								<!-- /review-box -->
+                                <!-- /review-box -->
+                                <c:forEach var = "i" begin = "0" end = "${reviews.size() - 1 }">
+                                <div class="review-box clearfix">
+                                    <figure class="rev-thumb"><img src="resources/img/avatar2.jpg" alt="">
+                                    </figure>
+                                    <div class="rev-content">
+                                        <div class="rating">
+                                            <c:if test="${reviews.get(i).getRating() == 5}">
+                                            <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon-star voted"></i>
+                                            </c:if>
+                                            <c:if test="${reviews.get(i).getRating() == 4}">
+                                            <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                                            </c:if>
+                                            <c:if test="${reviews.get(i).getRating() == 3}">
+                                            <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                            </c:if>
+                                            <c:if test="${reviews.get(i).getRating() == 2}">
+                                            <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                            </c:if>
+                                            <c:if test="${reviews.get(i).getRating() == 1}">
+                                            <i class="icon-star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                                            </c:if>
+                                        </div>
+                                        <div class="rev-info">
+                                            ${reviews.get(i).getUser().getUsername()} at ${reviews.get(i).getDateReview()} :
+                                        </div>
+                                        <div class="rev-text">
+                                            <p>${reviews.get(i).getReviewText()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </c:forEach>
+                                <!-- /review-box -->
 							</div>
 							<!-- /review-container -->
 						</section>
@@ -244,30 +276,29 @@
 
 							<div class="add-review">
 								<h5>Leave a Review</h5>
-								<form>
+								<form  action="submitReview.phpp" method="post">
 									<div class="row">
-										<div class="form-group col-md-6">
-											<label>Name and Lastname *</label>
-											<input type="text" name="name_review" id="name_review" placeholder="" class="form-control">
-										</div>
-										<div class="form-group col-md-6">
-											<label>Email *</label>
-											<input type="email" name="email_review" id="email_review" class="form-control">
-										</div>
+										<c:choose>
+										<c:when test="${loginedUser == null}">
+											<div class="form-group col-md-6">
+												<label>Name and Lastname *</label>
+												<input type="text" name="name_review" id="name_review" placeholder="" class="form-control">
+											</div>
+											<div class="form-group col-md-6">
+												<label>Email *</label>
+												<input type="email" name="email_review" id="email_review" class="form-control">
+											</div>
+										</c:when>
+										</c:choose>
 										<div class="form-group col-md-6">
 											<label>Rating </label>
 											<div class="custom-select-form">
-											<select name="rating_review" id="rating_review" class="wide">
-												<option value="1">1 (lowest)</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="5" selected>5 (medium)</option>
-												<option value="6">6</option>
-												<option value="7">7</option>
-												<option value="8">8</option>
-												<option value="9">9</option>
-												<option value="10">10 (highest)</option>
+											<select name="rating" id="rating_review" class="wide">
+												<option value="1">&#9733;</option>
+												<option value="2">&#9733; &#9733;</option>
+												<option value="3">&#9733; &#9733; &#9733;</option>
+												<option value="4">&#9733; &#9733; &#9733; &#9733;</option>
+												<option value="5">&#9733; &#9733; &#9733;  &#9733; &#9733;</option>
 											</select>
 											</div>
 										</div>
@@ -276,6 +307,7 @@
 											<textarea name="review_text" id="review_text" class="form-control" style="height:130px;"></textarea>
 										</div>
 										<div class="form-group col-md-12 add_top_20">
+											<input type="hidden" name="id" value="${restaurant.getId()}">
 											<input type="submit" value="Submit" class="btn_1" id="submit-review">
 										</div>
 									</div>
@@ -288,11 +320,11 @@
 						<div class="box_detail booking">
 							<div class="price">
 								<span>45$ <small>person</small></span>
-								<div class="score"><span>Good<em>350 Reviews</em></span><strong>${restaurant.getRating()}</strong></div>
+								<div class="score"><span>${reviews.size()} Reviews</span><strong>${restaurantRating} / 5</strong>
+									</div>
 							</div>
 							
-						
-							
+
 							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_map"></i> ${restaurant.getGoogleMaps()}</a>
 							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_phone"></i> ${restaurant.getPhone()}</a>
 							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_internet"></i>&#64; ${restaurant.getWebSite()}</a>
