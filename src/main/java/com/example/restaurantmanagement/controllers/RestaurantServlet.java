@@ -1,10 +1,12 @@
 package com.example.restaurantmanagement.controllers;
 
 import com.example.restaurantmanagement.entities.Restaurant;
+import com.example.restaurantmanagement.entities.Review;
 import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.UserModel;
 import com.example.restaurantmanagement.services.userRepositoryImp;
 import com.example.restaurantmanagement.services.restaurantRepositoryImp;
+import com.example.restaurantmanagement.services.reviewRepositoryImp;
 import com.example.restaurantmanagement.utils.AppUtils;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @MultipartConfig
@@ -22,11 +27,14 @@ import java.util.*;
 public class RestaurantServlet extends HttpServlet {
     userRepositoryImp userRepositoryImp;
     restaurantRepositoryImp restaurantRepositoryImp;
+    reviewRepositoryImp reviewRepositoryImp;
+
 
 
     public void init() throws ServletException {
         userRepositoryImp = new userRepositoryImp();
         restaurantRepositoryImp = new restaurantRepositoryImp();
+        reviewRepositoryImp = new reviewRepositoryImp();
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -194,10 +202,55 @@ public class RestaurantServlet extends HttpServlet {
             req.setAttribute("pay", pay);
             //--End-Handling-Pay-Methods----//
 
+            //--Sending-Reviews----//
+            List<Review> reviews = reviewRepositoryImp.getRestaurantReviews(id);
+            req.setAttribute("reviews", reviews);
+
+
+            double restaurantRating = 0;
+            for(Review r : reviews)
+                restaurantRating = restaurantRating + r.getRating();
+            restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/reviews.size()));
+            req.setAttribute("restaurantRating", restaurantRating);
+            System.out.println(reviews.size());
+            System.out.println(restaurantRating);
 
             req.getRequestDispatcher("views/restaurantDetail.jsp").forward(req, resp);
-        }
+
             //=========================================================================\\
+        }else if (Path.equalsIgnoreCase("/submitReview.phpp")) {
+            Long rating = Long.valueOf(req.getParameter("rating"));
+            Long id = Long.valueOf(req.getParameter("id"));
+            String review_text = req.getParameter("review_text");
+
+            Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+            Review review = new Review();
+            review.setRestaurant(restaurant);
+            review.setReviewText(review_text);
+            review.setRating(rating);
+            //--Review-Date---//
+            LocalDateTime myDateObj = LocalDateTime.now();
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
+            String formattedDate = myDateObj.format(myFormatObj);
+            review.setDateReview(formattedDate);
+            //--End-Review-Date---//
+            review.setUser(userRepositoryImp.currentUser);
+            reviewRepositoryImp.saveOrUpdateReview(review);
+            List<Review> reviews = reviewRepositoryImp.getRestaurantReviews(id);
+
+            req.setAttribute("reviews", reviews);
+
+            double restaurantRating = 0;
+            for(Review r : reviews)
+                restaurantRating = restaurantRating + r.getRating();
+            restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/reviews.size()));
+            req.setAttribute("restaurantRating", restaurantRating);
+            System.out.println(reviews.size());
+            System.out.println(restaurantRating);
+
+            req.getRequestDispatcher("/restaurantDetail.phpp?id="+id).forward(req, resp);
+            //=========================================================================\\
+        }
         else {
             req.getRequestDispatcher("404.jsp").forward(req, resp);
         }
