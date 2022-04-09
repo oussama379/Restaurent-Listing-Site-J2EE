@@ -3,6 +3,7 @@ package com.example.restaurantmanagement.controllers;
 import com.example.restaurantmanagement.entities.Restaurant;
 import com.example.restaurantmanagement.entities.Review;
 import com.example.restaurantmanagement.entities.User;
+import com.example.restaurantmanagement.model.RestaurantModel;
 import com.example.restaurantmanagement.model.UserModel;
 import com.example.restaurantmanagement.services.userRepositoryImp;
 import com.example.restaurantmanagement.services.restaurantRepositoryImp;
@@ -29,6 +30,8 @@ public class RestaurantServlet extends HttpServlet {
     restaurantRepositoryImp restaurantRepositoryImp;
     reviewRepositoryImp reviewRepositoryImp;
 
+    String errorMessage;
+
 
 
     public void init() throws ServletException {
@@ -41,15 +44,37 @@ public class RestaurantServlet extends HttpServlet {
         resp.setContentType("text/html");
         String Path = req.getServletPath();
         //=========================================================================\\
+        if (Path.equalsIgnoreCase("/listRestaurantCrud.phpp")) {
+            RestaurantModel model1 = new RestaurantModel();
+            model1.setKeyWord("restaurants");
+            model1.setRestaurants(restaurantRepositoryImp.getAllRestaurants());
+            req.setAttribute("modelRestaurant", model1);
+            req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
+        }
+        //=========================================================================\\
         if (Path.equalsIgnoreCase("/addRestaurant.phpp")) {
             //TODO Only Restaurant Owners
-            UserModel model1 = new UserModel();
-            model1.setKeyWord("users");
-            List<User> users = userRepositoryImp.getAllUsers();
-            model1.setUsers(users);
-            req.setAttribute("modelUser", model1);
             req.getRequestDispatcher("views/addRestaurant.jsp").forward(req, resp);
-        }//=========================================================================\\
+        }
+        //=========================================================================\\
+        else if (Path.equalsIgnoreCase("/deleteRestaurant.phpp")) {
+            Long RestID = Long.valueOf(req.getParameter("id"));
+
+            if (restaurantRepositoryImp.deleteRestaurant(RestID)) {
+                errorMessage = "Deleted Successfully";
+                req.setAttribute("errorMessage", errorMessage);
+            } else {
+                errorMessage = "Error while Deleting";
+                req.setAttribute("errorMessage", errorMessage);
+
+            }
+            RestaurantModel model1 = new RestaurantModel();
+            model1.setKeyWord("restaurants");
+            model1.setRestaurants(restaurantRepositoryImp.getAllRestaurants());
+            req.setAttribute("modelRestaurant", model1);
+            req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
+        }
+        //=========================================================================\\
         else if (Path.equalsIgnoreCase("/saveRestaurant.phpp")) {
             Restaurant restaurant = new Restaurant();
             restaurant.setName(req.getParameter("name"));
