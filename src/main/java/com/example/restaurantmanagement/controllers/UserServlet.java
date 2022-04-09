@@ -1,5 +1,6 @@
 package com.example.restaurantmanagement.controllers;
 
+import com.example.restaurantmanagement.entities.Review;
 import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.UserModel;
 import com.example.restaurantmanagement.services.userRepositoryImp;
@@ -43,6 +44,8 @@ public class UserServlet extends HttpServlet {
             }
             //=========================================================================\\
             else if (Path.equalsIgnoreCase("/saveUser.php")) {
+                // TODO to be tested (first_time)
+                boolean first_time;
                 User user = new User();
                 user.setFirstname(request.getParameter("firstname"));
                 user.setLastname(request.getParameter("lastname"));
@@ -53,7 +56,7 @@ public class UserServlet extends HttpServlet {
                 if (Long.valueOf(request.getParameter("id")) != 0)
                     user.setId(Long.valueOf(request.getParameter("id")));
 
-                if (userRepositoryImp.saveOrUpdateUser(user)) {
+                if (userRepositoryImp.saveOrUpdateUser(user, true)) {
                     savePicture(request, user.getId());
 
                     UserModel model1 = new UserModel();
@@ -109,7 +112,7 @@ public class UserServlet extends HttpServlet {
                 user.setPassword(request.getParameter("password1"));
                 user.setRole("CLIENT");
 
-                if (userRepositoryImp.saveOrUpdateUser(user)) {
+                if (userRepositoryImp.saveOrUpdateUser(user, true)) {
                     errorMessage = "Registered Successfully";
                     request.setAttribute("errorMessage", errorMessage);
                     request.getRequestDispatcher("views/login.jsp").forward(request, response);

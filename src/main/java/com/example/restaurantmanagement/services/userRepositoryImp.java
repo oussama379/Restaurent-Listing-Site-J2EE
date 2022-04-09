@@ -19,12 +19,14 @@ public class userRepositoryImp implements userRepository{
     }
 
     @Override
-    public boolean saveOrUpdateUser(User user) {
+    public boolean saveOrUpdateUser(User user, boolean firstSave) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try{
-            String password = user.getPassword();
-            user.setPassword(encryptionMd5(password));
+            if(firstSave){
+                String password = user.getPassword();
+                user.setPassword(encryptionMd5(password));
+            }
             session.saveOrUpdate(user);
             session.flush() ;
             tx.commit();

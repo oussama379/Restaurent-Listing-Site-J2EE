@@ -19,7 +19,6 @@ public class Restaurant {
     private Long id;
     private String name;
     private String description;
-    private Long popularity;
     private double averageCost;
     private String payment; // Possible payment methods
     private Long rating;
@@ -71,14 +70,7 @@ public class Restaurant {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Long getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(Long popularity) {
-        this.popularity = popularity;
-    }
+    
 
     public double getAverageCost() {
         return averageCost;
@@ -270,7 +262,6 @@ public class Restaurant {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", popularity=" + popularity +
                 ", averageCost=" + averageCost +
                 ", payment='" + payment + '\'' +
                 ", rating=" + rating +
