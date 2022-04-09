@@ -125,7 +125,7 @@
 			<div class="header_box version_2">
 				<h2><i class="fa fa-file"></i>User info</h2>
 			</div>
-            <form action="saveUser.php" method="post">
+            <form action="saveUser.php" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
@@ -175,12 +175,23 @@
 				</div>
 			</div>
 			</div>
+            <!-- /row-->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Profile picture</label>
+                        <%--						<form action="/file-upload" class="dropzone dz-clickable"><div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>--%>
+                        <input class="form-control form-control-lg" id="picture" name="picture" type="file">
+                    </div>
+                </div>
+            </div>
+            <!-- /row-->
+
                 <input type="hidden" name="id" value="<%= user.getId() %>">
-			<!-- /row-->
                 <button type="submit" class="btn_1 medium">Save</button>
+                <a href="listUsers.php" class="btn_1 medium">Cancel</a>
 <%--		<p><a href="#0" class="btn_1 medium">Save</a></p>--%>
         </form>
-            <p><a href="listUsers.php" class="btn_1 medium">Cancel</a></p>
 	  </div>
 	  <!-- /.container-fluid-->
    	</div>

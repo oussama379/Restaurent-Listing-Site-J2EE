@@ -3,15 +3,20 @@ package com.example.restaurantmanagement.controllers;
 import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.UserModel;
 import com.example.restaurantmanagement.services.userRepositoryImp;
+import com.example.restaurantmanagement.utils.AppUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@MultipartConfig
 @WebServlet(name="UserServlet", urlPatterns = "*.php")
 public class UserServlet extends HttpServlet {
     userRepositoryImp userRepositoryImp;
@@ -49,6 +54,8 @@ public class UserServlet extends HttpServlet {
                     user.setId(Long.valueOf(request.getParameter("id")));
 
                 if (userRepositoryImp.saveOrUpdateUser(user)) {
+                    savePicture(request, user.getId());
+
                     UserModel model1 = new UserModel();
                     model1.setKeyWord("users");
                     List<User> users = userRepositoryImp.getAllUsers();
@@ -129,9 +136,32 @@ public class UserServlet extends HttpServlet {
         doGet(req,resp);
     }
 
-    public void destroy() {
+    private void savePicture(HttpServletRequest request, Long id) throws ServletException, IOException {
+        /*
+         * The objective : store files in "/path-to-project-folder/src/main/webapp/upload/"
+         * getServletContext().getRealPath("/") : return = /path-to-project-folder/target/RestaurentManagement-1.0-SNAPSHOT/
+         * AppUtils.UPLOAD_DIRECTORY : return = /../../src/main/webapp/upload
+         * the result :
+         * /path-to-project-folder/target/RestaurentManagement-1.0-SNAPSHOT/../../src/main/webapp/upload = /path-to-project-folder/src/main/webapp/upload/
+         * */
+        String uploadPath = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY_USER;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) uploadDir.mkdirs();
+
+        // result ex : "id-PIC.png"
+
+        String fileName, saveName;
+        for (Part part : request.getParts()) {
+            fileName = part.getSubmittedFileName();
+            if (fileName != null){
+                if (part.getName().equals("picture")){
+                    saveName = id+"-PIC.png";
+                    part.write(uploadPath + File.separator + saveName);
+                }
+            }
         }
     }
+}
 
 
 

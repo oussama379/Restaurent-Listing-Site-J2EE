@@ -270,9 +270,9 @@ public class RestaurantServlet extends HttpServlet {
         * the result :
         * /path-to-project-folder/target/RestaurentManagement-1.0-SNAPSHOT/../../src/main/webapp/upload = /path-to-project-folder/src/main/webapp/upload/
         * */
-        String uploadPath = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY;
+        String uploadPath = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY_RESTAURANT;
         File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) uploadDir.mkdir();
+        if (!uploadDir.exists()) uploadDir.mkdirs();
 
         // result ex : "pic1.png:pic2.png:pic3.png:"
         StringBuilder pictures = new StringBuilder();
