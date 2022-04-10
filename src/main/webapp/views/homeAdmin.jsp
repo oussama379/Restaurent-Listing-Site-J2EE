@@ -71,7 +71,7 @@
             <a href="addRestaurant.phpp">Add Restaurants</a>
           </li>
           <li>
-            <a href="listRestaurant.phpp">List Restaurants</a>
+            <a href="listRestaurantCrud.phpp">List Restaurants</a>
           </li>
         </ul>
       </li>

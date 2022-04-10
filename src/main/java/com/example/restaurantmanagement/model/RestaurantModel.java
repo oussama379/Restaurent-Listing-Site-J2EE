@@ -14,4 +14,5 @@ import java.util.List;
 public class RestaurantModel {
     private String keyWord;
     private List<Restaurant> restaurants = new ArrayList<>();
+    private Restaurant restaurantToEdit = new Restaurant();
 }

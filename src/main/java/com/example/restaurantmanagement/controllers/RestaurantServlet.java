@@ -22,6 +22,8 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @MultipartConfig
 @WebServlet(name="RestaurantServlet", urlPatterns = "*.phpp")
@@ -52,21 +54,32 @@ public class RestaurantServlet extends HttpServlet {
             req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
         }
         //=========================================================================\\
-        if (Path.equalsIgnoreCase("/addRestaurant.phpp")) {
+        else if (Path.equalsIgnoreCase("/addRestaurant.phpp")) {
             //TODO Only Restaurant Owners
             req.getRequestDispatcher("views/addRestaurant.jsp").forward(req, resp);
         }
         //=========================================================================\\
-        else if (Path.equalsIgnoreCase("/deleteRestaurant.phpp")) {
-            Long RestID = Long.valueOf(req.getParameter("id"));
+        else if (Path.equalsIgnoreCase("/editRestaurant.phpp")) {
+            Long restID = Long.valueOf(req.getParameter("id"));
+            Restaurant restaurant = restaurantRepositoryImp.getRestaurant(restID);
 
-            if (restaurantRepositoryImp.deleteRestaurant(RestID)) {
+            RestaurantModel model1 = new RestaurantModel();
+            model1.setKeyWord("restaurant-edit");
+            model1.setRestaurantToEdit(restaurant);
+            req.setAttribute("modelRestaurant", model1);
+
+            req.getRequestDispatcher("views/addRestaurant.jsp").forward(req, resp);
+        }
+        //=========================================================================\\
+        else if (Path.equalsIgnoreCase("/deleteRestaurant.phpp")) {
+            Long restID = Long.valueOf(req.getParameter("id"));
+
+            if (restaurantRepositoryImp.deleteRestaurant(restID)) {
                 errorMessage = "Deleted Successfully";
                 req.setAttribute("errorMessage", errorMessage);
             } else {
                 errorMessage = "Error while Deleting";
                 req.setAttribute("errorMessage", errorMessage);
-
             }
             RestaurantModel model1 = new RestaurantModel();
             model1.setKeyWord("restaurants");
@@ -96,20 +109,77 @@ public class RestaurantServlet extends HttpServlet {
             restaurant.setPayment(req.getParameter("payment"));
             restaurant.setWebSite(req.getParameter("webSite"));
             restaurant.setOwnerUser(null);
+            if (req.getParameter("id") != null){
+                restaurant.setId(Long.valueOf(req.getParameter("id")));
+
+                Restaurant restaurant1 = restaurantRepositoryImp.getRestaurant(restaurant.getId());
+                restaurant.setImages(restaurant1.getImages());
+                restaurant.setMenuImages(restaurant1.getMenuImages());
+            }
+
 
             // Save
-            restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+            if (restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant)){
+                if (req.getParameter("id") != null){ // Is an Edit
+                    // Edit object to save pictures after first save to put the object id on pictures names
+                    String[] pic_menu = updateFiles(req, restaurant.getId());
+                    restaurant.setImages(pic_menu[0]);
+                    restaurant.setMenuImages(pic_menu[1]);
+                }else {
+                    String[] pic_menu = saveFiles(req, restaurant.getId());
+                    restaurant.setImages(pic_menu[0]);
+                    restaurant.setMenuImages(pic_menu[1]);
+                }
 
-            // Edit object to save pictures after first save to put the object id on pictures names
-            String[] pic_menu = saveFiles(req, restaurant.getId());
-            restaurant.setImages(pic_menu[0]);
-            restaurant.setMenuImages(pic_menu[1]);
-            // Update : Add pictures and menus
-            restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+                // Update : Add pictures and menus
+                if (restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant)) {
+                    errorMessage = "Saved Successfully";
+                    req.setAttribute("errorMessage", errorMessage);
+                } else {
+                    errorMessage = "Error while Saving";
+                    req.setAttribute("errorMessage", errorMessage);
+                }
+                RestaurantModel model1 = new RestaurantModel();
+                model1.setKeyWord("restaurants");
+                model1.setRestaurants(restaurantRepositoryImp.getAllRestaurants());
+                req.setAttribute("modelRestaurant", model1);
+            }else {
+                errorMessage = "Error while Saving";
+                req.setAttribute("errorMessage", errorMessage);
+            }
 
-            req.getRequestDispatcher("views/addRestaurant.jsp").forward(req, resp);
-            //=========================================================================\\
+            req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
         }
+        //=========================================================================\\
+        else if(Path.equalsIgnoreCase("/setMainPicture.phpp")){
+            long id = Long.parseLong(req.getParameter("id"));
+            int index = Integer.parseInt(req.getParameter("index"));
+            boolean result = setMainPicture(id , index);
+
+            if (result) {
+                resp.sendError(HttpServletResponse.SC_OK); // 200
+            } else {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
+            }
+
+        }
+        //=========================================================================\\
+        else if(Path.equalsIgnoreCase("/deletePicture.phpp")){
+            long id = Long.parseLong(req.getParameter("id"));
+            int index = Integer.parseInt(req.getParameter("index"));
+            String path = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY_RESTAURANT;
+            String type = req.getParameter("type");
+
+            boolean result = deletePicture(id , index, path, type);
+
+            if (result) {
+                resp.sendError(HttpServletResponse.SC_OK); // 200
+            } else {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
+            }
+
+        }
+        //=========================================================================\\
         else if (Path.equalsIgnoreCase("/listRestaurants.phpp")) {
             List<String> typesCuisine = restaurantRepositoryImp.getTypesOfCuisine();
             req.setAttribute("typesCuisine", typesCuisine);
@@ -307,7 +377,7 @@ public class RestaurantServlet extends HttpServlet {
         String fileName, saveName;
         for (Part part : request.getParts()) {
             fileName = part.getSubmittedFileName();
-            if (fileName != null){
+            if (fileName != null && !fileName.equals("")){
                 if (part.getName().equals("pictures")){
                     saveName = id+"-PIC"+p+"-"+fileName;
                     part.write(uploadPath + File.separator + saveName);
@@ -324,6 +394,122 @@ public class RestaurantServlet extends HttpServlet {
 
         String[] ary = {pictures.toString(), menu.toString()};
         return ary;
+    }
+
+    private String[] updateFiles(HttpServletRequest request, Long id) throws ServletException, IOException {
+        String uploadPath = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY_RESTAURANT;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) uploadDir.mkdirs();
+
+        Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+
+        // result ex : "pic1.png:pic2.png:pic3.png:"
+        StringBuilder pictures = new StringBuilder();
+        StringBuilder menu = new StringBuilder();
+        pictures.append(restaurant.getImages());
+        menu.append(restaurant.getMenuImages());
+
+        String[] array_pictures = pictures.toString().split(":");
+        String[] array_menu = menu.toString().split(":");
+        Matcher matcher;
+
+        String s = array_pictures[array_pictures.length-1];
+        matcher = Pattern.compile("\\d+").matcher(s);
+        matcher.find();matcher.find();
+        int p = Integer.parseInt(matcher.group())+1;
+
+        String ss = array_menu[array_menu.length-1];
+        matcher = Pattern.compile("\\d+").matcher(ss);
+        matcher.find();matcher.find();
+        int m = Integer.parseInt(matcher.group())+1;
+
+//        int p = array_pictures.length+1, m = array_menu.length+1;
+        String fileName, saveName;
+        for (Part part : request.getParts()) {
+            fileName = part.getSubmittedFileName();
+            if (fileName != null && !fileName.equals("")){
+                if (part.getName().equals("pictures")){
+                    saveName = id+"-PIC"+p+"-"+fileName;
+                    part.write(uploadPath + File.separator + saveName);
+                    pictures.append(saveName).append(":");
+                    p++;
+                }else if (part.getName().equals("menu")){
+                    saveName = id+"-MENU"+m+"-"+fileName;
+                    part.write(uploadPath + File.separator + saveName);
+                    menu.append(saveName).append(":");
+                    m++;
+                }
+            }
+        }
+
+        String[] ary = {pictures.toString(), menu.toString()};
+        return ary;
+    }
+
+    private boolean setMainPicture(Long id, int index){
+        Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+        String images = restaurant.getImages();
+
+        String[] arrOfStr = images.split(":");
+        swap(arrOfStr, 0, index);
+        restaurant.setImages(arrToString(arrOfStr));
+
+        return restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+    }
+
+    private boolean deletePicture(Long id, int index, String path, String type){
+        Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+        String images;
+        if (type.equals("PIC"))
+            images = restaurant.getImages();
+        else // MENU
+            images = restaurant.getMenuImages();
+
+        String[] arrOfStr = images.split(":");
+        if (arrOfStr.length == 1) return false;
+        String imageToDelete = arrOfStr[index];
+
+        arrOfStr[index] = "";
+        arrOfStr = removeEmptyElements(arrOfStr);
+
+        if (type.equals("PIC"))
+            restaurant.setImages(arrToString(arrOfStr));
+        else // MENU
+            restaurant.setMenuImages(arrToString(arrOfStr));
+
+        File file = new File(path, imageToDelete);
+
+        if (file.delete())
+            return restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+
+        return false;
+    }
+
+    private <T> void swap (T[] a, int i, int j) {
+        T t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+    }
+
+    private String arrToString (String[] a) {
+        StringBuilder result = new StringBuilder();
+        for (String s: a) {
+            result.append(s).append(":");
+        }
+
+        return result.toString();
+    }
+
+    private String[] removeEmptyElements (String[] a) {
+        List<String> list = new ArrayList<String>();
+
+        for(String s : a) {
+            if(s != null && s.length() > 0) {
+                list.add(s);
+            }
+        }
+
+        return list.toArray(new String[0]);
     }
 
 }

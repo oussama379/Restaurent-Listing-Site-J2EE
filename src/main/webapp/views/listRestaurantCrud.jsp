@@ -73,7 +73,7 @@
                         <a href="addRestaurant.phpp">Add Restaurants</a>
                     </li>
                     <li>
-                        <a href="listRestaurant.phpp">List Restaurants</a>
+                        <a href="listRestaurantCrud.phpp">List Restaurants</a>
                     </li>
                 </ul>
             </li>
@@ -130,25 +130,14 @@
             </div>
             <div class="list_general">
                 <ul>
-                    <a href="#">
-                        <li>
-                            <figure><img src="upload/restaurants/5003-PIC1-WhatsApp Image 2022-03-20 at 22.55.58 (2).jpeg" alt=""></figure>
-                            <h4>Hotel Mariott <i class="pending">Pending</i></h4>
-                            <p>Address : XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx</p>
-                            <ul class="buttons">
-                                <li><a href="#0" class="btn_1"> Edit</a></li>
-                                <li><a href="#0" class="btn_1"> Delete</a></li>
-                            </ul>
-                        </li>
-                    </a>
                     <c:forEach items="${modelRestaurant.getRestaurants()}" var="r">
-                        <a href="#">
+                        <a href="restaurantDetail.phpp?id=${r.id}">
                             <li>
                                 <figure><img src="upload/restaurants/${r.images.split(":")[0]}" alt=""></figure>
                                 <h4>${r.name} <i class="pending">Pending</i></h4>
                                 <p>Address : ${r.address}</p>
                                 <ul class="buttons">
-                                    <li><a href="#0" class="btn_1"> Edit</a></li>
+                                    <li><a href="editRestaurant.phpp?id=${r.id} " class="btn_1"> Edit</a></li>
                                     <li><a href="deleteRestaurant.phpp?id=${r.id}" class="btn_1"> Delete</a></li>
                                 </ul>
                             </li>
