@@ -9,6 +9,8 @@ import com.example.restaurantmanagement.services.userRepositoryImp;
 import com.example.restaurantmanagement.services.restaurantRepositoryImp;
 import com.example.restaurantmanagement.services.reviewRepositoryImp;
 import com.example.restaurantmanagement.utils.AppUtils;
+import javafx.util.Pair;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -210,6 +212,22 @@ public class RestaurantServlet extends HttpServlet {
             }
             req.setAttribute("firstImages", firstImages);
             //--End-Handling-Images----//
+            User user = null;
+            List<Restaurant> bookmarks = null;
+            if(userRepositoryImp.currentUser != null) {
+                bookmarks = new ArrayList<>();
+                user = userRepositoryImp.getUser(userRepositoryImp.currentUser.getId());
+                if(!user.getBookmarks().isEmpty()){
+                    for(Restaurant r : user.getBookmarks())
+                        bookmarks.add(r);
+                }else{
+                    bookmarks = null;
+                    System.out.println("Empty");
+                }
+            }
+            /*System.out.println(restaurantsPage);
+            System.out.println(bookmarks);*/
+            req.setAttribute("bookmarks", bookmarks);
 
             req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
         }
@@ -344,6 +362,87 @@ public class RestaurantServlet extends HttpServlet {
             System.out.println(restaurantRating);
 
             req.getRequestDispatcher("/restaurantDetail.phpp?id="+id).forward(req, resp);
+            //=========================================================================\\
+        } else if (Path.equalsIgnoreCase("/bookMarks.phpp")) {
+            Long id_user = userRepositoryImp.currentUser.getId();
+            User user = userRepositoryImp.getUser(id_user);
+            Set<Restaurant> restaurantSet = user.getBookmarks();
+            List<Restaurant> restaurants = new ArrayList<>();
+            for(Restaurant r : restaurantSet)
+                restaurants.add(r);
+            req.setAttribute("restaurants", restaurants);
+
+            //--Handling-Images----//
+            List<String> allImages = new ArrayList<>();
+            for(Restaurant r : restaurants)
+                allImages.add(r.getImages());
+            List<String> firstImages = new ArrayList<>();
+            for(String s : allImages) {
+                String[] arrOfStr = s.split(":", 2);
+                firstImages.add(arrOfStr[0]);
+            }
+            req.setAttribute("firstImages", firstImages);
+            //--End-Handling-Images----//
+
+            //--Sending-Reviews-Sizes-&-rating--//
+            List<Integer> reviewSizes = new ArrayList<>();
+            List<Double> ratings = new ArrayList<>();
+            List<Long> id_reviewSizes = new ArrayList<>();
+            List<Long> id_ratings = new ArrayList<>();
+            Pair<List<Long>, List<Integer>> reviewSizesPair = null;
+            Pair<List<Long>, List<Double>> ratingsPair = null;
+
+
+            for(Restaurant R : restaurants) {
+                double restaurantRating = 0;
+                reviewSizes.add(R.getReviews().size());
+                for(Review r : R.getReviews())
+                    restaurantRating = restaurantRating + r.getRating();
+                restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/R.getReviews().size()));
+                ratings.add(restaurantRating);
+
+                id_ratings.add(R.getId());
+                id_reviewSizes.add(R.getId());
+            }
+            reviewSizesPair = new Pair<>(id_reviewSizes, reviewSizes);
+            ratingsPair = new Pair<>(id_ratings, ratings);
+
+            req.setAttribute("reviewSizesPair", reviewSizesPair);
+            req.setAttribute("ratingsPair", ratingsPair);
+
+            req.getRequestDispatcher("views/bookMarks.jsp").forward(req, resp);
+            //=========================================================================\\
+
+        } else if (Path.equalsIgnoreCase("/removeBookMark.phpp")) {
+            Long id_bookMark = Long.valueOf(req.getParameter("id"));
+            User user = userRepositoryImp.getUser(userRepositoryImp.currentUser.getId());
+            Set<Restaurant> restaurantSet = user.getBookmarks();
+            Restaurant R = null;
+            restaurantSet.removeIf(r -> r.getId() == id_bookMark);
+            Set<Restaurant> restaurantSet2 = new HashSet<>();
+            restaurantSet2.addAll(restaurantSet);
+
+            user.setBookmarks(restaurantSet2);
+            userRepositoryImp.saveOrUpdateUser(user, false);
+            if(req.getParameter("fromList") != null)
+                req.getRequestDispatcher("/listRestaurants.phpp").forward(req, resp);
+            req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
+            //=========================================================================\\
+        } else if (Path.equalsIgnoreCase("/addBookMark.phpp")) {
+            Long id_bookMark = Long.valueOf(req.getParameter("id"));
+            User user = userRepositoryImp.getUser(userRepositoryImp.currentUser.getId());
+            Set<Restaurant> restaurantSet = user.getBookmarks();
+            Restaurant R = restaurantRepositoryImp.getRestaurant(id_bookMark);
+            restaurantSet.add(R);
+            Set<Restaurant> restaurantSet2 = new HashSet<>();
+            restaurantSet2.addAll(restaurantSet);
+            user.setBookmarks(restaurantSet2);
+            userRepositoryImp.saveOrUpdateUser(user, false);
+
+            if(req.getParameter("fromList") != null)
+                req.getRequestDispatcher("/listRestaurants.phpp").forward(req, resp);
+
+            req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
             //=========================================================================\\
         }
         else {
