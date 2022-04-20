@@ -1,3 +1,4 @@
+<%@ page import="static com.example.restaurantmanagement.services.userRepositoryImp.currentUser" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +29,22 @@
 
 	<!-- YOUR CUSTOM CSS -->
     <link href="resources/css/custom.css" rel="stylesheet">
-	
+
+	<style>
+		.image_profile {
+			border-radius: 50%;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		span {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+	</style>
+
 </head>
 
 <body id="register_bg">
@@ -45,42 +61,64 @@
 			<figure>
 				<a href="index.php"><img src="resources/img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a>
 			</figure>
-			<form autocomplete="off" method="post" action="saveRegister.php">
+			<form autocomplete="off" method="post" action="saveEditProfile.php">
+					<img src="upload/users/1-PIC.png" height="170" data-retina="true" alt="" class="image_profile">
+					<br>
+					<input class="form-control form-control-lg" id="picture" name="picture" type="file">
+				<hr>
 				<div class="form-group">
 					<label>Your First Name</label>
-					<input class="form-control" type="text" name="firstname"> 
+					<input class="form-control" type="text" name="firstname" value="<%= currentUser.getFirstname()%>" required>
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>Your Last Name</label>
-					<input class="form-control" type="text" name="lastname">
+					<input class="form-control" type="text" name="lastname" value="<%= currentUser.getLastname() %>" required>
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>Your Username</label>
-					<input class="form-control" type="text" name="username">
+					<input class="form-control" type="text" name="username" value="<%= currentUser.getUsername() %>" required>
 					<i class="ti-user"></i>
 				</div>
+				<hr>
 				<div class="form-group">
-					<label>Your Email</label>
-					<input class="form-control" type="email" name="email">
+					<label><strong>Old</strong> Email</label>
+					<input class="form-control" type="email" name="oldEmail" value="<%= currentUser.getEmail() %>" required>
 					<i class="icon_mail_alt"></i>
 				</div>
 				<div class="form-group">
-					<label>Your password</label>
-					<input class="form-control" type="password" id="password1" name="password1">
+					<label>New Email</label>
+					<input class="form-control" type="email" id="email1" name="email1" required>
+					<i class="icon_mail_alt"></i>
+				</div>
+				<div class="form-group">
+					<label>Confirm New Email</label>
+					<input class="form-control" type="email" id="email2" name="email2" required>
+					<i class="icon_mail_alt"></i>
+					<br>
+					<span id="message"></span>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label><strong>Old</strong> password</label>
+					<input class="form-control" type="password" id="oldPassword" name="oldPassword" value="<%= currentUser.getPassword() %>" required>
+					<i class="icon_lock_alt"></i>
+				</div>
+
+				<div class="form-group">
+					<label>New password</label>
+					<input class="form-control" type="password" id="password1" name="password1" required>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div class="form-group">
-					<label>Confirm password</label>
-					<input class="form-control" type="password" id="password2" name="password2">
+					<label>Confirm New password</label>
+					<input class="form-control" type="password" id="password2" name="password2" required>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div id="pass-info" class="clearfix"></div>
 <%--				<a href="#0" class="btn_1 rounded full-width add_top_30">Register Now!</a>--%>
-				<button type="submit" class="btn_1 rounded full-width add_top_30">Register Now!</button>
-				<div class="text-center add_top_10">Already have an account? <strong><a href="login.html">Sign In</a></strong>
-				</div>
+				<button type="submit" class="btn_1 rounded full-width add_top_30">Edit Profile</button>
 			</form>
 			
 		</aside>
@@ -120,6 +158,14 @@
 				toastr["error"]("", "${errorMessage}")
 			}
 		}
+		$('#email1, #email2').on('keyup', function () {
+			if ($('#email1').val() == $('#email2').val()) {
+				$('#message').html('Emails match').css('color', 'green');
+			} else
+				$('#message').html('Emails do not match!').css('color', 'red');
+		});
+
+
 	</script>
 	
   

@@ -44,8 +44,6 @@ public class UserServlet extends HttpServlet {
             }
             //=========================================================================\\
             else if (Path.equalsIgnoreCase("/saveUser.php")) {
-                // TODO to be tested (first_time)
-                boolean first_time;
                 User user = new User();
                 user.setFirstname(request.getParameter("firstname"));
                 user.setLastname(request.getParameter("lastname"));
@@ -110,6 +108,7 @@ public class UserServlet extends HttpServlet {
                 user.setUsername(request.getParameter("username"));
                 user.setEmail(request.getParameter("email"));
                 user.setPassword(request.getParameter("password1"));
+                // TODO WHAT IS CLIENT
                 user.setRole("CLIENT");
 
                 if (userRepositoryImp.saveOrUpdateUser(user, true)) {
@@ -122,16 +121,63 @@ public class UserServlet extends HttpServlet {
                     request.setAttribute("errorMessage", errorMessage);
                     request.getRequestDispatcher("views/register.jsp").forward(request, response);
                 }
-
-
                 //=========================================================================\\
             } else if (Path.equalsIgnoreCase("/index.php")) {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 //=========================================================================\\
-            }else{
+            } else if (Path.equalsIgnoreCase("/editProfile.php")) {
+                User currentUser = userRepositoryImp.currentUser;
+                System.out.println(currentUser);
+                request.setAttribute("currentUser", currentUser);
+                request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                //=========================================================================\\
+            }else if (Path.equalsIgnoreCase("/saveEditProfile.php")) {
+                User currentUser = userRepositoryImp.currentUser;
+                if(!request.getParameter("oldEmail").equals(currentUser.getEmail())){
+                    errorMessage = "The Old Email is Wrong";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                }
+                if(!request.getParameter("oldPassword").equals(currentUser.getPassword())){
+                    errorMessage = "The Old Password is Wrong";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                }
+                if(!request.getParameter("email1").equals(request.getParameter("email2"))){
+                    errorMessage = "The Emails Do Not Match";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                }
+                if(!request.getParameter("password1").equals(request.getParameter("password2"))){
+                    errorMessage = "The Passwords Do Not Match";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                }
+                currentUser.setFirstname(request.getParameter("firstname"));
+                currentUser.setLastname(request.getParameter("lastname"));
+                currentUser.setUsername(request.getParameter("username"));
+                currentUser.setEmail(request.getParameter("email1"));
+                currentUser.setPassword(request.getParameter("password1"));
+                currentUser.setId(userRepositoryImp.currentUser.getId());
+
+                if (userRepositoryImp.saveOrUpdateUser(currentUser, true)) {
+                    // Destroy the session
+                    request.getSession().invalidate();
+                    // Destroy the cookie
+                    AppUtils.removeCookie(response);
+
+                    userRepositoryImp.currentUser = null;
+                    errorMessage = "Registered Successfully";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.getRequestDispatcher("views/login.jsp").forward(request, response);
+                }else{
+                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                }
+
+                //=========================================================================\\
+            } else{
                 request.getRequestDispatcher("404.jsp").forward(request, response);
             }
-
         }
 
     @Override

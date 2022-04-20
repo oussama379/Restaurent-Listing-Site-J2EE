@@ -156,14 +156,26 @@
 					</div>
 				</div>
 			</div>
+
+                <!-- /row-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" placeholder="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" class="form-control" placeholder="password" name="password" required>
+                        </div>
+                    </div>
+
+                </div>
+
 			<!-- /row-->
 			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<label>Password</label>
-						<input type="password" class="form-control" placeholder="password" name="password" required>
-					</div>
-				</div>
 				<div class="col-md-6">
 				<div class="form-group">
 					<label>Role</label>

@@ -17,6 +17,7 @@
                         <a href="#0" class="logged" data-toggle="dropdown" title="Logged"><img src="upload/users/${loginedUser.getId()}-PIC.png" alt=""></a>
                         <div class="dropdown-menu">
                             <ul>
+                                <li><a href="editProfile.php">Edit Profile</a></li>
                                 <li><a href="logout">Logout</a></li>
                                 <li><a href="#">${loginedUser.username}</a></li>
                             </ul>

@@ -95,6 +95,7 @@ public class userRepositoryImp implements userRepository{
             }else{
                 if(encryptionMd5(password).equals(user.getPassword())) {
                     currentUser = user;
+                    currentUser.setPassword(password);
                     return true;
                 }
                 else return false;
