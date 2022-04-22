@@ -476,8 +476,8 @@ public class RestaurantServlet extends HttpServlet {
         String fileName, saveName;
         for (Part part : request.getParts()) {
             fileName = part.getSubmittedFileName();
-            fileName = fileName.replaceAll(" ", "_").toLowerCase();
             if (fileName != null && !fileName.equals("")){
+                fileName = fileName.replaceAll(" ", "_").toLowerCase();
                 if (part.getName().equals("pictures")){
                     saveName = id+"-PIC"+p+"-"+fileName;
                     part.write(uploadPath + File.separator + saveName);
@@ -527,8 +527,8 @@ public class RestaurantServlet extends HttpServlet {
         String fileName, saveName;
         for (Part part : request.getParts()) {
             fileName = part.getSubmittedFileName();
-            fileName = fileName.replaceAll(" ", "_").toLowerCase();
             if (fileName != null && !fileName.equals("")){
+                fileName = fileName.replaceAll(" ", "_").toLowerCase();
                 if (part.getName().equals("pictures")){
                     saveName = id+"-PIC"+p+"-"+fileName;
                     part.write(uploadPath + File.separator + saveName);
