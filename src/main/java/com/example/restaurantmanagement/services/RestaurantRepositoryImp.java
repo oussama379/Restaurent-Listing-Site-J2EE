@@ -10,11 +10,19 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import javax.persistence.PersistenceException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class restaurantRepositoryImp implements restaurantRepository{
-
-    public restaurantRepositoryImp() {
+public class RestaurantRepositoryImp implements RestaurantRepository{
+    UserRepository userRepository;
+    public RestaurantRepositoryImp() {
+        userRepository = new UserRepositoryImp();
     }
     @Override
     public boolean saveOrUpdateRestaurant(Restaurant restaurant) {
@@ -119,6 +127,17 @@ public class restaurantRepositoryImp implements restaurantRepository{
         List<Restaurant> restaurants = criteria.list();
         return restaurants;
     }
+
+    public List<Restaurant> topWhat(int number, List<Restaurant> restaurants){
+        Collections.sort(restaurants, Comparator.comparingInt(Restaurant::getViews));
+        Collections.reverse(restaurants);
+        List<Restaurant> topFive = new ArrayList<>();
+        for(int i = 0; i < number ; i++) {
+            topFive.add(restaurants.get(i));
+        }
+        return topFive;
+    }
+
     public javafx.util.Pair<List<Restaurant>, Integer> getByMultipleCriteria(String name, String typeCuisine, String block, String rating, int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Restaurant.class);
@@ -164,7 +183,7 @@ public class restaurantRepositoryImp implements restaurantRepository{
 
 
     public static int pageSize = 3;
-    public static List<Restaurant> getPage(int pageNumber) {
+    public List<Restaurant> getPage(int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Restaurant> result = null;
         try {

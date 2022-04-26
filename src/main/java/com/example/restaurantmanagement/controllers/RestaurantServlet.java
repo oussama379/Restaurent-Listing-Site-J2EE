@@ -219,8 +219,7 @@ public class RestaurantServlet extends HttpServlet {
                     System.out.println("Empty");
                 }
             }
-            /*System.out.println(restaurantsPage);
-            System.out.println(bookmarks);*/
+
             req.setAttribute("bookmarks", bookmarks);
 
             req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);

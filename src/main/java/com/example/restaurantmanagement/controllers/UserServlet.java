@@ -3,6 +3,7 @@ package com.example.restaurantmanagement.controllers;
 import com.example.restaurantmanagement.entities.Restaurant;
 import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.UserModel;
+import com.example.restaurantmanagement.services.RestaurantRepository;
 import com.example.restaurantmanagement.services.RestaurantRepositoryImp;
 import com.example.restaurantmanagement.services.UserRepository;
 import com.example.restaurantmanagement.services.UserRepositoryImp;
@@ -26,12 +27,12 @@ import java.util.List;
 @WebServlet(name="UserServlet", urlPatterns = "*.php")
 public class UserServlet extends HttpServlet {
     UserRepository userRepository;
-    RestaurantRepositoryImp restaurantRepositoryImp;
+    RestaurantRepository restaurantRepository;
     String errorMessage;
 
         public void init() {
             userRepository = new UserRepositoryImp();
-            restaurantRepositoryImp  = new RestaurantRepositoryImp();
+            restaurantRepository  = new RestaurantRepositoryImp();
         }
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
             response.setContentType("text/html");
@@ -129,7 +130,7 @@ public class UserServlet extends HttpServlet {
                 }
                 //=========================================================================\\
             } else if (Path.equalsIgnoreCase("/index.php")) {
-                restaurantRepositoryImp.forIndex(request, response);
+                dothis(request, response);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 //=========================================================================\\
             } else if (Path.equalsIgnoreCase("/editProfile.php")) {
@@ -218,20 +219,12 @@ public class UserServlet extends HttpServlet {
             }
         }
     }
-    public List<Restaurant> topWhat(int number, List<Restaurant> restaurants){
-        Collections.sort(restaurants, Comparator.comparingInt(Restaurant::getViews));
-        Collections.reverse(restaurants);
-        List<Restaurant> topFive = new ArrayList<>();
-        for(int i = 0; i < number ; i++) {
-            topFive.add(restaurants.get(i));
-        }
-        return topFive;
-    }
+
 
     public void dothis(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Restaurant> topFive = this.topWhat(4, restaurantRepositoryImp.getAllRestaurants());
+        List<Restaurant> topFive = restaurantRepository.topWhat(4, restaurantRepository.getAllRestaurants());
         req.setAttribute("topFive", topFive);
-        System.out.println(restaurantRepositoryImp.getAllRestaurants());
+        System.out.println(restaurantRepository.getAllRestaurants());
         System.out.println(topFive);
         User user = null;
         List<Restaurant> bookmarks = null;

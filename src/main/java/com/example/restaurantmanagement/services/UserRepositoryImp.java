@@ -10,12 +10,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-public class userRepositoryImp implements userRepository{
+public class UserRepositoryImp implements UserRepository {
     public static User currentUser = null;
 
 
 
-    public userRepositoryImp() {
+    public UserRepositoryImp() {
     }
 
     @Override
@@ -81,24 +81,25 @@ public class userRepositoryImp implements userRepository{
 
 
     @Override
-    public boolean authenticate(String email, String password) {
+    public User authenticate(String email, String password) {
        // TODO change depricated
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try{
             Criteria criteria = session.createCriteria(User.class);
             User user = (User) criteria.add(Restrictions.eq("email", email)).uniqueResult();
+            System.out.println(user);
+
             session.flush() ;
             tx.commit();
             if(user == null){
-                return false;
+                return null;
             }else{
                 if(encryptionMd5(password).equals(user.getPassword())) {
-                    currentUser = user;
-                    currentUser.setPassword(password);
-                    return true;
+                    user.setPassword(password);
+                    return user;
                 }
-                else return false;
+                else return null;
             }
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -106,7 +107,7 @@ public class userRepositoryImp implements userRepository{
         }finally {
             session.close();
         }
-        return false;
+        return null;
     }
 
     @Override
