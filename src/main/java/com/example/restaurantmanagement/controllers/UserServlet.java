@@ -1,9 +1,11 @@
 package com.example.restaurantmanagement.controllers;
 
-import com.example.restaurantmanagement.entities.Review;
+import com.example.restaurantmanagement.entities.Restaurant;
 import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.UserModel;
-import com.example.restaurantmanagement.services.userRepositoryImp;
+import com.example.restaurantmanagement.services.RestaurantRepositoryImp;
+import com.example.restaurantmanagement.services.UserRepository;
+import com.example.restaurantmanagement.services.UserRepositoryImp;
 import com.example.restaurantmanagement.utils.AppUtils;
 
 import javax.servlet.ServletException;
@@ -15,16 +17,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
+// TODO FIX CURRENT USER
 @MultipartConfig
 @WebServlet(name="UserServlet", urlPatterns = "*.php")
 public class UserServlet extends HttpServlet {
-    userRepositoryImp userRepositoryImp;
+    UserRepository userRepository;
+    RestaurantRepositoryImp restaurantRepositoryImp;
     String errorMessage;
 
         public void init() {
-            userRepositoryImp = new userRepositoryImp();
+            userRepository = new UserRepositoryImp();
+            restaurantRepositoryImp  = new RestaurantRepositoryImp();
         }
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
             response.setContentType("text/html");
@@ -33,7 +40,7 @@ public class UserServlet extends HttpServlet {
             if (Path.equalsIgnoreCase("/listUsers.php")) {
                 UserModel model1 = new UserModel();
                 model1.setKeyWord("users");
-                List<User> users = userRepositoryImp.getAllUsers();
+                List<User> users = userRepository.getAllUsers();
                 model1.setUsers(users);
                 request.setAttribute("modelUser", model1);
                 request.getRequestDispatcher("views/listUsers.jsp").forward(request, response);
@@ -54,12 +61,12 @@ public class UserServlet extends HttpServlet {
                 if (Long.valueOf(request.getParameter("id")) != 0)
                     user.setId(Long.valueOf(request.getParameter("id")));
 
-                if (userRepositoryImp.saveOrUpdateUser(user, true)) {
+                if (userRepository.saveOrUpdateUser(user, true)) {
                     savePicture(request, user.getId());
 
                     UserModel model1 = new UserModel();
                     model1.setKeyWord("users");
-                    List<User> users = userRepositoryImp.getAllUsers();
+                    List<User> users = userRepository.getAllUsers();
                     model1.setUsers(users);
                     request.setAttribute("modelUser", model1);
                     errorMessage = "Saved Successfully";
@@ -75,7 +82,7 @@ public class UserServlet extends HttpServlet {
             //=========================================================================\\
             else if (Path.equalsIgnoreCase("/editUser.php")) {
                 Long userID = Long.valueOf(request.getParameter("id"));
-                User user = userRepositoryImp.getUser(userID);
+                User user = userRepository.getUser(userID);
                 request.setAttribute("user", user);
                 request.getRequestDispatcher("views/editUser.jsp").forward(request, response);
             }
@@ -83,7 +90,7 @@ public class UserServlet extends HttpServlet {
             else if (Path.equalsIgnoreCase("/deleteUser.php")) {
                 Long userID = Long.valueOf(request.getParameter("id"));
 
-                if (userRepositoryImp.deleteUser(userID)) {
+                if (userRepository.deleteUser(userID)) {
                     errorMessage = "Deleted Successfully";
                     request.setAttribute("errorMessage", errorMessage);
                 } else {
@@ -93,7 +100,7 @@ public class UserServlet extends HttpServlet {
                 }
                 UserModel model1 = new UserModel();
                 model1.setKeyWord("users");
-                List<User> users = userRepositoryImp.getAllUsers();
+                List<User> users = userRepository.getAllUsers();
                 model1.setUsers(users);
                 request.setAttribute("modelUser", model1);
                 request.getRequestDispatcher("views/listUsers.jsp").forward(request, response);
@@ -108,10 +115,9 @@ public class UserServlet extends HttpServlet {
                 user.setUsername(request.getParameter("username"));
                 user.setEmail(request.getParameter("email"));
                 user.setPassword(request.getParameter("password1"));
-                // TODO WHAT IS CLIENT
                 user.setRole("CLIENT");
 
-                if (userRepositoryImp.saveOrUpdateUser(user, true)) {
+                if (userRepository.saveOrUpdateUser(user, true)) {
                     errorMessage = "Registered Successfully";
                     request.setAttribute("errorMessage", errorMessage);
                     request.getRequestDispatcher("views/login.jsp").forward(request, response);
@@ -123,16 +129,19 @@ public class UserServlet extends HttpServlet {
                 }
                 //=========================================================================\\
             } else if (Path.equalsIgnoreCase("/index.php")) {
+                restaurantRepositoryImp.forIndex(request, response);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 //=========================================================================\\
             } else if (Path.equalsIgnoreCase("/editProfile.php")) {
-                User currentUser = userRepositoryImp.currentUser;
+//                User currentUser = UserRepositoryImp.currentUser;
+                User currentUser = (User) request.getSession().getAttribute("loginedUser");
                 System.out.println(currentUser);
                 request.setAttribute("currentUser", currentUser);
                 request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
                 //=========================================================================\\
             }else if (Path.equalsIgnoreCase("/saveEditProfile.php")) {
-                User currentUser = userRepositoryImp.currentUser;
+                //User currentUser = UserRepositoryImp.currentUser;
+                User currentUser = (User) request.getSession().getAttribute("loginedUser");
                 if(!request.getParameter("oldEmail").equals(currentUser.getEmail())){
                     errorMessage = "The Old Email is Wrong";
                     request.setAttribute("errorMessage", errorMessage);
@@ -158,22 +167,21 @@ public class UserServlet extends HttpServlet {
                 currentUser.setUsername(request.getParameter("username"));
                 currentUser.setEmail(request.getParameter("email1"));
                 currentUser.setPassword(request.getParameter("password1"));
-                currentUser.setId(userRepositoryImp.currentUser.getId());
+                currentUser.setId(UserRepositoryImp.currentUser.getId());
 
-                if (userRepositoryImp.saveOrUpdateUser(currentUser, true)) {
+                if (userRepository.saveOrUpdateUser(currentUser, true)) {
                     // Destroy the session
                     request.getSession().invalidate();
                     // Destroy the cookie
                     AppUtils.removeCookie(response);
 
-                    userRepositoryImp.currentUser = null;
+                    //UserRepositoryImp.currentUser = null;
                     errorMessage = "Registered Successfully";
                     request.setAttribute("errorMessage", errorMessage);
                     request.getRequestDispatcher("views/login.jsp").forward(request, response);
                 }else{
                     request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
                 }
-
                 //=========================================================================\\
             } else{
                 request.getRequestDispatcher("404.jsp").forward(request, response);
@@ -209,6 +217,37 @@ public class UserServlet extends HttpServlet {
                 }
             }
         }
+    }
+    public List<Restaurant> topWhat(int number, List<Restaurant> restaurants){
+        Collections.sort(restaurants, Comparator.comparingInt(Restaurant::getViews));
+        Collections.reverse(restaurants);
+        List<Restaurant> topFive = new ArrayList<>();
+        for(int i = 0; i < number ; i++) {
+            topFive.add(restaurants.get(i));
+        }
+        return topFive;
+    }
+
+    public void dothis(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Restaurant> topFive = this.topWhat(4, restaurantRepositoryImp.getAllRestaurants());
+        req.setAttribute("topFive", topFive);
+        System.out.println(restaurantRepositoryImp.getAllRestaurants());
+        System.out.println(topFive);
+        User user = null;
+        List<Restaurant> bookmarks = null;
+        User currentUser = (User) req.getSession().getAttribute("loginedUser");
+        if (currentUser != null) {
+            bookmarks = new ArrayList<>();
+            user = currentUser;
+            if (!user.getBookmarks().isEmpty()) {
+                for (Restaurant r : user.getBookmarks())
+                    bookmarks.add(r);
+            } else {
+                bookmarks = null;
+                System.out.println("Empty");
+            }
+        }
+        req.setAttribute("bookmarks", bookmarks);
     }
 }
 

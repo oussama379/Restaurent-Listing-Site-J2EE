@@ -1,4 +1,4 @@
-<%@ page import="static com.example.restaurantmanagement.services.userRepositoryImp.currentUser" %>
+<%@ page import="static com.example.restaurantmanagement.services.UserRepositoryImp.currentUser" %>
 <!DOCTYPE html>
 <html lang="en">
 

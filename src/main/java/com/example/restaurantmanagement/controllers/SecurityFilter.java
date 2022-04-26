@@ -1,17 +1,16 @@
 package com.example.restaurantmanagement.controllers;
 
 import com.example.restaurantmanagement.entities.User;
-import com.example.restaurantmanagement.services.userRepositoryImp;
+import com.example.restaurantmanagement.services.UserRepository;
+import com.example.restaurantmanagement.services.UserRepositoryImp;
 import com.example.restaurantmanagement.utils.AppUtils;
 import com.example.restaurantmanagement.utils.SecurityUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -20,11 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebFilter("/*")
 public class SecurityFilter implements Filter {
-    private static userRepositoryImp userRepositoryImp;
+    private static UserRepository userRepository;
 
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
-        userRepositoryImp = new userRepositoryImp();
+        userRepository = new UserRepositoryImp();
     }
 
     @Override
@@ -39,7 +38,7 @@ public class SecurityFilter implements Filter {
 
         // IF Session doesn't exist and Cookie exist -> Create Session
         if (loginedUser == null && userId != 0L){
-            loginedUser = userRepositoryImp.getUser(userId);
+            loginedUser = userRepository.getUser(userId);
             AppUtils.storeLoginedUser(request.getSession(), loginedUser);
         }
 

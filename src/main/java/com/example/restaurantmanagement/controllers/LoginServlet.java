@@ -1,8 +1,8 @@
 package com.example.restaurantmanagement.controllers;
 
 import com.example.restaurantmanagement.entities.User;
-import com.example.restaurantmanagement.services.userRepository;
-import com.example.restaurantmanagement.services.userRepositoryImp;
+import com.example.restaurantmanagement.services.UserRepository;
+import com.example.restaurantmanagement.services.UserRepositoryImp;
 import com.example.restaurantmanagement.utils.AppUtils;
 
 import javax.servlet.*;
@@ -12,10 +12,10 @@ import java.io.IOException;
 
 @WebServlet(name = "LoginServlet", value = {"/login","/logout"})
 public class LoginServlet extends HttpServlet {
-    userRepositoryImp userRepository;
+    UserRepository userRepository;
 
     public void init() {
-        userRepository = new userRepositoryImp();
+        userRepository = new UserRepositoryImp();
     }
 
     @Override
@@ -42,8 +42,9 @@ public class LoginServlet extends HttpServlet {
         User userAccount = null;
 
         // Authentication test
-        if (userRepository.authenticate(email, password)){
-             userAccount = userRepositoryImp.currentUser;
+        User user = userRepository.authenticate(email, password);
+        if (user != null){
+             userAccount = user;
         }else{
             String errorMessage = "Invalid Email or Password";
             request.setAttribute("errorMessage", errorMessage);

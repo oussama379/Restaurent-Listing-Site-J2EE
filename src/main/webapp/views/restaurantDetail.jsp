@@ -153,6 +153,7 @@
 								</div>
 								<!-- /review-box -->
                                 <!-- /review-box -->
+								<c:if test="${reviews.isEmpty() != true}">
                                 <c:forEach var = "i" begin = "0" end = "${reviews.size() - 1 }">
                                 <div class="review-box clearfix">
                                     <figure class="rev-thumb"><img src="upload/users/${reviews.get(i).getUser().getId()}-PIC.png" alt="">
@@ -184,6 +185,7 @@
                                     </div>
                                 </div>
                                 </c:forEach>
+								</c:if>
                                 <!-- /review-box -->
 							</div>
 							<!-- /review-container -->
