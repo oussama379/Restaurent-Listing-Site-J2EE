@@ -1,5 +1,6 @@
 package com.example.restaurantmanagement.controllers;
 
+import com.example.restaurantmanagement.entities.AddRequestStatus;
 import com.example.restaurantmanagement.entities.Restaurant;
 import com.example.restaurantmanagement.entities.Review;
 import com.example.restaurantmanagement.entities.User;
@@ -26,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @MultipartConfig
 @WebServlet(name="RestaurantServlet", urlPatterns = "*.phpp")
@@ -111,12 +113,14 @@ public class RestaurantServlet extends HttpServlet {
             restaurant.setPayment(req.getParameter("payment"));
             restaurant.setWebSite(req.getParameter("webSite"));
             restaurant.setOwnerUser(null);
+            restaurant.setAddRequestStatus(AddRequestStatus.APPROVED);
             if (req.getParameter("id") != null){
                 restaurant.setId(Long.valueOf(req.getParameter("id")));
 
                 Restaurant restaurant1 = restaurantRepositoryImp.getRestaurant(restaurant.getId());
                 restaurant.setImages(restaurant1.getImages());
                 restaurant.setMenuImages(restaurant1.getMenuImages());
+                restaurant.setAddRequestStatus(restaurant1.getAddRequestStatus());
             }
 
 
@@ -444,6 +448,20 @@ public class RestaurantServlet extends HttpServlet {
 
             req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
             //=========================================================================\\
+        }
+        //=========================================================================\\
+        else if (Path.equalsIgnoreCase("/listRestReq.phpp")) {
+            String param = req.getParameter("param");
+
+            List<Restaurant> filteredList = restaurantRepositoryImp.getAllRestaurants()
+                    .stream()
+                    .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.PENDING))
+                    .collect(Collectors.toList());
+            RestaurantModel model1 = new RestaurantModel();
+            model1.setKeyWord("restaurants");
+            model1.setRestaurants(filteredList);
+            req.setAttribute("modelRestaurant", model1);
+            req.getRequestDispatcher("views/listRestaurantReq.jsp").forward(req, resp);
         }
         else {
             req.getRequestDispatcher("404.jsp").forward(req, resp);
