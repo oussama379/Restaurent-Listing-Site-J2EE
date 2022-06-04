@@ -117,6 +117,7 @@
 						<div class="col-md-6 isotope-item popular">
 							<div class="box_grid">
 								<figure>
+									<c:if test="${loginedUser != null}">
 									<c:choose>
 										<c:when test="${bookmarks == null || bookmarks.isEmpty() == true}">
 											<a OnClick="location.href='addBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt"></a>
@@ -131,15 +132,10 @@
 														<a OnClick="location.href='addBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt"></a>
 													</c:otherwise>
 												</c:choose>
-												<%--<c:if test="${bookmarks.get(x).getId() == restaurantsPage.get(i).getId()}">
-													<a OnClick="location.href='removeBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt liked" ></a>
-												</c:if>
-												<c:if test="${bookmarks.get(x).getId() != restaurantsPage.get(i).getId()}">
-                                                    <a OnClick="location.href='addBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt"></a>
-												</c:if>--%>
 											</c:forEach>
 										</c:otherwise>
 									</c:choose>
+									</c:if>
 									<a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
 								</figure>
 								<div class="wrapper">

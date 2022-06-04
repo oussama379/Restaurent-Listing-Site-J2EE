@@ -12,9 +12,9 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class reviewRepositoryImp {
+public class ReviewRepositoryImp implements ReviewRepository {
 
-    public reviewRepositoryImp() {
+    public ReviewRepositoryImp() {
     }
 
 
@@ -38,7 +38,7 @@ public class reviewRepositoryImp {
     public List<Review> getRestaurantReviews(Long id_restaurant) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Review.class);
-        restaurantRepositoryImp restaurantRepositoryImp = new restaurantRepositoryImp();
+        RestaurantRepository restaurantRepositoryImp = new RestaurantRepositoryImp();
         Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id_restaurant);
         if (restaurant != null) {
             criteria.add(Restrictions.eq("restaurant", restaurant));

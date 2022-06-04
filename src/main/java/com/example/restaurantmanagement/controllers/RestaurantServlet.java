@@ -5,10 +5,7 @@ import com.example.restaurantmanagement.entities.Restaurant;
 import com.example.restaurantmanagement.entities.Review;
 import com.example.restaurantmanagement.entities.User;
 import com.example.restaurantmanagement.model.RestaurantModel;
-import com.example.restaurantmanagement.model.UserModel;
-import com.example.restaurantmanagement.services.userRepositoryImp;
-import com.example.restaurantmanagement.services.restaurantRepositoryImp;
-import com.example.restaurantmanagement.services.reviewRepositoryImp;
+import com.example.restaurantmanagement.services.*;
 import com.example.restaurantmanagement.utils.AppUtils;
 import javafx.util.Pair;
 
@@ -32,18 +29,14 @@ import java.util.stream.Collectors;
 @MultipartConfig
 @WebServlet(name="RestaurantServlet", urlPatterns = "*.phpp")
 public class RestaurantServlet extends HttpServlet {
-    userRepositoryImp userRepositoryImp;
-    restaurantRepositoryImp restaurantRepositoryImp;
-    reviewRepositoryImp reviewRepositoryImp;
-
+    UserRepository userRepository;
+    RestaurantRepository restaurantRepository;
+    ReviewRepository reviewRepository;
     String errorMessage;
-
-
-
     public void init() throws ServletException {
-        userRepositoryImp = new userRepositoryImp();
-        restaurantRepositoryImp = new restaurantRepositoryImp();
-        reviewRepositoryImp = new reviewRepositoryImp();
+        userRepository = new UserRepositoryImp();
+        restaurantRepository = new RestaurantRepositoryImp();
+        reviewRepository = new ReviewRepositoryImp();
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -53,7 +46,7 @@ public class RestaurantServlet extends HttpServlet {
         if (Path.equalsIgnoreCase("/listRestaurantCrud.phpp")) {
             RestaurantModel model1 = new RestaurantModel();
             model1.setKeyWord("restaurants");
-            model1.setRestaurants(restaurantRepositoryImp.getAllRestaurants());
+            model1.setRestaurants(restaurantRepository.getAllRestaurants());
             req.setAttribute("modelRestaurant", model1);
             req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
         }
@@ -65,7 +58,7 @@ public class RestaurantServlet extends HttpServlet {
         //=========================================================================\\
         else if (Path.equalsIgnoreCase("/editRestaurant.phpp")) {
             Long restID = Long.valueOf(req.getParameter("id"));
-            Restaurant restaurant = restaurantRepositoryImp.getRestaurant(restID);
+            Restaurant restaurant = restaurantRepository.getRestaurant(restID);
 
             RestaurantModel model1 = new RestaurantModel();
             model1.setKeyWord("restaurant-edit");
@@ -78,7 +71,7 @@ public class RestaurantServlet extends HttpServlet {
         else if (Path.equalsIgnoreCase("/deleteRestaurant.phpp")) {
             Long restID = Long.valueOf(req.getParameter("id"));
 
-            if (restaurantRepositoryImp.deleteRestaurant(restID)) {
+            if (restaurantRepository.deleteRestaurant(restID)) {
                 errorMessage = "Deleted Successfully";
                 req.setAttribute("errorMessage", errorMessage);
             } else {
@@ -87,7 +80,7 @@ public class RestaurantServlet extends HttpServlet {
             }
             RestaurantModel model1 = new RestaurantModel();
             model1.setKeyWord("restaurants");
-            model1.setRestaurants(restaurantRepositoryImp.getAllRestaurants());
+            model1.setRestaurants(restaurantRepository.getAllRestaurants());
             req.setAttribute("modelRestaurant", model1);
             req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
         }
@@ -117,7 +110,7 @@ public class RestaurantServlet extends HttpServlet {
             if (req.getParameter("id") != null){
                 restaurant.setId(Long.valueOf(req.getParameter("id")));
 
-                Restaurant restaurant1 = restaurantRepositoryImp.getRestaurant(restaurant.getId());
+                Restaurant restaurant1 = restaurantRepository.getRestaurant(restaurant.getId());
                 restaurant.setImages(restaurant1.getImages());
                 restaurant.setMenuImages(restaurant1.getMenuImages());
                 restaurant.setAddRequestStatus(restaurant1.getAddRequestStatus());
@@ -125,7 +118,7 @@ public class RestaurantServlet extends HttpServlet {
 
 
             // Save
-            if (restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant)){
+            if (restaurantRepository.saveOrUpdateRestaurant(restaurant)){
                 if (req.getParameter("id") != null){ // Is an Edit
                     // Edit object to save pictures after first save to put the object id on pictures names
                     String[] pic_menu = updateFiles(req, restaurant.getId());
@@ -138,7 +131,7 @@ public class RestaurantServlet extends HttpServlet {
                 }
 
                 // Update : Add pictures and menus
-                if (restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant)) {
+                if (restaurantRepository.saveOrUpdateRestaurant(restaurant)) {
                     errorMessage = "Saved Successfully";
                     req.setAttribute("errorMessage", errorMessage);
                 } else {
@@ -147,7 +140,7 @@ public class RestaurantServlet extends HttpServlet {
                 }
                 RestaurantModel model1 = new RestaurantModel();
                 model1.setKeyWord("restaurants");
-                model1.setRestaurants(restaurantRepositoryImp.getAllRestaurants());
+                model1.setRestaurants(restaurantRepository.getAllRestaurants());
                 req.setAttribute("modelRestaurant", model1);
             }else {
                 errorMessage = "Error while Saving";
@@ -187,19 +180,19 @@ public class RestaurantServlet extends HttpServlet {
         }
         //=========================================================================\\
         else if (Path.equalsIgnoreCase("/listRestaurants.phpp")) {
-            List<String> typesCuisine = restaurantRepositoryImp.getTypesOfCuisine();
+            List<String> typesCuisine = restaurantRepository.getTypesOfCuisine();
             req.setAttribute("typesCuisine", typesCuisine);
 
-            int count = Math.toIntExact(restaurantRepositoryImp.countRestaurants());
+            int count = Math.toIntExact(restaurantRepository.countRestaurants());
             int nbPages ;
-            if(count % restaurantRepositoryImp.pageSize != 0) nbPages = (int) count/restaurantRepositoryImp.pageSize + 1;
+            if(count % RestaurantRepository.pageSize != 0) nbPages = (int) count/RestaurantRepository.pageSize + 1;
             else nbPages = (int) count/3;
             int currentPage = 1;
 
             if(req.getParameter("page") != null) {
                 currentPage = Integer.parseInt(req.getParameter("page"));
             }
-            List<Restaurant> restaurantsPage = restaurantRepositoryImp.getPage(currentPage);
+            List<Restaurant> restaurantsPage = restaurantRepository.getPage(currentPage);
 
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("nbPages", nbPages);
@@ -216,11 +209,12 @@ public class RestaurantServlet extends HttpServlet {
             }
             req.setAttribute("firstImages", firstImages);
             //--End-Handling-Images----//
-            User user = null;
+            User user = (User) req.getSession().getAttribute("loginedUser");
             List<Restaurant> bookmarks = null;
-            if(userRepositoryImp.currentUser != null) {
+
+            if(user != null) {
                 bookmarks = new ArrayList<>();
-                user = userRepositoryImp.getUser(userRepositoryImp.currentUser.getId());
+                user = userRepository.getUser(user.getId());
                 if(!user.getBookmarks().isEmpty()){
                     for(Restaurant r : user.getBookmarks())
                         bookmarks.add(r);
@@ -229,14 +223,13 @@ public class RestaurantServlet extends HttpServlet {
                     System.out.println("Empty");
                 }
             }
-            /*System.out.println(restaurantsPage);
-            System.out.println(bookmarks);*/
+
             req.setAttribute("bookmarks", bookmarks);
 
             req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
         }
         else if (Path.equalsIgnoreCase("/searchRestaurants.phpp")) {
-            List<String> typesCuisine = restaurantRepositoryImp.getTypesOfCuisine();
+            List<String> typesCuisine = restaurantRepository.getTypesOfCuisine();
             req.setAttribute("typesCuisine", typesCuisine);
             String name = req.getParameter("name");
             String location = req.getParameter("location");
@@ -254,7 +247,7 @@ public class RestaurantServlet extends HttpServlet {
                 cuisineType = null;
             else
                 req.setAttribute("cuisineType", cuisineType);
-            if(rating.equals("0"))
+            if(rating.equals("0") | rating.equals(""))
                 rating = null;
             else
                 req.setAttribute("rating", rating);
@@ -264,17 +257,17 @@ public class RestaurantServlet extends HttpServlet {
                 currentPage = Integer.parseInt(req.getParameter("page"));
             }
 
-            javafx.util.Pair<List<Restaurant>, Integer> P = restaurantRepositoryImp.getByMultipleCriteria(name, cuisineType, location, rating,
+            javafx.util.Pair<List<Restaurant>, Integer> P = restaurantRepository.getByMultipleCriteria(name, cuisineType, location, rating,
                     currentPage);
             req.setAttribute("search", true);
 
             int count = P.getValue();
             int nbPages ;
-            if(count % restaurantRepositoryImp.pageSize != 0) nbPages = (int) count/restaurantRepositoryImp.pageSize + 1;
+            if(count % RestaurantRepository.pageSize != 0) nbPages = (int) count/RestaurantRepository.pageSize + 1;
             else nbPages = (int) count/3;
 
             List<Restaurant> restaurantsPage = P.getKey();
-            System.out.println(restaurantsPage.size());
+//            System.out.println(restaurantsPage.size());
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("nbPages", nbPages);
             req.setAttribute("restaurantsPage", restaurantsPage);
@@ -286,7 +279,9 @@ public class RestaurantServlet extends HttpServlet {
             //=========================================================================\\
         }else if (Path.equalsIgnoreCase("/restaurantDetail.phpp")) {
             Long id = Long.valueOf(req.getParameter("id"));
-            Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+            Restaurant restaurant = restaurantRepository.getRestaurant(id);
+            restaurant.setViews(restaurant.getViews() + 1);
+            restaurantRepository.saveOrUpdateRestaurant(restaurant);
             req.setAttribute("restaurant", restaurant);
 
             //--Handling-Images----//
@@ -320,7 +315,7 @@ public class RestaurantServlet extends HttpServlet {
             //--End-Handling-Pay-Methods----//
 
             //--Sending-Reviews----//
-            List<Review> reviews = reviewRepositoryImp.getRestaurantReviews(id);
+            List<Review> reviews = reviewRepository.getRestaurantReviews(id);
             req.setAttribute("reviews", reviews);
 
 
@@ -329,8 +324,8 @@ public class RestaurantServlet extends HttpServlet {
                 restaurantRating = restaurantRating + r.getRating();
             restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/reviews.size()));
             req.setAttribute("restaurantRating", restaurantRating);
-            System.out.println(reviews.size());
-            System.out.println(restaurantRating);
+            /*System.out.println(reviews.size());
+            System.out.println(restaurantRating);*/
 
             req.getRequestDispatcher("views/restaurantDetail.jsp").forward(req, resp);
 
@@ -340,7 +335,7 @@ public class RestaurantServlet extends HttpServlet {
             Long id = Long.valueOf(req.getParameter("id"));
             String review_text = req.getParameter("review_text");
 
-            Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+            Restaurant restaurant = restaurantRepository.getRestaurant(id);
             Review review = new Review();
             review.setRestaurant(restaurant);
             review.setReviewText(review_text);
@@ -351,9 +346,9 @@ public class RestaurantServlet extends HttpServlet {
             String formattedDate = myDateObj.format(myFormatObj);
             review.setDateReview(formattedDate);
             //--End-Review-Date---//
-            review.setUser(userRepositoryImp.currentUser);
-            reviewRepositoryImp.saveOrUpdateReview(review);
-            List<Review> reviews = reviewRepositoryImp.getRestaurantReviews(id);
+            review.setUser((User) req.getSession().getAttribute("loginedUser"));
+            reviewRepository.saveOrUpdateReview(review);
+            List<Review> reviews = reviewRepository.getRestaurantReviews(id);
 
             req.setAttribute("reviews", reviews);
 
@@ -362,14 +357,13 @@ public class RestaurantServlet extends HttpServlet {
                 restaurantRating = restaurantRating + r.getRating();
             restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/reviews.size()));
             req.setAttribute("restaurantRating", restaurantRating);
-            System.out.println(reviews.size());
-            System.out.println(restaurantRating);
+     /*       System.out.println(reviews.size());
+            System.out.println(restaurantRating);*/
 
             req.getRequestDispatcher("/restaurantDetail.phpp?id="+id).forward(req, resp);
             //=========================================================================\\
         } else if (Path.equalsIgnoreCase("/bookMarks.phpp")) {
-            Long id_user = userRepositoryImp.currentUser.getId();
-            User user = userRepositoryImp.getUser(id_user);
+            User user = (User) req.getSession().getAttribute("loginedUser");
             Set<Restaurant> restaurantSet = user.getBookmarks();
             List<Restaurant> restaurants = new ArrayList<>();
             for(Restaurant r : restaurantSet)
@@ -419,7 +413,7 @@ public class RestaurantServlet extends HttpServlet {
 
         } else if (Path.equalsIgnoreCase("/removeBookMark.phpp")) {
             Long id_bookMark = Long.valueOf(req.getParameter("id"));
-            User user = userRepositoryImp.getUser(userRepositoryImp.currentUser.getId());
+            User user = (User) req.getSession().getAttribute("loginedUser");
             Set<Restaurant> restaurantSet = user.getBookmarks();
             Restaurant R = null;
             restaurantSet.removeIf(r -> r.getId() == id_bookMark);
@@ -427,26 +421,34 @@ public class RestaurantServlet extends HttpServlet {
             restaurantSet2.addAll(restaurantSet);
 
             user.setBookmarks(restaurantSet2);
-            userRepositoryImp.saveOrUpdateUser(user, false);
-            if(req.getParameter("fromList") != null)
+            userRepository.saveOrUpdateUser(user, false);
+            if(req.getParameter("fromList") != null) {
+                System.out.println("fromList");
                 req.getRequestDispatcher("/listRestaurants.phpp").forward(req, resp);
-            req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
+            }else{
+                req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
+            }
+
             //=========================================================================\\
         } else if (Path.equalsIgnoreCase("/addBookMark.phpp")) {
             Long id_bookMark = Long.valueOf(req.getParameter("id"));
-            User user = userRepositoryImp.getUser(userRepositoryImp.currentUser.getId());
+            User user = (User) req.getSession().getAttribute("loginedUser");
             Set<Restaurant> restaurantSet = user.getBookmarks();
-            Restaurant R = restaurantRepositoryImp.getRestaurant(id_bookMark);
+            Restaurant R = restaurantRepository.getRestaurant(id_bookMark);
             restaurantSet.add(R);
             Set<Restaurant> restaurantSet2 = new HashSet<>();
             restaurantSet2.addAll(restaurantSet);
             user.setBookmarks(restaurantSet2);
-            userRepositoryImp.saveOrUpdateUser(user, false);
+            userRepository.saveOrUpdateUser(user, false);
 
-            if(req.getParameter("fromList") != null)
+            if(req.getParameter("fromList") != null) {
                 req.getRequestDispatcher("/listRestaurants.phpp").forward(req, resp);
-
-            req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
+            }else if(req.getParameter("fromIndex") != null){
+                req.getRequestDispatcher("/index.php").forward(req, resp);
+            }
+            else{
+                req.getRequestDispatcher("/bookMarks.phpp").forward(req, resp);
+            }
             //=========================================================================\\
         }
         //=========================================================================\\
@@ -519,7 +521,7 @@ public class RestaurantServlet extends HttpServlet {
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
-        Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+        Restaurant restaurant = restaurantRepository.getRestaurant(id);
 
         // result ex : "pic1.png:pic2.png:pic3.png:"
         StringBuilder pictures = new StringBuilder();
@@ -566,18 +568,18 @@ public class RestaurantServlet extends HttpServlet {
     }
 
     private boolean setMainPicture(Long id, int index){
-        Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+        Restaurant restaurant = restaurantRepository.getRestaurant(id);
         String images = restaurant.getImages();
 
         String[] arrOfStr = images.split(":");
         swap(arrOfStr, 0, index);
         restaurant.setImages(arrToString(arrOfStr));
 
-        return restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+        return restaurantRepository.saveOrUpdateRestaurant(restaurant);
     }
 
     private boolean deletePicture(Long id, int index, String path, String type){
-        Restaurant restaurant = restaurantRepositoryImp.getRestaurant(id);
+        Restaurant restaurant = restaurantRepository.getRestaurant(id);
         String images;
         if (type.equals("PIC"))
             images = restaurant.getImages();
@@ -599,7 +601,7 @@ public class RestaurantServlet extends HttpServlet {
         File file = new File(path, imageToDelete);
 
         if (file.delete())
-            return restaurantRepositoryImp.saveOrUpdateRestaurant(restaurant);
+            return restaurantRepository.saveOrUpdateRestaurant(restaurant);
 
         return false;
     }
