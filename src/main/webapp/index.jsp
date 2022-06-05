@@ -51,43 +51,45 @@
 
             <div id="reccomended" class="owl-carousel owl-theme">
                 <!-- item for here-->
-                <c:forEach var = "i" begin = "0" end = "${topFive.size() - 1 }">
-                <div class="item">
-                    <div class="box_grid">
-                        <figure>
-                            <c:if test="${loginedUser != null}">
-                            <c:choose>
-                                <c:when test="${bookmarks == null || bookmarks.isEmpty() == true}">
-                                    <a OnClick="location.href='addBookMark.phpp?id=${topFive.get(i).getId()}&fromIndex=true'" class="wish_bt"></a>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:forEach var = "v" begin = "0" end = "${bookmarks.size() - 1}">
+                <c:if test="${topFive.size() > 0}">
+                    <c:forEach var = "i" begin = "0" end = "${topFive.size() - 1 }">
+                        <div class="item">
+                            <div class="box_grid">
+                                <figure>
+                                    <c:if test="${loginedUser != null}">
                                         <c:choose>
-                                            <c:when test="${bookmarks.get(v).getId() == topFive.get(i).getId()}">
-                                                <a OnClick="location.href='removeBookMark.phpp?id=${topFive.get(i).getId()}&fromIndex=true'" class="wish_bt liked" ></a>
+                                            <c:when test="${bookmarks == null || bookmarks.isEmpty() == true}">
+                                                <a OnClick="location.href='addBookMark.phpp?id=${topFive.get(i).getId()}&fromIndex=true'" class="wish_bt"></a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a OnClick="location.href='addBookMark.phpp?id=${topFive.get(i).getId()}&fromIndex=true'" class="wish_bt"></a>
+                                                <c:forEach var = "v" begin = "0" end = "${bookmarks.size() - 1}">
+                                                    <c:choose>
+                                                        <c:when test="${bookmarks.get(v).getId() == topFive.get(i).getId()}">
+                                                            <a OnClick="location.href='removeBookMark.phpp?id=${topFive.get(i).getId()}&fromIndex=true'" class="wish_bt liked" ></a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a OnClick="location.href='addBookMark.phpp?id=${topFive.get(i).getId()}&fromIndex=true'" class="wish_bt"></a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
                                             </c:otherwise>
                                         </c:choose>
-                                    </c:forEach>
-                                </c:otherwise>
-                            </c:choose>
-                            </c:if>
-                            <a href="restaurantDetail.phpp?id=${topFive.get(i).getId()}"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
-                        </figure>
-                        <div class="wrapper">
-                            <h3><a href="restaurant-detail.html">${topFive.get(i).getName()}</a></h3>
-                            <p>${topFive.get(i).getDescription()}</p>
-                            <span class="price">Average <strong>${topFive.get(i).getAverageCost()} DH</strong> /per person</span>
+                                    </c:if>
+                                    <a href="restaurantDetail.phpp?id=${topFive.get(i).getId()}"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
+                                </figure>
+                                <div class="wrapper">
+                                    <h3><a href="restaurant-detail.html">${topFive.get(i).getName()}</a></h3>
+                                    <p>${topFive.get(i).getDescription()}</p>
+                                    <span class="price">Average <strong>${topFive.get(i).getAverageCost()} DH</strong> /per person</span>
+                                </div>
+                                <ul>
+                                    <li><i class="ti-eye"></i> ${topFive.get(i).getViews()} views</li>
+                                    <li><div class="score"><span>${topFive.get(i).getReviews().size()} Reviews</span><strong>${topFive.get(i).getRating()} / 5</strong></div></li>
+                                </ul>
+                            </div>
                         </div>
-                        <ul>
-                            <li><i class="ti-eye"></i> ${topFive.get(i).getViews()} views</li>
-                            <li><div class="score"><span>${topFive.get(i).getReviews().size()} Reviews</span><strong>${topFive.get(i).getRating()} / 5</strong></div></li>
-                        </ul>
-                    </div>
-                </div>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                <!-- /item -->
             </div>
             <!-- /carousel -->

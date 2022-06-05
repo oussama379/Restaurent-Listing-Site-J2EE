@@ -106,7 +106,10 @@ public class RestaurantServlet extends HttpServlet {
             restaurant.setPayment(req.getParameter("payment"));
             restaurant.setWebSite(req.getParameter("webSite"));
             restaurant.setOwnerUser(null);
-            restaurant.setAddRequestStatus(AddRequestStatus.APPROVED);
+            if (AppUtils.getLoginedUser(req.getSession()).getRole().equals("ADMIN"))
+                restaurant.setAddRequestStatus(AddRequestStatus.APPROVED);
+            else
+                restaurant.setAddRequestStatus(AddRequestStatus.PENDING);
             if (req.getParameter("id") != null){
                 restaurant.setId(Long.valueOf(req.getParameter("id")));
 
@@ -146,8 +149,10 @@ public class RestaurantServlet extends HttpServlet {
                 errorMessage = "Error while Saving";
                 req.setAttribute("errorMessage", errorMessage);
             }
-
-            req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
+            if(restaurant.getAddRequestStatus() != AddRequestStatus.APPROVED)
+                resp.sendRedirect(req.getContextPath() +"/listRestReq.phpp");
+            else
+                req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
         }
         //=========================================================================\\
         else if(Path.equalsIgnoreCase("/setMainPicture.phpp")){
@@ -455,7 +460,7 @@ public class RestaurantServlet extends HttpServlet {
         else if (Path.equalsIgnoreCase("/listRestReq.phpp")) {
             String param = req.getParameter("param");
 
-            List<Restaurant> filteredList = restaurantRepositoryImp.getAllRestaurants()
+            List<Restaurant> filteredList = restaurantRepository.getAllRestaurants()
                     .stream()
                     .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.PENDING))
                     .collect(Collectors.toList());
@@ -463,6 +468,38 @@ public class RestaurantServlet extends HttpServlet {
             model1.setKeyWord("restaurants");
             model1.setRestaurants(filteredList);
             req.setAttribute("modelRestaurant", model1);
+            req.getRequestDispatcher("views/listRestaurantReq.jsp").forward(req, resp);
+        }
+        //=========================================================================\\
+        else if (Path.equalsIgnoreCase("/approveRestaurant.phpp")) {
+            Long restID = Long.valueOf(req.getParameter("id"));
+            Restaurant restaurant = restaurantRepository.getRestaurant(restID);
+
+            restaurant.setAddRequestStatus(AddRequestStatus.APPROVED);
+
+            if (restaurantRepository.saveOrUpdateRestaurant(restaurant)) {
+                String successMessage = "Approved Successfully";
+                req.setAttribute("successMessage", successMessage);
+            } else {
+                errorMessage = "Error";
+                req.setAttribute("errorMessage", errorMessage);
+            }
+            req.getRequestDispatcher("/listRestReq.phpp").forward(req, resp);
+        }
+        //=========================================================================\\
+        else if (Path.equalsIgnoreCase("/cancelRestaurant.phpp")) {
+            Long restID = Long.valueOf(req.getParameter("id"));
+            Restaurant restaurant = restaurantRepository.getRestaurant(restID);
+
+            restaurant.setAddRequestStatus(AddRequestStatus.CANCELLED);
+
+            if (restaurantRepository.saveOrUpdateRestaurant(restaurant)) {
+                String successMessage = "Canceled Successfully";
+                req.setAttribute("successMessage", successMessage);
+            } else {
+                errorMessage = "Error";
+                req.setAttribute("errorMessage", errorMessage);
+            }
             req.getRequestDispatcher("views/listRestaurantReq.jsp").forward(req, resp);
         }
         else {

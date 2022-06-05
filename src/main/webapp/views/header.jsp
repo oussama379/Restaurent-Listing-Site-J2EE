@@ -17,6 +17,7 @@
                         <a href="#0" class="logged" data-toggle="dropdown" title="Logged"><img src="upload/users/${loginedUser.getId()}-PIC.png" alt=""></a>
                         <div class="dropdown-menu">
                             <ul>
+                                <li><a href="bookMarks.phpp">My Favorites</a></li>
                                 <li><a href="editProfile.php">Edit Profile</a></li>
                                 <li><a href="logout">Logout</a></li>
                                 <li><a href="#">${loginedUser.username}</a></li>
@@ -44,18 +45,18 @@
             <c:choose>
                 <c:when test="${loginedUser != null}">
                     <li><span><a href="index.php">Home</a></span></li>
-<%--                    <li><span><a href="listRestaurants.phpp">Restaurants</a></span></li>--%>
+                    <li><span><a href="listRestaurants.phpp">Restaurants</a></span></li>
+<%--                    <li><span><a href="bookMarks.phpp">My Favorites</a></span></li>--%>
                     <c:if test="${loginedUser.role.equals('ADMIN')}">
                         <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
-                        <li><span><a href="bookMarks.phpp">My Favorites</a></span></li>
+                    </c:if>
+                    <c:if test="${loginedUser.role.equals('OWNER')}">
+                        <li><span><a href="addRestaurant.phpp">Restaurant add request</a></span></li>
                     </c:if>
                 </c:when>
                 <c:otherwise>
                     <li><span><a href="index.php">Home</a></span></li>
                     <li><span><a href="listRestaurants.phpp">Restaurants</a></span></li>
-                    <c:if test="${loginedUser.role.equals('ADMIN')}">
-                        <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
-                    </c:if>
                     <li><span><a href="register.php">Register</a></span></li>
                 </c:otherwise>
             </c:choose>

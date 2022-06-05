@@ -109,23 +109,24 @@
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active">List of Restaurants</li>
-        </ol>
+<%--        <ol class="breadcrumb">--%>
+<%--            <li class="breadcrumb-item">--%>
+<%--                <a href="#">Dashboard</a>--%>
+<%--            </li>--%>
+<%--            <li class="breadcrumb-item active">List of Restaurants</li>--%>
+<%--        </ol>--%>
+        <div class="mb-4"></div>
         <!-- Example DataTables Card-->
         <div class="box_general">
             <div class="header_box">
-                <h2 class="d-inline-block">Bookings list</h2>
-                <div class="filter">
-                    <select name="orderby" class="selectbox">
-                        <option value="Any status">Any status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Cancelled">Cancelled</option>
-                    </select>
-                </div>
+                <h2 class="d-inline-block">Restaurant add requests</h2>
+<%--                <div class="filter">--%>
+<%--                    <select name="orderby" class="selectbox">--%>
+<%--                        <option value="Any status">Any status</option>--%>
+<%--                        <option value="Pending">Pending</option>--%>
+<%--                        <option value="Cancelled">Cancelled</option>--%>
+<%--                    </select>--%>
+<%--                </div>--%>
             </div>
             <div class="list_general">
                 <ul>
@@ -136,8 +137,9 @@
                                 <h4>${r.name} <i class="pending">Pending</i></h4>
                                 <p>Address : ${r.address}</p>
                                 <ul class="buttons">
-                                    <li><a href="editRestaurant.phpp?id=${r.id} " class="btn_1"> Edit</a></li>
-                                    <li><a href="deleteRestaurant.phpp?id=${r.id}" class="btn_1"> Delete</a></li>
+                                    <li><a href="editRestaurant.phpp?id=${r.id} " class="btn_1 gray mr-3">Edit</a></li>
+                                    <li><a href="approveRestaurant.phpp?id=${r.id} " class="btn_1 gray approve">Approve</a></li>
+                                    <li><a href="cancelRestaurant.phpp?id=${r.id} " class="btn_1 gray delete">Cancel</a></li>
                                 </ul>
                             </li>
                         </a>
@@ -220,10 +222,10 @@
             "hideMethod": "fadeOut"
         }
 
-        if ("${errorMessage}" == "Deleted Successfully" || "${errorMessage}" == "Saved Successfully"){
-            toastr["success"]("", "${errorMessage}")
+        if ("${successMessage}" !== ""){
+            toastr["success"]("", "${successMessage}")
         }
-        if ("${errorMessage}" == "Error while Deleting"){
+        if ("${errorMessage}" !== ""){
             toastr["error"]("", "${errorMessage}")
         }
     }
