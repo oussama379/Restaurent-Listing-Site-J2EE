@@ -7,6 +7,13 @@
 
 <head>
     <%@ include file = "admin/admin_head.jsp"%>
+	<style>
+		.required:after {
+			content:" *";
+			font-weight:bold;
+			color: red;
+		}
+	</style>
 </head>
 
 <body class="fixed-nav sticky-footer" id="page-top">
@@ -52,7 +59,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Email</label>
-						<input type="email" class="form-control" placeholder="email" name="email" required>
+						<input type="email" class="form-control" placeholder="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
 					</div>
 				</div>
 			</div>
@@ -80,7 +87,7 @@
 				<div class="form-group">
 					<label>Role</label>
 					<div class="styled-select">
-					<select name="role">
+					<select name="role" required>
 						<option value="ADMIN">Admin</option>
 						<option value="CLIENT">Client</option>
 						<option value="OWNER">Restaurant Owner</option>
@@ -95,7 +102,7 @@
                     <div class="form-group">
                         <label>Profile picture</label>
                         <%--						<form action="/file-upload" class="dropzone dz-clickable"><div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>--%>
-                        <input class="form-control form-control-lg" id="picture" name="picture" type="file">
+                        <input class="form-control form-control-lg" id="picture" name="picture" type="file" required>
                     </div>
                 </div>
             </div>
@@ -155,6 +162,7 @@
   <script src="resources/js_admin/editor/summernote-bs4.min.js"></script>
       <script src="resources/js_admin/toastr.min.js"></script>
   <script>
+	  $("input[required]").parent("div").children("label").addClass("required");
       $('.editor').summernote({
     fontSizes: ['10', '14'],
     toolbar: [

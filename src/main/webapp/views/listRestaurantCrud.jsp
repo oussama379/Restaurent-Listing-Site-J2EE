@@ -23,15 +23,15 @@
         <!-- Example DataTables Card-->
         <div class="box_general">
             <div class="header_box">
-                <h2 class="d-inline-block">Bookings list</h2>
-                <div class="filter">
-                    <select name="orderby" class="selectbox">
-                        <option value="Any status">Any status</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Cancelled">Cancelled</option>
-                    </select>
-                </div>
+                <h2 class="d-inline-block">Restaurants list</h2>
+<%--                <div class="filter">--%>
+<%--                    <select name="orderby" class="selectbox">--%>
+<%--                        <option value="Any status">Any status</option>--%>
+<%--                        <option value="Approved">Approved</option>--%>
+<%--                        <option value="Pending">Pending</option>--%>
+<%--                        <option value="Cancelled">Cancelled</option>--%>
+<%--                    </select>--%>
+<%--                </div>--%>
             </div>
             <div class="list_general">
                 <ul>
@@ -39,7 +39,7 @@
                         <a href="restaurantDetail.phpp?id=${r.id}">
                             <li>
                                 <figure><img src="upload/restaurants/${r.images.split(":")[0]}" alt=""></figure>
-                                <h4>${r.name} <i class="pending">Pending</i></h4>
+                                <h4>${r.name}</h4>
                                 <p>Address : ${r.address}</p>
                                 <ul class="buttons">
                                     <li><a href="editRestaurant.phpp?id=${r.id} " class="btn_1"> Edit</a></li>
@@ -48,6 +48,11 @@
                             </li>
                         </a>
                     </c:forEach>
+                    <c:if test="${modelRestaurant.getRestaurants().isEmpty()}">
+                        <div class="alert alert-warning mb-2 text-center" role="alert">
+                            No records found
+                        </div>
+                    </c:if>
                 </ul>
             </div>
         </div>

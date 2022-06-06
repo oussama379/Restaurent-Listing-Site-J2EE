@@ -46,15 +46,6 @@
                 </tr>
               </tfoot>
               <tbody>
-              <tr>
-                <td>Oussama</td>
-                <td>Hennane</td>
-                <td>oussama123</td>
-                <td>oussama@gmail.com</td>
-                <td>Admin</td>
-                <td><a href="#0" class="btn_1 small">Edit</a></td>
-                <td><a href="#0" class="btn_1 small">Delete</a></td>
-              </tr>
               <c:forEach items="${modelUser.getUsers()}" var="u">
                 <tr>
                   <td>${u.firstname}</td>
@@ -66,6 +57,11 @@
                   <td><a href="deleteUser.php?id=${u.id}" class="btn_1 small">Delete</a></td>
                 </tr>
               </c:forEach>
+              <c:if test="${modelUser.getUsers().isEmpty()}">
+                <div class="alert alert-warning mb-2 text-center" role="alert">
+                  No records found
+                </div>
+              </c:if>
               </tbody>
             </table>
           </div>

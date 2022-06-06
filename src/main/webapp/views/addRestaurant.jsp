@@ -35,6 +35,11 @@
 			height: 11rem;
 			margin-right: 5px;
 		}
+		.required:after {
+			content:" *";
+			font-weight:bold;
+			color: red;
+		}
 	</style>
 </head>
 
@@ -43,7 +48,8 @@
   <%@ include file = "admin/admin_navigation.jsp"%>
 <!-- /Navigation-->
 
-  <form class="content-wrapper" action="saveRestaurant.phpp" method="post" onsubmit="getTags()" enctype="multipart/form-data" style="<%= removeMargin %>">
+  <form class="content-wrapper" action="saveRestaurant.phpp" method="post" onsubmit="getTags()"
+		enctype="multipart/form-data" style="<%= removeMargin %>">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
 <%--      <ol class="breadcrumb">--%>
@@ -61,7 +67,8 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Listing Title</label>
-						<input type="text" class="form-control" placeholder="Restaurant Title" name="name" value="${r.name}">
+						<input type="text" class="form-control" placeholder="Restaurant Title" name="name"
+							   value="${r.name}" required>
 					</div>
 				</div>
 			</div>
@@ -79,7 +86,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Cuisine Type</label>
-						<input type="text" class="form-control" placeholder="Ex. Traditional dishes " name="typeCuisine" value="${r.typeCuisine}">
+						<input type="text" class="form-control" placeholder="Ex. Traditional dishes " name="typeCuisine" value="${r.typeCuisine}" required>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -158,7 +165,7 @@
 							</div>
 							<label>Add new pictures</label>
 						</c:if>
-						<input class="form-control form-control-lg" id="pictures" name="pictures" type="file" multiple>
+						<input class="form-control form-control-lg" id="pictures" name="pictures" type="file" multiple <c:if test="${r == null}">required</c:if> >
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -184,7 +191,7 @@
 							</div>
 							<label>Add new pictures</label>
 						</c:if>
-						<input class="form-control form-control-lg" id="menu" name="menu" type="file" multiple>
+						<input class="form-control form-control-lg" id="menu" name="menu" type="file" multiple <c:if test="${r == null}">required</c:if>>
 					</div>
 				</div>
 			</div>
@@ -199,7 +206,8 @@
 				<div class="col-md-12">
 					<div class="form-group">
 						<label>Address</label>
-						<input type="text" class="form-control" placeholder="ex. 250, Fifth Avenue..." name="address" value="${r.address}">
+						<input type="text" class="form-control" placeholder="ex. 250, Fifth Avenue..." name="address"
+							   value="${r.address}" required>
 					</div>
 				</div>
 			</div>
@@ -208,7 +216,7 @@
 					<div class="form-group">
 						<label>Neighborhood</label>
 						<div class="styled-select">
-							<select name="block">
+							<select name="block" required>
 								<option value="" disabled selected>Select</option>
 							<c:forEach var="var" items="${blocks}" >
 								<option value="${var}" <c:if test="${var.equals(r.block)}">selected</c:if> >${var}</option>
@@ -260,7 +268,7 @@
 				<div class="col-md-5">
 					<div class="form-group">
 						<div class="styled-select">
-						<select name="openingTime">
+						<select name="openingTime" required>
 							<option value="" disabled selected>Opening Time</option>
 							<c:forEach var="var" items="${hours}" >
 								<option value="${var}" <c:if test="${var.equals(r.openingTime)}">selected</c:if> >${var}</option>
@@ -297,7 +305,7 @@
 				<div class="col-md-5">
 					<div class="form-group">
 						<div class="styled-select">
-						<select name="closingTime">
+						<select name="closingTime" required>
 							<option value="" disabled selected>Closing Time</option>
 						<c:forEach var="var" items="${hours}" >
 							<option value="${var}" <c:if test="${var.equals(r.closingTime)}">selected</c:if> >${var}</option>
@@ -315,7 +323,7 @@
 				<div class="col-md-5">
 					<div class="form-group">
 						<div class="styled-select">
-						<select name="openingTimeWeekEnd">
+						<select name="openingTimeWeekEnd" required>
 							<option value="" disabled selected>Opening Time</option>
 							<c:forEach var="var" items="${hours}" >
 								<option value="${var}" <c:if test="${var.equals(r.openingTimeWeekEnd)}">selected</c:if> >${var}</option>
@@ -327,7 +335,7 @@
 				<div class="col-md-5">
 					<div class="form-group">
 						<div class="styled-select">
-						<select name="closingTimeWeekEnd">
+						<select name="closingTimeWeekEnd" required>
 							<option value="" disabled selected>Closing Time</option>
 							<c:forEach var="var" items="${hours}" >
 								<option value="${var}" <c:if test="${var.equals(r.closingTimeWeekEnd)}">selected</c:if> >${var}</option>
@@ -348,13 +356,15 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label>Average Pricing for One Person</label>
-						<input type="text" class="form-control" placeholder="Price in DH" name="averageCost" value="${r.averageCost}">
+						<input type="text" class="form-control" placeholder="Price in DH" name="averageCost"
+							   value="${r.averageCost}" required>
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="form-group">
 						<label>Accepted payments methods</label>
-						<input type="text" class="form-control" placeholder="Cash, Cards" id="payment" name="payment" value="${r.payment}" hidden>
+						<input type="text" class="form-control" placeholder="Cash, Cards" id="payment" name="payment"
+							   value="${r.payment}" hidden>
 						<div id="paymentDiv" class="form-control"></div>
 					</div>
 				</div>
@@ -387,6 +397,7 @@
 
 	<%-- Custom Script --%>
 	<script>
+		$("input[required]").parent("div").children("label").addClass("required");
 	  $('.editor').summernote({
 		fontSizes: ['10', '14'],
 		toolbar: [

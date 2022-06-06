@@ -65,6 +65,11 @@
                             </li>
                         </a>
                     </c:forEach>
+                    <c:if test="${modelRestaurant.getRestaurants().isEmpty()}">
+                        <div class="alert alert-warning mb-2 text-center" role="alert">
+                            No records found
+                        </div>
+                    </c:if>
                 </ul>
             </div>
         </div>
