@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -226,6 +227,10 @@ public class Restaurant {
 
     public AddRequestStatus getAddRequestStatus() {
         return addRequestStatus;
+    }
+
+    public String getStatus() {
+        return addRequestStatus.name().toLowerCase(Locale.ROOT);
     }
 
     public void setAddRequestStatus(AddRequestStatus addRequestStatus) {

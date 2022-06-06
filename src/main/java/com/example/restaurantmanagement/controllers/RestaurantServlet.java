@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -105,7 +106,7 @@ public class RestaurantServlet extends HttpServlet {
             restaurant.setBlock(req.getParameter("block"));
             restaurant.setPayment(req.getParameter("payment"));
             restaurant.setWebSite(req.getParameter("webSite"));
-            restaurant.setOwnerUser(null);
+            restaurant.setOwnerUser(AppUtils.getLoginedUser(req.getSession()));
             if (AppUtils.getLoginedUser(req.getSession()).getRole().equals("ADMIN"))
                 restaurant.setAddRequestStatus(AddRequestStatus.APPROVED);
             else
@@ -149,10 +150,14 @@ public class RestaurantServlet extends HttpServlet {
                 errorMessage = "Error while Saving";
                 req.setAttribute("errorMessage", errorMessage);
             }
-            if(restaurant.getAddRequestStatus() != AddRequestStatus.APPROVED)
+
+            if (AppUtils.getLoginedUser(req.getSession()).getRole().equals("ADMIN")){
+                if(restaurant.getAddRequestStatus() != AddRequestStatus.APPROVED)
+                    resp.sendRedirect(req.getContextPath() +"/listRestReq.phpp");
+                else
+                    req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
+            } else
                 resp.sendRedirect(req.getContextPath() +"/listRestReq.phpp");
-            else
-                req.getRequestDispatcher("views/listRestaurantCrud.jsp").forward(req, resp);
         }
         //=========================================================================\\
         else if(Path.equalsIgnoreCase("/setMainPicture.phpp")){
@@ -459,10 +464,16 @@ public class RestaurantServlet extends HttpServlet {
         //=========================================================================\\
         else if (Path.equalsIgnoreCase("/listRestReq.phpp")) {
             String param = req.getParameter("param");
+            List<Restaurant> filteredList = restaurantRepository.getAllRestaurants();
+            Predicate<Restaurant> predicate = null;
+            if (AppUtils.getLoginedUser(req.getSession()).getRole().equals("ADMIN")){
+                predicate = restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.PENDING);
+            }else{
+                predicate = restaurant -> restaurant.getOwnerUser().getId().equals(AppUtils.getLoginedUser(req.getSession()).getId());
+            }
 
-            List<Restaurant> filteredList = restaurantRepository.getAllRestaurants()
-                    .stream()
-                    .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.PENDING))
+            filteredList = filteredList.stream()
+                    .filter(predicate)
                     .collect(Collectors.toList());
             RestaurantModel model1 = new RestaurantModel();
             model1.setKeyWord("restaurants");

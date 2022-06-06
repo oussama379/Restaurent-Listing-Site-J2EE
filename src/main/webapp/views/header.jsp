@@ -51,7 +51,7 @@
                         <li><span><a href="homeAdmin.admin">Admin Section</a></span></li>
                     </c:if>
                     <c:if test="${loginedUser.role.equals('OWNER')}">
-                        <li><span><a href="addRestaurant.phpp">Restaurant add request</a></span></li>
+                        <li><span><a href="listRestReq.phpp">Restaurant add request</a></span></li>
                     </c:if>
                 </c:when>
                 <c:otherwise>

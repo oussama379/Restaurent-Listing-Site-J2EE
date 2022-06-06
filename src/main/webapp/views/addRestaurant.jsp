@@ -1,7 +1,13 @@
+<%@ page import="com.example.restaurantmanagement.utils.AppUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="r" value="${modelRestaurant.getRestaurantToEdit()}"/>
 <c:set var="blocks" value='${["Medina", "Oudayas", "Hassan", "Océan", "Les Orangers", "Diour Jamaa", "Aakkari", "Yacoub El Mansour", "Massira", "Hay el Fath", "Youssoufia", "Douar el Hajja", "Mabella", "Taqaddoum", "Hay Nahda", "Aviation", "Rommani", "Agdal", "Hay Riad", "Souissi", "Les Ambassadeurs"]}'/>
 <c:set var="hours" value='${["1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 AM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 PM"]}'/>
+<%
+	String loggedUserRole = AppUtils.getLoginedUser(request.getSession()).getRole();
+	String removeMargin = "";
+	if (!loggedUserRole.equals("ADMIN")) removeMargin = "margin-right: 250px;";
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,7 +43,7 @@
   <%@ include file = "admin/admin_navigation.jsp"%>
 <!-- /Navigation-->
 
-  <form class="content-wrapper" action="saveRestaurant.phpp" method="post" onsubmit="getTags()" enctype="multipart/form-data">
+  <form class="content-wrapper" action="saveRestaurant.phpp" method="post" onsubmit="getTags()" enctype="multipart/form-data" style="<%= removeMargin %>">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
 <%--      <ol class="breadcrumb">--%>

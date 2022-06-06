@@ -807,7 +807,7 @@ label.fix_spacing {
   color: #ffc107;
 }
 
-.unread, .read, .pending, .cancel, .approved {
+.unread, .read, .pending, .cancelled, .approved {
   background-color: #dc3545;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
@@ -824,7 +824,7 @@ label.fix_spacing {
   line-height: 1;
 }
 
-.unread, .cancel {
+.unread, .cancelled {
   background-color: #dc3545;
 }
 

@@ -1,4 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.example.restaurantmanagement.utils.AppUtils" %>
+<%@ page import="com.example.restaurantmanagement.entities.Restaurant" %>
+<%
+    String loggedUserRole = AppUtils.getLoginedUser(request.getSession()).getRole();
+    String removeMargin = "";
+    if (!loggedUserRole.equals("ADMIN")) removeMargin = "margin-right: 250px;";
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +17,7 @@
 <!-- Navigation-->
   <%@ include file = "admin/admin_navigation.jsp"%>
 <!-- /Navigation-->
-<div class="content-wrapper">
+<div class="content-wrapper" style="<%= removeMargin %>">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
 <%--        <ol class="breadcrumb">--%>
@@ -22,8 +29,11 @@
         <div class="mb-4"></div>
         <!-- Example DataTables Card-->
         <div class="box_general">
-            <div class="header_box">
+            <div class="header_box d-flex justify-content-between">
                 <h2 class="d-inline-block">Restaurant add requests</h2>
+                <c:if test='<%= !loggedUserRole.equals("ADMIN") %>'>
+                    <a href="addRestaurant.phpp" class="btn_1" style="line-height: 1.5;">Add</a>
+                </c:if>
 <%--                <div class="filter">--%>
 <%--                    <select name="orderby" class="selectbox">--%>
 <%--                        <option value="Any status">Any status</option>--%>
@@ -38,12 +48,19 @@
                         <a href="restaurantDetail.phpp?id=${r.id}">
                             <li>
                                 <figure><img src="upload/restaurants/${r.images.split(":")[0]}" alt=""></figure>
-                                <h4>${r.name} <i class="pending">Pending</i></h4>
+
+                                <h4>${r.name} <i class="${r.getStatus()}">${r.addRequestStatus}</i></h4>
                                 <p>Address : ${r.address}</p>
                                 <ul class="buttons">
                                     <li><a href="editRestaurant.phpp?id=${r.id} " class="btn_1 gray mr-3">Edit</a></li>
-                                    <li><a href="approveRestaurant.phpp?id=${r.id} " class="btn_1 gray approve">Approve</a></li>
-                                    <li><a href="cancelRestaurant.phpp?id=${r.id} " class="btn_1 gray delete">Cancel</a></li>
+                                    <c:if test='<%= loggedUserRole.equals("ADMIN") %>'>
+                                        <li><a href="approveRestaurant.phpp?id=${r.id} " class="btn_1 gray approve">Approve</a></li>
+                                        <li><a href="cancelRestaurant.phpp?id=${r.id} " class="btn_1 gray delete">Cancel</a></li>
+                                    </c:if>
+                                    <c:if test='<%= loggedUserRole.equals("OWNER") %>'>
+<%--                                        <li><a href="approveRestaurant.phpp?id=${r.id} " class="btn_1 gray approve" >Submit</a></li>--%>
+                                        <li><a href="deleteRestaurant.phpp?id=${r.id}" class="btn_1 gray delete">Delete</a></li>
+                                    </c:if>
                                 </ul>
                             </li>
                         </a>
