@@ -54,6 +54,11 @@
 
 				<!-- /box_grid -->
 			</div>
+			<c:if test="${restaurants.isEmpty()}">
+				<div class="alert alert-warning text-center" role="alert">
+					There is no favorite restaurant yet
+				</div>
+			</c:if>
 			<!-- /row -->
 			</div>
 			<!-- /isotope-wrapper -->

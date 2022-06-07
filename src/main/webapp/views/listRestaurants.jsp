@@ -123,16 +123,17 @@
 											<a OnClick="location.href='addBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt"></a>
 										</c:when>
 										<c:otherwise>
-											<c:forEach var = "v" begin = "0" end = "${bookmarks.size() - 1}">
+<%--											<c:forEach var = "v" begin = "0" end = "${bookmarks.size() - 1}">--%>
 												<c:choose>
-													<c:when test="${bookmarks.get(v).getId() == restaurantsPage.get(i).getId()}">
+<%--													<c:when test="${bookmarks.get(v).getId() == restaurantsPage.get(i).getId()}">--%>
+													<c:when test="${bookmarks.contains(restaurantsPage.get(i))}">
 														<a OnClick="location.href='removeBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt liked" ></a>
 													</c:when>
 													<c:otherwise>
 														<a OnClick="location.href='addBookMark.phpp?id=${restaurantsPage.get(i).getId()}&fromList=true'" class="wish_bt"></a>
 													</c:otherwise>
 												</c:choose>
-											</c:forEach>
+<%--											</c:forEach>--%>
 										</c:otherwise>
 									</c:choose>
 									</c:if>
