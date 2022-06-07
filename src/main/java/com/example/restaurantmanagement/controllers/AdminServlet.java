@@ -36,13 +36,19 @@ public class AdminServlet extends HttpServlet {
         List<Restaurant> allRestaurants = restaurantRepository.getAllRestaurants();
         List<User> allUsers = userRepository.getAllUsers();
 
-        int restaurantsCount = allRestaurants.size();
-        int approvedRestaurantsCount = (int) allRestaurants.stream()
-                .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.APPROVED)).count();
-        int pendingRestaurantsCount = (int) allRestaurants.stream()
-                .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.PENDING)).count();
-        int cancelledRestaurantsCount = (int) allRestaurants.stream()
-                .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.CANCELLED)).count();
+        long restaurantsCount, approvedRestaurantsCount, pendingRestaurantsCount, cancelledRestaurantsCount;
+        restaurantsCount = approvedRestaurantsCount = pendingRestaurantsCount = cancelledRestaurantsCount = 0;
+
+        if (allRestaurants != null){
+            restaurantsCount = allRestaurants.size();
+            approvedRestaurantsCount = allRestaurants.stream()
+                    .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.APPROVED)).count();
+            pendingRestaurantsCount = allRestaurants.stream()
+                    .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.PENDING)).count();
+            cancelledRestaurantsCount = allRestaurants.stream()
+                    .filter(restaurant -> restaurant.getAddRequestStatus().equals(AddRequestStatus.CANCELLED)).count();
+        }
+
         int usersCount = allUsers.size();
 
         req.setAttribute("restaurantsCount", restaurantsCount);
