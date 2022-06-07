@@ -13,6 +13,45 @@
 			font-weight:bold;
 			color: red;
 		}
+		/*Password strength */
+		#pass-info {
+			width: 100%;
+			margin-bottom: 15px;
+			color: #555;
+			text-align: center;
+			font-size: 12px;
+			font-size: 0.75rem;
+			padding: 5px 3px 3px 3px;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			-ms-border-radius: 3px;
+			border-radius: 3px;
+		}
+		#pass-info.weakpass {
+			border: 1px solid #FF9191;
+			background: #FFC7C7;
+			color: #94546E;
+		}
+		#pass-info.stillweakpass {
+			border: 1px solid #FBB;
+			background: #FDD;
+			color: #945870;
+		}
+		#pass-info.goodpass {
+			border: 1px solid #C4EEC8;
+			background: #E4FFE4;
+			color: #51926E;
+		}
+		#pass-info.strongpass {
+			border: 1px solid #6ED66E;
+			background: #79F079;
+			color: #348F34;
+		}
+		#pass-info.vrystrongpass {
+			border: 1px solid #379137;
+			background: #48B448;
+			color: #CDFFCD;
+		}
 	</style>
 </head>
 
@@ -59,7 +98,8 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Email</label>
-						<input type="email" class="form-control" placeholder="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+						<input type="email" class="form-control" placeholder="email" name="email"
+							   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
 					</div>
 				</div>
 			</div>
@@ -69,13 +109,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" class="form-control" placeholder="password" name="password" required>
-                        </div>
+                            <input type="password" class="form-control" placeholder="password" id="password1" name="password" required>
+						</div>
+						<div id="pass-info" class="clearfix"></div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Confirm Password</label>
-                            <input type="password" class="form-control" placeholder="password" name="password" required>
+                            <input type="password" class="form-control" placeholder="confirm password" id="password2" name="password2" required>
                         </div>
                     </div>
 
@@ -158,6 +199,7 @@
 	<script src="resources/vendor_admin/dropzone.min.js"></script>
 	<script src="resources/vendor_admin/bootstrap-datepicker.js"></script>
 	<script>$('input.date-pick').datepicker();</script>
+	  <script src="resources/js/pw_strenght.js"></script>
   <!-- WYSIWYG Editor -->
   <script src="resources/js_admin/editor/summernote-bs4.min.js"></script>
       <script src="resources/js_admin/toastr.min.js"></script>

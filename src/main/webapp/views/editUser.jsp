@@ -32,7 +32,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>First name</label>
-						<input type="text" class="form-control" placeholder="first name" name="firstname" value="<%= user.getUsername() %>">
+						<input type="text" class="form-control" placeholder="first name" name="firstname" value="<%= user.getFirstname() %>">
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -69,9 +69,9 @@
 					<label>Role</label>
 					<div class="styled-select">
 					<select name="role">
-                        <option value="ADMIN">Admin</option>
-                        <option value="CLIENT">Client</option>
-                        <option value="OWNER">Restaurant Owner</option>
+                        <option value="ADMIN" <c:if test='<%= user.getRole().equals("ADMIN") %>'>selected</c:if> >Admin</option>
+                        <option value="CLIENT" <c:if test='<%= user.getRole().equals("CLIENT") %>'>selected</c:if> >Client</option>
+                        <option value="OWNER" <c:if test='<%= user.getRole().equals("OWNER") %>'>selected</c:if> >Restaurant Owner</option>
 					</select>
 					</div>
 				</div>

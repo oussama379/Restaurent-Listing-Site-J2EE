@@ -48,38 +48,39 @@
 			<form autocomplete="off" method="post" action="saveRegister.php">
 				<div class="form-group">
 					<label>Your First Name</label>
-					<input class="form-control" type="text" name="firstname"> 
+					<input class="form-control" type="text" name="firstname" required>
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>Your Last Name</label>
-					<input class="form-control" type="text" name="lastname">
+					<input class="form-control" type="text" name="lastname" required>
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>Your Username</label>
-					<input class="form-control" type="text" name="username">
+					<input class="form-control" type="text" name="username" required>
 					<i class="ti-user"></i>
 				</div>
 				<div class="form-group">
 					<label>Your Email</label>
-					<input class="form-control" type="email" name="email">
+					<input class="form-control" type="email" name="email" required>
 					<i class="icon_mail_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>Your password</label>
-					<input class="form-control" type="password" id="password1" name="password1">
+					<input class="form-control" type="password" id="password1" name="password1"
+						   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>Confirm password</label>
-					<input class="form-control" type="password" id="password2" name="password2">
+					<input class="form-control" type="password" id="password2" name="password2" required>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div id="pass-info" class="clearfix"></div>
 <%--				<a href="#0" class="btn_1 rounded full-width add_top_30">Register Now!</a>--%>
 				<button type="submit" class="btn_1 rounded full-width add_top_30">Register Now!</button>
-				<div class="text-center add_top_10">Already have an account? <strong><a href="login.html">Sign In</a></strong>
+				<div class="text-center add_top_10">Already have an account? <strong><a href="login">Sign In</a></strong>
 				</div>
 			</form>
 			
