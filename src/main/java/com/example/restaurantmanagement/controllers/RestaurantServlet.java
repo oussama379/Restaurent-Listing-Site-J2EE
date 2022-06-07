@@ -546,12 +546,12 @@ public class RestaurantServlet extends HttpServlet {
             fileName = part.getSubmittedFileName();
             if (fileName != null && !fileName.equals("")){
                 fileName = fileName.replaceAll(" ", "_").toLowerCase();
-                if (part.getName().equals("pictures")){
+                if (part.getName().equals("pictures") && part.getSize() > 0){
                     saveName = id+"-PIC"+p+"-"+fileName;
                     part.write(uploadPath + File.separator + saveName);
                     pictures.append(saveName).append(":");
                     p++;
-                }else if (part.getName().equals("menu")){
+                }else if (part.getName().equals("menu") && part.getSize() > 0){
                     saveName = id+"-MENU"+m+"-"+fileName;
                     part.write(uploadPath + File.separator + saveName);
                     menu.append(saveName).append(":");

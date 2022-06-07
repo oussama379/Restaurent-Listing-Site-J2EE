@@ -140,46 +140,61 @@ public class UserServlet extends HttpServlet {
                 request.setAttribute("currentUser", currentUser);
                 request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
                 //=========================================================================\\
-            }else if (Path.equalsIgnoreCase("/saveEditProfile.php")) {
+            } else if (Path.equalsIgnoreCase("/saveEditProfile.php")) {
                 //User currentUser = UserRepositoryImp.currentUser;
                 User currentUser = (User) request.getSession().getAttribute("loginedUser");
-                if(!request.getParameter("oldEmail").equals(currentUser.getEmail())){
-                    errorMessage = "The Old Email is Wrong";
-                    request.setAttribute("errorMessage", errorMessage);
-                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                boolean firstSave = false;
+                if (request.getParameter("emailChange") != null){
+
+                    if(!request.getParameter("oldEmail").equals(currentUser.getEmail())){
+                        errorMessage = "The Old Email is Wrong";
+                        request.setAttribute("errorMessage", errorMessage);
+                        request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                    }
+
+                    if(!request.getParameter("email1").equals(request.getParameter("email2"))){
+                        errorMessage = "The Emails Do Not Match";
+                        request.setAttribute("errorMessage", errorMessage);
+                        request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                    }
                 }
-                if(!request.getParameter("oldPassword").equals(currentUser.getPassword())){
-                    errorMessage = "The Old Password is Wrong";
-                    request.setAttribute("errorMessage", errorMessage);
-                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
-                }
-                if(!request.getParameter("email1").equals(request.getParameter("email2"))){
-                    errorMessage = "The Emails Do Not Match";
-                    request.setAttribute("errorMessage", errorMessage);
-                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
-                }
-                if(!request.getParameter("password1").equals(request.getParameter("password2"))){
-                    errorMessage = "The Passwords Do Not Match";
-                    request.setAttribute("errorMessage", errorMessage);
-                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+
+                if (request.getParameter("passwordChange") != null){
+
+                    if(!request.getParameter("oldPassword").equals(currentUser.getPassword())){
+                        errorMessage = "The Old Password is Wrong";
+                        request.setAttribute("errorMessage", errorMessage);
+                        request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                    }
+
+                    if(!request.getParameter("password1").equals(request.getParameter("password2"))){
+                        errorMessage = "The Passwords Do Not Match";
+                        request.setAttribute("errorMessage", errorMessage);
+                        request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
+                    }
                 }
                 currentUser.setFirstname(request.getParameter("firstname"));
                 currentUser.setLastname(request.getParameter("lastname"));
                 currentUser.setUsername(request.getParameter("username"));
-                currentUser.setEmail(request.getParameter("email1"));
-                currentUser.setPassword(request.getParameter("password1"));
-                currentUser.setId(UserRepositoryImp.currentUser.getId());
+                if (request.getParameter("emailChange") != null)
+                    currentUser.setEmail(request.getParameter("email1"));
+                if (request.getParameter("passwordChange") != null){
+                    firstSave = true;
+                    currentUser.setPassword(request.getParameter("password1"));
+                }
 
-                if (userRepository.saveOrUpdateUser(currentUser, true)) {
-                    // Destroy the session
-                    request.getSession().invalidate();
-                    // Destroy the cookie
-                    AppUtils.removeCookie(response);
+                if (userRepository.saveOrUpdateUser(currentUser, firstSave)) {
+                    savePicture(request, currentUser.getId());
+                    AppUtils.storeLoginedUser(request.getSession(), currentUser);
+//                    // Destroy the session
+//                    request.getSession().invalidate();
+//                    // Destroy the cookie
+//                    AppUtils.removeCookie(response);
 
                     //UserRepositoryImp.currentUser = null;
-                    errorMessage = "Registered Successfully";
-                    request.setAttribute("errorMessage", errorMessage);
-                    request.getRequestDispatcher("views/login.jsp").forward(request, response);
+                    String succMessage = "Registered Successfully";
+                    request.setAttribute("succMessage", succMessage);
+                    request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
                 }else{
                     request.getRequestDispatcher("views/editProfile.jsp").forward(request, response);
                 }
@@ -211,8 +226,8 @@ public class UserServlet extends HttpServlet {
         String fileName, saveName;
         for (Part part : request.getParts()) {
             fileName = part.getSubmittedFileName();
-            if (fileName != null){
-                if (part.getName().equals("picture")){
+            if (fileName != null && !fileName.equals("")){
+                if (part.getName().equals("picture") && part.getSize() > 0){
                     saveName = id+"-PIC.png";
                     part.write(uploadPath + File.separator + saveName);
                 }

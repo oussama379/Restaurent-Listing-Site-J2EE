@@ -1,4 +1,8 @@
-<%@ page import="static com.example.restaurantmanagement.services.UserRepositoryImp.currentUser" %>
+<%@ page import="com.example.restaurantmanagement.utils.AppUtils" %>
+<%@ page import="com.example.restaurantmanagement.entities.User" %>
+<%
+	User currentUser = AppUtils.getLoginedUser(request.getSession());
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,8 +65,8 @@
 			<figure>
 				<a href="index.php"><img src="resources/img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a>
 			</figure>
-			<form autocomplete="off" method="post" action="saveEditProfile.php">
-					<img src="upload/users/1-PIC.png" height="170" data-retina="true" alt="" class="image_profile">
+			<form autocomplete="off" method="post" action="saveEditProfile.php" enctype="multipart/form-data">
+					<img src="upload/users/<%= currentUser.getId()%>-PIC.png" height="170" data-retina="true" alt="" class="image_profile">
 					<br>
 					<input class="form-control form-control-lg" id="picture" name="picture" type="file">
 				<hr>
@@ -83,37 +87,49 @@
 				</div>
 				<hr>
 				<div class="form-group">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="emailChange" name="emailChange">
+						<label class="form-check-label" for="emailChange">Change email</label>
+					</div>
+				</div>
+				<div class="form-group">
 					<label><strong>Old</strong> Email</label>
-					<input class="form-control" type="email" name="oldEmail" value="<%= currentUser.getEmail() %>" required>
+					<input class="form-control" type="email" name="oldEmail" id="oldEmail" value="<%= currentUser.getEmail() %>" disabled>
 					<i class="icon_mail_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>New Email</label>
-					<input class="form-control" type="email" id="email1" name="email1" required>
+					<input class="form-control" type="email" id="email1" name="email1" disabled>
 					<i class="icon_mail_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>Confirm New Email</label>
-					<input class="form-control" type="email" id="email2" name="email2" required>
+					<input class="form-control" type="email" id="email2" name="email2" disabled>
 					<i class="icon_mail_alt"></i>
 					<br>
 					<span id="message"></span>
 				</div>
 				<hr>
 				<div class="form-group">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="passwordChange" name="passwordChange">
+						<label class="form-check-label" for="passwordChange">Change password</label>
+					</div>
+				</div>
+				<div class="form-group">
 					<label><strong>Old</strong> password</label>
-					<input class="form-control" type="password" id="oldPassword" name="oldPassword" value="<%= currentUser.getPassword() %>" required>
+					<input class="form-control" type="password" id="oldPassword" name="oldPassword" value="" disabled>
 					<i class="icon_lock_alt"></i>
 				</div>
 
 				<div class="form-group">
 					<label>New password</label>
-					<input class="form-control" type="password" id="password1" name="password1" required>
+					<input class="form-control" type="password" id="password1" name="password1" disabled>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>Confirm New password</label>
-					<input class="form-control" type="password" id="password2" name="password2" required>
+					<input class="form-control" type="password" id="password2" name="password2" disabled>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div id="pass-info" class="clearfix"></div>
@@ -154,6 +170,9 @@
 				"showMethod": "fadeIn",
 				"hideMethod": "fadeOut"
 			}
+			if ("${succMessage}"){
+				toastr["success"]("", "${succMessage}")
+			}
 			if ("${errorMessage}"){
 				toastr["error"]("", "${errorMessage}")
 			}
@@ -163,6 +182,26 @@
 				$('#message').html('Emails match').css('color', 'green');
 			} else
 				$('#message').html('Emails do not match!').css('color', 'red');
+		});
+
+		$("#emailChange").change(function() {
+			if(this.checked) {
+				$("#oldEmail,#email1,#email2").prop('disabled', false);
+				$("#oldEmail,#email1,#email2").prop('required', true);
+			}else {
+				$("#oldEmail,#email1,#email2").prop('disabled', true);
+				$("#oldEmail,#email1,#email2").prop('required', false);
+			}
+		});
+
+		$("#passwordChange").change(function() {
+			if(this.checked) {
+				$("#oldPassword,#password1,#password2").prop('disabled', false);
+				$("#oldPassword,#password1,#password2").prop('required', true);
+			}else {
+				$("#oldPassword,#password1,#password2").prop('disabled', true);
+				$("#oldPassword,#password1,#password2").prop('required', false);
+			}
 		});
 
 
