@@ -29,7 +29,6 @@
 
 	<!-- YOUR CUSTOM CSS -->
     <link href="resources/css/custom.css" rel="stylesheet">
-	
 </head>
 
 <body id="register_bg">

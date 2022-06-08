@@ -1,7 +1,7 @@
 <footer class="sticky-footer">
     <div class="container">
         <div class="text-center">
-            <small>Copyright © PANAGEA 2018</small>
+            <small>Made with &#10084; in MIOLA-ENSIAS</small>
         </div>
     </div>
 </footer>

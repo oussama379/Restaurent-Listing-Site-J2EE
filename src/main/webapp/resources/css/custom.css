@@ -1,3 +1,19 @@
 /*============================================================================================*/
 /* Your custom styles below */
 /*============================================================================================*/
+
+#login_bg {
+    background: url(../img/our/home_cover.jpg) center center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#register_bg {
+    background: url(../img/our/home_cover.jpg) center center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}

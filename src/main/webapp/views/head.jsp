@@ -22,3 +22,31 @@
 
 <!-- YOUR CUSTOM CSS -->
 <link href="resources/css/custom.css" rel="stylesheet">
+
+<style>
+/* HOME */
+    .hero_single.version_2:before  {
+        background: #ccc url("<c:url value="/resources/img/our/home_cover.jpg" />") center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+/* Restaurants List */
+    .hero_in.restaurants:before {
+        background: url("<c:url value="/resources/img/our/home_cover.jpg" />") center center no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+/* Bookmarks */
+    .hero_in.tours:before {
+        background: url("<c:url value="/resources/img/our/home_cover.jpg" />") center center no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+

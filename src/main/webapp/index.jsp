@@ -5,13 +5,6 @@
 
 <head>
     <%@ include file = "views/head.jsp"%>
-    <style>
-        #cover{
-            background-image: url("resources/img/our/home_cover.jpg");
-            background-position: center;
-            background-size: cover;
-        }
-    </style>
 </head>
 
 <body>
@@ -19,8 +12,8 @@
 <div id="page">
     <%@ include file = "views/header.jsp"%>
     <div>
-        <section class="hero_single version_2">
-            <div id="cover" class="wrapper">
+        <section id="cover" class="hero_single version_2">
+            <div class="wrapper">
                 <div class="container">
                     <h3>Search for restaurants</h3>
                     <p>Explore top-rated restaurants in RABAT</p>
@@ -42,7 +35,9 @@
 
                         </div>
                         <!-- /row -->
-                        <p class="btn_home_align"><a href="listRestaurants.phpp" class="btn_1 rounded">View all Restaurents</a></p>
+                        <p class="btn_home_align" style="text-align: center; margin-top: 5rem;">
+                            <a href="listRestaurants.phpp" class="btn_1">View all Restaurents</a>
+                        </p>
                     </form>
                 </div>
             </div>
