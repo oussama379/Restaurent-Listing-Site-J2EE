@@ -64,13 +64,13 @@
 				</div>
 				<div class="form-group">
 					<label>Your Email</label>
-					<input class="form-control" type="email" name="email" required>
+					<input class="form-control" type="email" name="email"
+						   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
 					<i class="icon_mail_alt"></i>
 				</div>
 				<div class="form-group">
 					<label>Your password</label>
-					<input class="form-control" type="password" id="password1" name="password1"
-						   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+					<input class="form-control" type="password" id="password1" name="password1" required>
 					<i class="icon_lock_alt"></i>
 				</div>
 				<div class="form-group">

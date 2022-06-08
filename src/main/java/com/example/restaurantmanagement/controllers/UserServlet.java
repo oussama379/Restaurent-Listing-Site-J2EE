@@ -18,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -119,6 +123,7 @@ public class UserServlet extends HttpServlet {
                 user.setRole("CLIENT");
 
                 if (userRepository.saveOrUpdateUser(user, true)) {
+                    createDefaultAvatar(user.getId());
                     errorMessage = "Registered Successfully";
                     request.setAttribute("errorMessage", errorMessage);
                     request.getRequestDispatcher("views/login.jsp").forward(request, response);
@@ -232,6 +237,18 @@ public class UserServlet extends HttpServlet {
                     part.write(uploadPath + File.separator + saveName);
                 }
             }
+        }
+    }
+
+    private void createDefaultAvatar(Long id){
+        String uploadPath = getServletContext().getRealPath("/") + AppUtils.UPLOAD_DIRECTORY_USER + "/" + id + "-PIC.png";
+        Path copied = Paths.get(uploadPath);
+        Path originalPath = Paths.get(getServletContext().getRealPath("/") + "resources/avatar.png");
+        try {
+//            FileUtils.copyDirectory(source, dest);
+            Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
