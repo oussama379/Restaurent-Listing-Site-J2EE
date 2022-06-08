@@ -51,6 +51,17 @@ public class MainServlet extends HttpServlet {
         req.setAttribute("topFive", topFive);
         System.out.println(restaurantRepository.getAllRestaurants());
         System.out.println(topFive);
+            //--Handling-Images----//
+            List<String> allImages = new ArrayList<>();
+            for(Restaurant r : topFive)
+                allImages.add(r.getImages());
+            List<String> firstImages = new ArrayList<>();
+            for(String s : allImages) {
+                String[] arrOfStr = s.split(":", 2);
+                firstImages.add(arrOfStr[0]);
+            }
+            req.setAttribute("firstImages", firstImages);
+            //--End-Handling-Images----//
         User user = null;
         List<Restaurant> bookmarks = null;
         User currentUser = (User) req.getSession().getAttribute("loginedUser");

@@ -3,7 +3,7 @@
 <header class="header menu_fixed">
     <div id="preloader"><div data-loader="circle-side"></div></div><!-- /Page Preload -->
     <div id="logo">
-        <a href="index.php">
+        <a href="<c:url value="/" />">
             <img src="resources/img/logo.png" width="150" height="36" data-retina="true" alt="" class="logo_normal">
             <img src="resources/img/logo_sticky.png" width="150" height="36" data-retina="true" alt="" class="logo_sticky">
         </a>
@@ -44,7 +44,7 @@
         <ul>
             <c:choose>
                 <c:when test="${loginedUser != null}">
-                    <li><span><a href="index.php">Home</a></span></li>
+                    <li><span><a href="<c:url value="/" />">Home</a></span></li>
                     <li><span><a href="listRestaurants.phpp">Restaurants</a></span></li>
 <%--                    <li><span><a href="bookMarks.phpp">My Favorites</a></span></li>--%>
                     <c:if test="${loginedUser.role.equals('ADMIN')}">
@@ -55,7 +55,7 @@
                     </c:if>
                 </c:when>
                 <c:otherwise>
-                    <li><span><a href="index.php">Home</a></span></li>
+                    <li><span><a href="<c:url value="/" />">Home</a></span></li>
                     <li><span><a href="listRestaurants.phpp">Restaurants</a></span></li>
                     <li><span><a href="register.php">Register</a></span></li>
                 </c:otherwise>
