@@ -4,6 +4,15 @@
 
 <head>
 	<%@ include file = "head.jsp"%>
+	<style>
+		.hero_in.restaurants_detail:before {
+			background: url(<c:url value="/upload/restaurants/${Images.get(0)}" />) center center no-repeat;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+	</style>
 </head>
 
 <body>
@@ -234,10 +243,10 @@
 							</div>
 							
 
-							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_map"></i> ${restaurant.getGoogleMaps()}</a>
+							<a href="${restaurant.getGoogleMaps()}" class="btn_1 full-width outline wishlist"><i class="icon_map"></i> Google Maps</a>
 							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_phone"></i> ${restaurant.getPhone()}</a>
-							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_internet"></i>&#64; ${restaurant.getWebSite()}</a>
-							<a href="#" class="btn_1 full-width outline wishlist"><i class="fa fa-envelope"></i>  ${restaurant.getEmail()}</a>
+							<a href="${restaurant.getWebSite()}" class="btn_1 full-width outline wishlist"><i class="icon_internet"></i>&#64; Website</a>
+							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_mail"></i>  ${restaurant.getEmail()}</a>
 							<a href="#" class="btn_1 full-width outline wishlist"><i class="icon_pin_alt"></i> ${restaurant.getAddress()}</a>
 							<!-- <div class="form-group">
 								<input class="form-control" type="text" placeholder="Neighborhood...." name="location">

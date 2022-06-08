@@ -20,7 +20,7 @@
                                 <li><a href="bookMarks.phpp">My Favorites</a></li>
                                 <li><a href="editProfile.php">Edit Profile</a></li>
                                 <li><a href="logout">Logout</a></li>
-                                <li><a href="#">${loginedUser.username}</a></li>
+<%--                                <li><a href="#">${loginedUser.username}</a></li>--%>
                             </ul>
                         </div>
                     </div>

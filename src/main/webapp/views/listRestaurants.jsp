@@ -105,7 +105,7 @@
 						<input type="submit" class="btn_search" value="Search">
 						<br>
 						<br>
-						<a href="listRestaurants.phpp" class="btn_1 medium">Cancel Search</a>
+						<a href="listRestaurants.phpp" class="btn_1 outline medium" style="width: 100%;">Cancel Search</a>
 					</div>
 				</aside>
 <%--				</form>--%>
