@@ -237,7 +237,7 @@ public class UserServlet extends HttpServlet {
 
 
     public void dothis(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Restaurant> topFive = restaurantRepository.topWhat(4, restaurantRepository.getAllRestaurants());
+        List<Restaurant> topFive = restaurantRepository.topWhat(3, restaurantRepository.getAllRestaurants());
         req.setAttribute("topFive", topFive);
         System.out.println(restaurantRepository.getAllRestaurants());
         System.out.println(topFive);

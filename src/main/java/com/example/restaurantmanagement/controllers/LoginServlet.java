@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 
         // Authentication test
         User user = userRepository.authenticate(email, password);
+        System.out.println("in login servlet " + user);
         if (user != null){
              userAccount = user;
         }else{

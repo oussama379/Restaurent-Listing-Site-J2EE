@@ -30,14 +30,14 @@
 </head>
 
 <body id="login_bg">
-	
+
 	<nav id="menu" class="fake_menu"></nav>
-	
+
 	<div id="preloader">
 		<div data-loader="circle-side"></div>
 	</div>
 	<!-- End Preload -->
-	
+
 	<div id="login">
 		<aside>
 			<figure>
@@ -67,16 +67,16 @@
 						  <span class="checkmark"></span>
 						</label>
 					</div>
-					<div class="float-right mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
+<%--					<div class="float-right mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>--%>
 				</div>
-				<input type="submit"  class="btn_1 rounded full-width" value="Login to Panagea"/>
-				<div class="text-center add_top_10">New to Panagea? <strong><a href="register.php">Sign up!</a></strong></div>
+				<input type="submit"  class="btn_1 rounded full-width" value="Login"/>
+				<div class="text-center add_top_10">New to our site ? <strong><a href="register.php">Sign up!</a></strong></div>
 			</form>
-			<div class="copy">© 2018 Panagea</div>
+<%--			<div class="copy">© 2018 Panagea</div>--%>
 		</aside>
 	</div>
 	<!-- /login -->
-		
+
 	<!-- COMMON SCRIPTS -->
     <script src="resources/js/jquery-2.2.4.min.js"></script>
     <script src="resources/js/common_scripts.js"></script>

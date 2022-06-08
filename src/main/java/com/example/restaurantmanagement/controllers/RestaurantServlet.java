@@ -244,7 +244,8 @@ public class RestaurantServlet extends HttpServlet {
             String name = req.getParameter("name");
             String location = req.getParameter("location");
             String cuisineType = req.getParameter("cuisineType");
-            String rating = req.getParameter("rating");
+            String rating = null;
+                    //req.getParameter("rating");
             if(name.equals(""))
                 name = null;
             else
@@ -257,10 +258,10 @@ public class RestaurantServlet extends HttpServlet {
                 cuisineType = null;
             else
                 req.setAttribute("cuisineType", cuisineType);
-            if(rating.equals("0") | rating.equals(""))
-                rating = null;
-            else
-                req.setAttribute("rating", rating);
+//            if(rating.equals("0") | rating.equals("") | )
+//                rating = null;
+//            else
+//                req.setAttribute("rating", rating);
             int currentPage = 1;
 
             if(req.getParameter("page") != null) {
@@ -274,17 +275,37 @@ public class RestaurantServlet extends HttpServlet {
             int count = P.getValue();
             int nbPages ;
             if(count % RestaurantRepository.pageSize != 0) nbPages = (int) count/RestaurantRepository.pageSize + 1;
-            else nbPages = (int) count/3;
+            else nbPages = (int) count/RestaurantRepository.pageSize;
+
+
 
             List<Restaurant> restaurantsPage = P.getKey();
 //            System.out.println(restaurantsPage.size());
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("nbPages", nbPages);
             req.setAttribute("restaurantsPage", restaurantsPage);
+            //System.out.println("search : "+ restaurantsPage);
             if(name == null) req.setAttribute("name", "");
             if(rating == null) req.setAttribute("rating", "0");
             if(location == null) req.setAttribute("location", "");
             if(cuisineType == null) req.setAttribute("cuisineType", "All Categories");
+
+            //--Handling-Images----//
+            List<String> allImages = new ArrayList<>();
+            for(Restaurant r : restaurantsPage)
+                allImages.add(r.getImages());
+            List<String> firstImages = new ArrayList<>();
+            for(String s : allImages) {
+                String[] arrOfStr = s.split(":", 2);
+                firstImages.add(arrOfStr[0]);
+            }
+            req.setAttribute("firstImages", firstImages);
+            //--End-Handling-Images----//
+
+
+
+
+
             req.getRequestDispatcher("views/listRestaurants.jsp").forward(req, resp);
             //=========================================================================\\
         }else if (Path.equalsIgnoreCase("/restaurantDetail.phpp")) {
@@ -299,6 +320,7 @@ public class RestaurantServlet extends HttpServlet {
             String[] arrOfStr = restaurant.getImages().split(":");
             for(String s : arrOfStr)
                 Images.add(s);
+            System.out.println("Images" + Images);
             req.setAttribute("Images", Images);
 
             List<String> menuImages = new ArrayList<>();
@@ -306,6 +328,7 @@ public class RestaurantServlet extends HttpServlet {
             for(String s1 : arrOfStr1)
                 menuImages.add(s1);
             req.setAttribute("menuImages", menuImages);
+            System.out.println("menuImages" + Images);
             //--End-Handling-Images----//
 
             //--Handling-Tags----//
@@ -333,6 +356,7 @@ public class RestaurantServlet extends HttpServlet {
             for(Review r : reviews)
                 restaurantRating = restaurantRating + r.getRating();
             restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/reviews.size()));
+            System.out.println("rating ="+restaurantRating);
             req.setAttribute("restaurantRating", restaurantRating);
             /*System.out.println(reviews.size());
             System.out.println(restaurantRating);*/
@@ -346,6 +370,9 @@ public class RestaurantServlet extends HttpServlet {
             String review_text = req.getParameter("review_text");
 
             Restaurant restaurant = restaurantRepository.getRestaurant(id);
+
+
+
             Review review = new Review();
             review.setRestaurant(restaurant);
             review.setReviewText(review_text);
@@ -366,10 +393,11 @@ public class RestaurantServlet extends HttpServlet {
             for(Review r : reviews)
                 restaurantRating = restaurantRating + r.getRating();
             restaurantRating = Double.parseDouble(new DecimalFormat("##.#").format(restaurantRating/reviews.size()));
+            restaurant.setRating(restaurantRating);
             req.setAttribute("restaurantRating", restaurantRating);
      /*       System.out.println(reviews.size());
             System.out.println(restaurantRating);*/
-
+            restaurantRepository.saveOrUpdateRestaurant(restaurant);
             req.getRequestDispatcher("/restaurantDetail.phpp?id="+id).forward(req, resp);
             //=========================================================================\\
         } else if (Path.equalsIgnoreCase("/bookMarks.phpp")) {

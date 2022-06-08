@@ -16,9 +16,9 @@
 					<h1 class="fadeInUp"><span></span>${restaurant.getName()}</h1>
 				</div>
 				<span class="magnific-gallery">
-					<a href="upload/${Images.get(0)}" class="btn_photos" title="Photo title" data-effect="mfp-zoom-in">View photos</a>
+					<a href="upload/restaurants/${Images.get(0)}" class="btn_photos" title="Photo title" data-effect="mfp-zoom-in">View photos</a>
 					<c:forEach var = "i" begin = "1" end = "${Images.size() - 1 }">
-					<a href="upload/${Images.get(i)}" title="Photo title" data-effect="mfp-zoom-in"></a>
+					<a href="upload/restaurants/${Images.get(i)}" title="Photo title" data-effect="mfp-zoom-in"></a>
 					</c:forEach>
 				</span>
 			</div>
@@ -37,7 +37,7 @@
 			</nav>
 			<div class="container margin_60_35">
 				<div class="row">
-					<div class="col-lg-8">
+					<div class="col-lg-7">
 						<section id="description">
 							<h2>Description</h2>
 							<p>${restaurant.getDescription()}</p>
@@ -81,10 +81,10 @@
 									<c:forEach var = "i" begin = "0" end = "${menuImages.size() - 1 }">
 									<li>
 											<figure>
-												<img src="upload/${menuImages.get(i)}" alt="">
+												<img src="upload/restaurants/${menuImages.get(i)}" alt="">
 												<figcaption>
 													<div class="caption-content">
-														<a href="upload/${menuImages.get(i)}" title="Photo title" data-effect="mfp-zoom-in">
+														<a href="upload/restaurants/${menuImages.get(i)}" title="Photo title" data-effect="mfp-zoom-in">
 															<i class="pe-7s-albums"></i>
 															<p>Menu Photo</p>
 														</a>
@@ -119,7 +119,7 @@
 							<div class="row">
 								<div class="col-lg-6">
 									<ul class="bullets">
-										<c:if test="${pay.contains('Cards')}"><li><img src="resources/img/cards_all.svg" alt=""></li><br></c:if>
+										<c:if test="${pay.contains('Cards')}"><li>Cards</li><br></c:if>
 										<c:if test="${pay.contains('Cash')}"><li>Cash</li></c:if>
 									</ul>
 								</div>
@@ -133,25 +133,6 @@
 						<br>
 						<section id="reviews">
 							<div class="reviews-container">
-								<!-- /review-box -->
-								<div class="review-box clearfix">
-									<figure class="rev-thumb"><img src="resources/img/avatar2.jpg" alt="">
-									</figure>
-									<div class="rev-content">
-										<div class="rating">
-											<i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-										</div>
-										<div class="rev-info">
-											Ahsan – April 01, 2016:
-										</div>
-										<div class="rev-text">
-											<p>
-												Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-											</p>
-										</div>
-									</div>
-								</div>
-								<!-- /review-box -->
                                 <!-- /review-box -->
 								<c:if test="${reviews.isEmpty() != true}">
                                 <c:forEach var = "i" begin = "0" end = "${reviews.size() - 1 }">
@@ -193,6 +174,7 @@
 						<!-- /section -->
 						<hr>
 
+						<c:if test="${loginedUser != null}">
 							<div class="add-review">
 								<h5>Leave a Review</h5>
 								<form  action="submitReview.phpp" method="post">
@@ -232,14 +214,22 @@
 									</div>
 								</form>
 							</div>
+						</c:if>
 					</div>
 					<!-- /col -->
+
 					
-					<aside class="col-lg-4" id="sidebar">
+					<aside class="col-lg-5" id="sidebar">
 						<div class="box_detail booking">
 							<div class="price">
-								<span>45$ <small>person</small></span>
-								<div class="score"><span>${reviews.size()} Reviews</span><strong>${restaurantRating} / 5</strong>
+								<span>${restaurant.getAverageCost()} DH <small>person</small></span>
+								<div class="score"><span>${reviews.size()} Reviews</span>
+									<c:if test="${Double.isNaN( restaurantRating)}">
+									<strong>Not rated yet</strong>
+									</c:if>
+									<c:if test="${Double.isNaN( restaurantRating) != true}">
+										<strong>${restaurantRating} / 5</strong>
+									</c:if>
 									</div>
 							</div>
 							

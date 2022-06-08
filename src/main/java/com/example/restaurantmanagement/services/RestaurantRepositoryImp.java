@@ -129,37 +129,47 @@ public class RestaurantRepositoryImp implements RestaurantRepository{
     }
 
     public List<Restaurant> topWhat(int number, List<Restaurant> restaurants){
-        Collections.sort(restaurants, Comparator.comparingInt(Restaurant::getViews));
-        Collections.reverse(restaurants);
-        List<Restaurant> topFive = new ArrayList<>();
-        for(int i = 0; i < number ; i++) {
-            topFive.add(restaurants.get(i));
+        if(restaurants.size() >= number)  {
+            Collections.sort(restaurants, Comparator.comparingInt(Restaurant::getViews));
+            Collections.reverse(restaurants);
+            List<Restaurant> topFive = new ArrayList<>();
+            for (int i = 0; i < number; i++) {
+                topFive.add(restaurants.get(i));
+            }
+            return topFive;
+        }else{
+            return null;
         }
-        return topFive;
     }
 
     public javafx.util.Pair<List<Restaurant>, Integer> getByMultipleCriteria(String name, String typeCuisine, String block, String rating, int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Restaurant.class);
-
+        System.out.println("criteria before :" + criteria.list());
         if (name != null) {
             criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
         }
+        System.out.println("criteria after name :" + criteria.list());
         if (typeCuisine != null) {
             criteria.add(Restrictions.like("typeCuisine", typeCuisine, MatchMode.ANYWHERE));
         }
+        System.out.println("criteria after typeCuisine :" + criteria.list());
         if (block != null) {
             criteria.add(Restrictions.like("block", block, MatchMode.ANYWHERE));
         }
-        if (rating != null) {
-            Long rat = Long.parseLong(rating);
-            criteria.add(Restrictions.eq("rating", rat));
-        }
+        System.out.println("criteria after block :" + criteria.list());
+//        if (rating != null) {
+//            double rat = Double.parseDouble(rating);
+//            criteria.add(Restrictions.eq("rating", rat));
+//        }
         int count = Integer.valueOf(criteria.list().size());
+        System.out.println("count:" + count);
+        System.out.println("criteria:" + criteria.list());
         criteria = criteria.setFirstResult(this.pageSize * (pageNumber - 1));
         criteria = criteria.setMaxResults(this.pageSize);
         List<Restaurant> restaurants = criteria.list();
         javafx.util.Pair<List<Restaurant>, Integer> P = new javafx.util.Pair<>(restaurants, count);
+        System.out.println("in getByMultipleCriteria" + restaurants);
         return P;
     }
 
@@ -182,7 +192,7 @@ public class RestaurantRepositoryImp implements RestaurantRepository{
     }
 
 
-    public static int pageSize = 3;
+    public static int pageSize = 2;
     public List<Restaurant> getPage(int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Restaurant> result = null;

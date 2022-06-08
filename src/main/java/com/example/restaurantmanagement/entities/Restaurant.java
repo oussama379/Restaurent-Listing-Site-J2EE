@@ -23,7 +23,7 @@ public class Restaurant {
     private String description;
     private double averageCost;
     private String payment; // Possible payment methods
-    private Long rating;
+    private double rating;
     private String typeCuisine;
     private String phone;
     private String webSite;
@@ -90,11 +90,11 @@ public class Restaurant {
         this.payment = payment;
     }
 
-    public Long getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Long rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

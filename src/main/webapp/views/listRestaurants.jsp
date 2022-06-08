@@ -22,25 +22,25 @@
 		</section>
 		<!--/hero_in-->
 		
-		<div class="filters_listing sticky_horizontal">
-			<div class="container">
-				<ul class="clearfix">
-					<li>
-						<div class="switch-field">
-							<input type="radio" id="all" name="listing_filter" value="all" checked data-filter="*" class="selected">
-							<label for="all">All</label>
-							<input type="radio" id="popular" name="listing_filter" value="popular" data-filter=".popular">
-							<label for="popular">Popular</label>
-							<input type="radio" id="latest" name="listing_filter" value="latest" data-filter=".latest">
-							<label for="latest">Latest</label>
-						</div>
-					</li>
-					
-				</ul>
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /filters -->
+<%--		<div class="filters_listing sticky_horizontal">--%>
+<%--			<div class="container">--%>
+<%--				<ul class="clearfix">--%>
+<%--					<li>--%>
+<%--						<div class="switch-field">--%>
+<%--							<input type="radio" id="all" name="listing_filter" value="all" checked data-filter="*" class="selected">--%>
+<%--							<label for="all">All</label>--%>
+<%--							<input type="radio" id="popular" name="listing_filter" value="popular" data-filter=".popular">--%>
+<%--							<label for="popular">Popular</label>--%>
+<%--							<input type="radio" id="latest" name="listing_filter" value="latest" data-filter=".latest">--%>
+<%--							<label for="latest">Latest</label>--%>
+<%--						</div>--%>
+<%--					</li>--%>
+<%--					--%>
+<%--				</ul>--%>
+<%--			</div>--%>
+<%--			<!-- /container -->--%>
+<%--		</div>--%>
+<%--		<!-- /filters -->--%>
 		
 		<div class="collapse" id="collapseMap">
 			<div id="map" class="map"></div>
@@ -74,16 +74,16 @@
 						<br>
 						<br>
 						<br>
-						<div class="form-group">
-							<select class="wide" name="rating">
-								<option value="0">Rating</option>
-								<option value="1"<c:if test="${rating != null && rating == 1}">selected</c:if>>&#9733;</option>
-								<option value="2" <c:if test="${rating != null && rating == 2}">selected</c:if>>&#9733; &#9733;</option>
-								<option value="3" <c:if test="${rating != null && rating == 3}">selected</c:if>>&#9733; &#9733; &#9733;</option>
-								<option value="4" <c:if test="${rating != null && rating == 4}">selected</c:if>>&#9733; &#9733; &#9733; &#9733;</option>
-								<option value="5" <c:if test="${rating != null && rating == 5}">selected</c:if>>&#9733; &#9733; &#9733;  &#9733; &#9733;</option>
-							</select>
-						</div>
+<%--						<div class="form-group">--%>
+<%--							<select class="wide" name="rating">--%>
+<%--								<option value="0">Rating</option>--%>
+<%--								<option value="1"<c:if test="${rating != null && rating == 1}">selected</c:if>>&#9733;</option>--%>
+<%--								<option value="2" <c:if test="${rating != null && rating == 2}">selected</c:if>>&#9733; &#9733;</option>--%>
+<%--								<option value="3" <c:if test="${rating != null && rating == 3}">selected</c:if>>&#9733; &#9733; &#9733;</option>--%>
+<%--								<option value="4" <c:if test="${rating != null && rating == 4}">selected</c:if>>&#9733; &#9733; &#9733; &#9733;</option>--%>
+<%--								<option value="5" <c:if test="${rating != null && rating == 5}">selected</c:if>>&#9733; &#9733; &#9733;  &#9733; &#9733;</option>--%>
+<%--							</select>--%>
+<%--						</div>--%>
 						<br>
 						<br>
 						<br>
@@ -103,6 +103,8 @@
 							</ul>
 						</div>--%>
 						<input type="submit" class="btn_search" value="Search">
+						<br>
+						<br>
 						<a href="listRestaurants.phpp" class="btn_1 medium">Cancel Search</a>
 					</div>
 				</aside>
@@ -137,10 +139,10 @@
 										</c:otherwise>
 									</c:choose>
 									</c:if>
-									<a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}"><img src="upload/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
+									<a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="resources/img-fluid" alt="" width="800" height="533"><div class="read_more"><span>Read more</span></div></a>
 								</figure>
 								<div class="wrapper">
-									<h3><a href="restaurant-detail.html">${restaurantsPage.get(i).getName()}</a></h3>
+									<h3><a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}">${restaurantsPage.get(i).getName()}</a></h3>
 									<p>${restaurantsPage.get(i).getDescription()}</p>
 									<span class="price">Average <strong>${restaurantsPage.get(i).getAverageCost()} DH</strong> /per person</span>
 								</div>

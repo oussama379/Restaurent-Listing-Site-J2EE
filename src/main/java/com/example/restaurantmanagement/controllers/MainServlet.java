@@ -30,7 +30,6 @@ public class MainServlet extends HttpServlet {
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
-            String Path = req.getServletPath();
             dothis(req,resp);
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
@@ -45,8 +44,10 @@ public class MainServlet extends HttpServlet {
         public void destroy() {
                 super.destroy();
         }
-    public void dothis(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Restaurant> topFive = restaurantRepository.topWhat(4, restaurantRepository.getAllRestaurants());
+
+        public void dothis(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            System.out.println(restaurantRepository.getAllRestaurants());
+        List<Restaurant> topFive = restaurantRepository.topWhat(3, restaurantRepository.getAllRestaurants());
         req.setAttribute("topFive", topFive);
         System.out.println(restaurantRepository.getAllRestaurants());
         System.out.println(topFive);
