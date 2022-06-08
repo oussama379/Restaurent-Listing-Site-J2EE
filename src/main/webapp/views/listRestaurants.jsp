@@ -139,7 +139,7 @@
 										</c:otherwise>
 									</c:choose>
 									</c:if>
-									<a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="resources/img-fluid" alt=""><div class="read_more"><span>Read more</span></div></a>
+									<a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="img-fluid" alt=""><div class="read_more"><span>Read more</span></div></a>
 								</figure>
 								<div class="wrapper">
 									<h3><a href="restaurantDetail.phpp?id=${restaurantsPage.get(i).getId()}">${restaurantsPage.get(i).getName()}</a></h3>

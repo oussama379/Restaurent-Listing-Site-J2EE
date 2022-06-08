@@ -64,7 +64,7 @@
 	<div id="login">
 		<aside>
 			<figure>
-				<a href="<c:url value="/" />"><img src="resources/img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a>
+				<a href="<c:url value="/" />"><img src="resources/img/logo_sticky.png" height="36" data-retina="true" alt="" class="logo_sticky"></a>
 			</figure>
 			<form autocomplete="off" method="post" action="saveEditProfile.php" enctype="multipart/form-data">
 					<img src="upload/users/<%= currentUser.getId()%>-PIC.png" height="170" data-retina="true" alt="" class="image_profile">

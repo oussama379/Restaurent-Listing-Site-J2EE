@@ -5,6 +5,13 @@
 
 <head>
     <%@ include file = "views/head.jsp"%>
+    <style>
+        #cover{
+            background-image: url("resources/img/our/home_cover.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,10 +20,10 @@
     <%@ include file = "views/header.jsp"%>
     <div>
         <section class="hero_single version_2">
-            <div class="wrapper">
+            <div id="cover" class="wrapper">
                 <div class="container">
                     <h3>Search for restaurants</h3>
-                    <p>Expolore top rated restaurants near you</p>
+                    <p>Explore top-rated restaurants in RABAT</p>
                     <form method="post" action="searchRestaurants.phpp">
                         <div class="row no-gutters custom-search-input-2">
                             <div class="col-lg-10">
@@ -75,7 +82,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:if>
-                                    <a href="restaurantDetail.phpp?id=${topFive.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="resources/img-fluid" alt=""><div class="read_more"><span>Read more</span></div></a>
+                                    <a href="restaurantDetail.phpp?id=${topFive.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="img-fluid" alt=""><div class="read_more"><span>Read more</span></div></a>
                                 </figure>
                                 <div class="wrapper">
                                     <h3><a href="restaurant-detail.html">${topFive.get(i).getName()}</a></h3>

@@ -31,7 +31,7 @@
 							<div class="box_grid">
 								<figure>
 									<a OnClick="location.href='removeBookMark.phpp?id=${restaurants.get(i).getId()}'" class="wish_bt liked" ></a>
-									<a href="restaurantDetail.phpp?id=${restaurants.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="resources/img-fluid" alt=""><div class="read_more"><span>Read more</span></div></a>
+									<a href="restaurantDetail.phpp?id=${restaurants.get(i).getId()}"><img src="upload/restaurants/${firstImages.get(i)}" class="img-fluid" alt=""><div class="read_more"><span>Read more</span></div></a>
 								</figure>
 								<div class="wrapper">
 									<h3><a href="restaurant-detail.html">${restaurants.get(i).getName()}</a></h3>

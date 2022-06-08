@@ -4,8 +4,8 @@
     <div id="preloader"><div data-loader="circle-side"></div></div><!-- /Page Preload -->
     <div id="logo">
         <a href="<c:url value="/" />">
-            <img src="resources/img/logo.png" width="150" height="36" data-retina="true" alt="" class="logo_normal">
-            <img src="resources/img/logo_sticky.png" width="150" height="36" data-retina="true" alt="" class="logo_sticky">
+            <img src="resources/img/logo.png" height="36" data-retina="true" alt="" class="logo_normal">
+            <img src="resources/img/logo_sticky.png" height="36" data-retina="true" alt="" class="logo_sticky">
         </a>
     </div>
     <ul id="top_menu">
