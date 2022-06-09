@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface RestaurantRepository {
-    static int pageSize = 2;
+    static int pageSize = 3;
     boolean saveOrUpdateRestaurant(Restaurant restaurant);
     boolean deleteRestaurant(Long id);
     Restaurant getRestaurant(Long id);

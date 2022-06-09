@@ -69,16 +69,20 @@ public class AppUtils {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     public static int storeRedirectAfterLoginUrl(HttpSession session, String requestUri) {
+        System.out.println(">>>>>>>>>>>>>> storeRedirectAfterLoginUrl");
         Integer id = uri_id_map.get(requestUri);
 
         if (id == null) {
             id = REDIRECT_ID++;
-
+            System.out.println(">>>>>>>>>>>>>> "+id);
             uri_id_map.put(requestUri, id);
             id_uri_map.put(id, requestUri);
+            System.out.println(">>>>>>>>>>>>>>"+uri_id_map);
+            System.out.println(">>>>>>>>>>>>>>"+id_uri_map);
             return id;
         }
-
+        System.out.println(">>>>>>>>>>>>>>"+uri_id_map);
+        System.out.println(">>>>>>>>>>>>>>"+id_uri_map);
         return id;
     }
 
@@ -121,20 +125,20 @@ public class AppUtils {
         }
         urlPattern = servletPath;
 
-        boolean has = hasUrlPattern(servletContext, urlPattern);
-        if (has) {
-            return urlPattern;
-        }
-        int i = servletPath.lastIndexOf('.');
-        if (i != -1) {
-            String ext = servletPath.substring(i + 1);
-            urlPattern = "*." + ext;
-            has = hasUrlPattern(servletContext, urlPattern);
-
-            if (has) {
-                return urlPattern;
-            }
-        }
-        return "/";
+//        boolean has = hasUrlPattern(servletContext, urlPattern);
+//        if (has) {
+//            return urlPattern;
+//        }
+//        int i = servletPath.lastIndexOf('.');
+//        if (i != -1) {
+//            String ext = servletPath.substring(i + 1);
+//            urlPattern = "*." + ext;
+//            has = hasUrlPattern(servletContext, urlPattern);
+//
+//            if (has) {
+//                return urlPattern;
+//            }
+//        }
+        return urlPattern;
     }
 }

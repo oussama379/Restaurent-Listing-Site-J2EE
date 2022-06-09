@@ -13,6 +13,7 @@ import java.io.IOException;
 @WebServlet(name = "LoginServlet", value = {"/login","/logout"})
 public class LoginServlet extends HttpServlet {
     UserRepository userRepository;
+    static int redirectId = -1;
 
     public void init() {
         userRepository = new UserRepositoryImp();
@@ -30,6 +31,10 @@ public class LoginServlet extends HttpServlet {
             // Redirect to Home Page.
             response.sendRedirect(request.getContextPath() + "/");
         }else{
+            try {
+                redirectId = Integer.parseInt(request.getParameter("redirectId"));
+            } catch (Exception e) {
+            }
                 request.getRequestDispatcher("views/login.jsp").forward(request, response);
         }
     }
@@ -59,14 +64,10 @@ public class LoginServlet extends HttpServlet {
         if(remember != null)
             AppUtils.storeCookie(response, userAccount.getId());
 
-        //
-        int redirectId = -1;
-        try {
-            redirectId = Integer.parseInt(request.getParameter("redirectId"));
-        } catch (Exception e) {
-        }
+
         String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
         if (requestUri != null) {
+            redirectId = -1;
             response.sendRedirect(requestUri);
         } else {
             // Par défaut, après l'achèvement de la connexion

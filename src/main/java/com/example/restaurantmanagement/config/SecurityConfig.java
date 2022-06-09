@@ -24,17 +24,34 @@ public class SecurityConfig {
     private static void init() {
         // Config ROLE_ADMIN
         List<String> urlPatterns1 = new ArrayList<String>();
-//        urlPatterns1.add("/*");
+        urlPatterns1.add("/homeAdmin.admin");
+        urlPatterns1.add("/listUsers.php");
+        urlPatterns1.add("/addUsers.php");
+        urlPatterns1.add("/saveUser.php");
+        urlPatterns1.add("/editUser.php");
+        urlPatterns1.add("/deleteUser.php");
+        urlPatterns1.add("/listRestaurantCrud.phpp");
+        urlPatterns1.add("/addRestaurant.phpp");
+        urlPatterns1.add("/editRestaurant.phpp");
+        urlPatterns1.add("/deleteRestaurant.phpp");
+        urlPatterns1.add("/saveRestaurant.phpp");
+        urlPatterns1.add("/listRestReq.phpp");
+        urlPatterns1.add("/approveRestaurant.phpp");
+        urlPatterns1.add("/cancelRestaurant.phpp");
         mapConfig.put(ROLE_ADMIN, urlPatterns1);
 
         // Config ROLE_OWNER
         List<String> urlPatterns2 = new ArrayList<String>();
-        urlPatterns2.add("/owner");
+        urlPatterns2.add("/addRestaurant.phpp");
+        urlPatterns2.add("/submitReview.phpp");
+        urlPatterns2.add("/bookMarks.phpp");
+        urlPatterns2.add("/listRestReq.phpp");
         mapConfig.put(ROLE_OWNER, urlPatterns2);
 
         // Config ROLE_CLIENT
         List<String> urlPatterns3 = new ArrayList<String>();
-        urlPatterns3.add("/client");
+        urlPatterns3.add("/submitReview.phpp");
+        urlPatterns3.add("/bookMarks.phpp");
         mapConfig.put(ROLE_CLIENT, urlPatterns3);
     }
 

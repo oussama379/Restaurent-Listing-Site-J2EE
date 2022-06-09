@@ -1,6 +1,7 @@
 package com.example.restaurantmanagement.services;
 
 import com.example.restaurantmanagement.config.HibernateUtil;
+import com.example.restaurantmanagement.entities.AddRequestStatus;
 import com.example.restaurantmanagement.entities.Restaurant;
 
 
@@ -145,6 +146,7 @@ public class RestaurantRepositoryImp implements RestaurantRepository{
     public javafx.util.Pair<List<Restaurant>, Integer> getByMultipleCriteria(String name, String typeCuisine, String block, String rating, int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Restaurant.class);
+        criteria.add(Restrictions.eq("addRequestStatus", AddRequestStatus.APPROVED));
         System.out.println("criteria before :" + criteria.list());
         if (name != null) {
             criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
@@ -177,7 +179,7 @@ public class RestaurantRepositoryImp implements RestaurantRepository{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try{
-            Query query = session.createQuery("select count(id) from Restaurant");
+            Query query = session.createQuery("select count(id) from Restaurant where addRequestStatus = 1");
             Long count = (Long)query.uniqueResult();
             session.flush() ;
             tx.commit();
@@ -192,13 +194,13 @@ public class RestaurantRepositoryImp implements RestaurantRepository{
     }
 
 
-    public static int pageSize = 2;
+    public static int pageSize = 3;
     public List<Restaurant> getPage(int pageNumber) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Restaurant> result = null;
         try {
             session.beginTransaction();
-            org.hibernate.query.Query query = session.createQuery("from Restaurant");
+            org.hibernate.query.Query query = session.createQuery("from Restaurant where addRequestStatus = 1");
             query = query.setFirstResult(pageSize * (pageNumber - 1));
             query.setMaxResults(pageSize);
             result = query.list();

@@ -17,8 +17,8 @@
 			<div class="container">
 				<div class="row justify-content-center text-center">
 					<div class="col-xl-7 col-lg-9">
-						<h2>404 <i class="icon_error-triangle_alt"></i></h2>
-						<p>We're sorry, but the page you were looking for doesn't exist.</p>
+						<h2>403 &#128520<i class=""></i></h2>
+						<p>Not with us</p>
 <%--						<form>--%>
 <%--							<div class="search_bar_error">--%>
 <%--								<input type="text" class="form-control" placeholder="What are you looking for?">--%>
